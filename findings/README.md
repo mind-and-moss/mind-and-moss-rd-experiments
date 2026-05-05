@@ -17,7 +17,7 @@ findings/
   concepts/                ← unvalidated ideas + random inventions (flat .md files)
   topics/                  ← cross-cutting research used across products
     fabrication/           ← print prep, mold-making, glass grinding, etc.
-    ecosystem/             ← bioactive systems, isopods, plants, humidity
+    ecosystem/             ← bioactive systems, isopods, plants, humidity, aquarium methods (Walstad, Father Fish)
     materials/             ← acrylic, glass, silicone, UV adhesives, etc.
     cad-and-modeling/      ← Blender, Plasticity, iPad workflows
     electronics/           ← LED wiring, soldering, etc.
