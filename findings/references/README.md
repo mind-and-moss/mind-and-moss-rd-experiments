@@ -10,17 +10,21 @@ This folder is the human-curated counterweight: manufacturer datasheets, hobbyis
 
 ## Structure
 
-Mirrors `topics/` so a researcher can flip between "what the AI told me" and "what the actual sources say" on the same topic:
+Mirrors the rest of `findings/` (topics, products, and concepts) so a researcher can flip between "what the AI told me" and "what the actual sources say" on the same subject:
 
 ```
 findings/
   topics/          ← AI-conversation content (verbatim from threads)
-  references/     ← external/curated content (this folder)
-    materials/
-    fabrication/
-    ecosystem/
-    electronics/
-    cad-and-modeling/
+  products/        ← per-product AI excavation
+  concepts/        ← per-concept AI excavation
+  references/      ← external/curated content (this folder)
+    materials/         ← datasheets and supplier links per material
+    fabrication/       ← technique videos, build logs, tooling references
+    ecosystem/         ← bioactive / livestock makers and resources
+    electronics/       ← parts catalogs, calculator tools
+    cad-and-modeling/  ← software docs, tutorial channels
+    products/          ← imitation examples for each in-development product
+    concepts/          ← imitation examples for each unvalidated concept
 ```
 
 Subfolders are added only when there's content to put in them. Empty trees aren't worth their footprint.
@@ -50,10 +54,18 @@ When something in `topics/` is contradicted or confirmed by an external source, 
 - AI-written content from a different chatbot — that goes in `archive/` as a new RESEARCH file.
 - Aspirational links ("I should read this someday") — keep those in personal notes, not the shared knowledge base.
 
-## Tagging unverified entries
+## Tagging entries
 
-If you list a source but haven't fully validated it yet, prefix with `[unvetted]` so future-you knows. Example:
+Tags go right before the bold name so future-you knows what kind of source this is at a glance.
+
+- **`[unvetted]`** — Listed but not yet validated. Example: claims X about silicone bond lines, need to verify.
+- **`[imitation-example]`** — A real built piece, artist, maker, or commercial product worth studying as a visual/creative reference for what Mind and Moss is building. Not a technical spec sheet — a "look at this and learn how they did it" pointer. The `products/` and `concepts/` subfolders are mostly imitation examples, but the tag can be applied anywhere.
+
+Example formatting:
 
 ```
 - [unvetted] **Some Forum Post** — claims X about silicone bond lines. Need to verify.
+- [imitation-example] **Christopher Ries — Hawk Galleries** — Optical lead-crystal sculptor. Reference for monolithic clear-glass forms with internal light play.
 ```
+
+Tags can stack: `[unvetted] [imitation-example]` is valid (a maker's site you found but haven't studied yet).
