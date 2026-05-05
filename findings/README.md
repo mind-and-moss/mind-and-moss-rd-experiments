@@ -15,14 +15,17 @@ findings/
     the-gem/               ← stained-glass + impossible-gem hardscape piece
     cylindrical-terrarium/ ← existing sealed cylinder build
   concepts/                ← unvalidated ideas + random inventions (flat .md files)
-  topics/                  ← cross-cutting research used across products
+  topics/                  ← cross-cutting research used across products (AI-conversation excavation)
     fabrication/           ← print prep, mold-making, glass grinding, etc.
     ecosystem/             ← bioactive systems, isopods, plants, humidity
     materials/             ← acrylic, glass, silicone, UV adhesives, etc.
     cad-and-modeling/      ← Blender, Plasticity, iPad workflows
     electronics/           ← LED wiring, soldering, etc.
+  references/              ← external/curated sources (datasheets, suppliers, forums) — parallel to topics/
   business/                ← brand, pricing, sourcing, product categories
 ```
+
+`topics/` and `references/` cover the same subject areas with different content rules. `topics/` is verbatim from AI-conversation excavation. `references/` is human-curated external sources — manufacturer datasheets, hobbyist forums, supplier links. See `references/README.md` for the convention.
 
 ## How to navigate
 
@@ -31,6 +34,7 @@ findings/
 - **"What do we know about <material>?"** → `topics/materials/<material>.md`
 - **"Is there an idea floating around about ___?"** → `concepts/`
 - **"Where did this fact originally come from?"** → every section in every file is tagged with a `Source:` line pointing back to the original Thread in `archive/`. Open the matching `archive/RESEARCH-00X-*.md` and search by Thread number.
+- **"Is there a manufacturer datasheet / forum / video for this?"** → `references/<topic-area>/`. AI excavation in `topics/` is for ideation; `references/` is for primary sources.
 
 ## Citation convention
 
