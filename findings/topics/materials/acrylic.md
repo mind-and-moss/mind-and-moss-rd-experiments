@@ -24,3 +24,38 @@ Source: RESEARCH-002 Thread 4 — "Foggy window liner for sealed terrariums" (Ap
 
 ### Acrylic care
 - No isopropyl, acetone, or ammonia. Use mild soap + water or Novus #1.
+
+---
+
+Source: RESEARCH-005 Thread 16 — "Acrylic Aquarium Build Tips" (chat #14)
+
+### Material reality check (thin acrylic)
+- **0.04" (1mm) acrylic is too thin** for anything taller than 2-3" of water column.
+- Fine for: tiny micro tanks, humidity chambers, lids, baffles.
+- Risky for: any tank with real water column.
+
+### Sealing tier system
+- **Tier 1 — flawless solvent weld** = no glue layer at all. Solvent melts both edges, polymer chains interdiffuse, seam becomes one continuous sheet. As strong as parent material. Adding silicone does almost nothing structurally on top of this.
+- **Tier 2 — weld + internal silicone fillet** = backup against real-world imperfections (microscopic bubbles, dry spots, edge mismatch, stress risers). Tier 2 is BELOW Tier 1 because it implies the weld wasn't perfect or build is risky (thin material).
+- Silicone, boat sealants, and most resins are NOT reliable structural seals for acrylic — secondary insurance only.
+
+### Invisible internal acrylic underwater
+- Acrylic refractive index ≈ 1.49 vs water ≈ 1.33 — close enough that flat clean acrylic disappears underwater
+- **Visibility killers:** polished glowing edges, surface scratches, algae film
+- Design goal: control all three
+- Flat horizontal acrylic virtually disappears underwater when thin, clean, shadowed from above
+- Pro move: place under driftwood shadows
+
+### Edge techniques (silicone)
+- Sandpaper the silicone area before applying
+- Tape, razor blade, fingertip techniques compared
+- Acrylic cutter for "hook" cuts to mechanically anchor silicone
+
+### Microfiber / cleaning specifics
+
+---
+
+Source: RESEARCH-005 Thread "Microfiber cloth and acrylic" (chat #72)
+
+- Microfiber window towels can scratch acrylic if grit gets trapped in the cloth.
+- For terrariums specifically: rinse cloth before use, light pressure only, avoid dry wiping.

@@ -51,3 +51,22 @@ Isaiah asked: can I mix O2 in a 4x4 in water box and then pump it 12 inches to b
 
 ### Relevance to The Machine
 For zebrafish in 55–75 ft racetrack, surface agitation from cascade flow + airstones likely sufficient. Only consider O2 saturator if stocking density gets very high.
+
+---
+
+Source: RESEARCH-005 Thread 17 — "Aquarium Pressure and Oxygen Issues" (chat #15)
+
+### Closed-cycle gas exchange basics (relevant to The Machine if any portion is sealed)
+- 5-gallon bucket as integrated gas + filter chamber discussed (cross-references the canister filter concept)
+- DIY condenser for humidity control
+- Self-contained biosphere principles
+- Net positive O₂ in closed setup raises the CO₂ accumulation question
+
+### Humidity escape via dehumidifier coupling
+- 15-gallon aquarium with all airflow routed out one tube → external dehumidifier
+- Cab Yick $45 dehumidifier on Amazon as low-cost prototype hardware
+
+### Copepod feeding (cross-reference)
+- Source: RESEARCH-005 Thread "Feeding Copepods in 1G Tank" (chat #12)
+- Single question — feeding copepod populations in 1-gallon tank
+- Live food culture for fish — could be a Machine inhabitant supply

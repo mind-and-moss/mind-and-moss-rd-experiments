@@ -1,6 +1,6 @@
-# Glass Edge Grinder — Custom Build
+# Glass Edge Grinder
 
-Custom belt-grinder/sander build for polishing glass panel edges to invisible-seam tolerance. Bond-line specs that drive the design also live in `products/the-gem/seam-construction.md`.
+Bond-line specs, grit progression, and architecture choices for a custom belt-grinder/sander that polishes glass panel edges to invisible-seam tolerance. Plus clamp options for thin-panel assembly. The "build instructions" themselves are not yet written — most content here is the engineering targets and tradeoffs that constrain the design.
 
 ---
 
@@ -65,3 +65,26 @@ Bond-line tolerance pushes the design harder than the polish does. The grinder d
 - Builds on RESEARCH-002 Thread 6 ("Seam options ranked: 1) UV optical adhesive (invisible)")
 - Adds the **fabrication side** of how to actually achieve the edge precision the invisible seam requires
 - The bond-line specs Isaiah pasted in came from another bot — worth confirming source if used in production decisions
+
+---
+
+Source: RESEARCH-005 Thread 20 — "Clamps for glass assembly" (chat #48 — first ~10 turns only; rest drifts to PC building)
+
+## Corner / joint clamps for thin glass-acrylic assembly
+
+For holding glass and acrylic panels in rectangular assemblies during silicone cure or weld setup:
+
+| Clamp | Price | Notes |
+|---|---|---|
+| Kreg 90° Corner Clamp | $49.99 | Auto-adjusts, woodworking-grade |
+| Bessey 90° Corner Clamp WS-1 | $10.49 | Budget basic 90° joins |
+| Pittsburgh Corner Clamp w/ Quick Release | $11.99 | Quick-release for fast setups |
+| Micro-Mark Mini 4 Corner Clamps | $14.96 | For tight spaces / small projects |
+| Bessey WS-3+2K 90° Angle Clamp | $31.97 | Pro-grade, 1-1/8" throat |
+| Milescraft SquareClampKit | $24.99 | Complete kit |
+
+For The Gem's 6" panel work and similar thin-acrylic builds, the Bessey WS-1 ($10.49) is a strong starter — multiple in parallel beats one expensive Kreg for the price.
+
+## Production-line vertical organization (briefly discussed in same chat)
+- 30 × 60oz cube containers needed lights + air, going vertical for floor space
+- Design wasn't resolved in the chat — open question for production-line shelving

@@ -36,3 +36,36 @@ Platinum-cure silicone will not cure if it contacts:
 - Certain spray paints, lacquers, polyester resins
 - Uncured SLA resin from 3D-printed masters (must be fully post-cured before molding)
 - Superglue / CA glue residue
+
+---
+
+Source: RESEARCH-005 Thread 22 — "Alginate impression material" (chat #101)
+
+## Alginate as a fast/cheap mold material
+- Dental alginate (the cheap molding stuff dentists use)
+- Powder + water → soft rubbery gel
+- Sets fast — good for rapid prototyping
+- **Single-use** — alginate dries out and shrinks, can't be re-used
+- More accurate alternative: polyvinyl siloxane (this is the platinum-cure family already documented above)
+
+## When to reach for alginate
+- Very fast, low-stakes prototype molds during early Gem hardscape iteration
+- When polyvinyl siloxane / tin-cure is too expensive or slow
+- One-shot test casts before committing to a "real" silicone mold
+
+---
+
+Source: RESEARCH-005 Thread 28 — "Layer count calculation" (chat #59 — Squidward bust personal project, technique gem-relevant)
+
+## Mold rotation for self-leveling concrete back-fill
+- For molds where the body should be hollow / partially filled with concrete:
+  - Rotate the mold during pour so concrete self-levels along the inner surface
+  - Reduces material weight while maintaining outer shape
+  - Useful when the cast piece needs to be lightweight but rigid
+
+## Multi-material casting (concrete + silicone in one piece)
+- Concrete forms the bulk
+- Silicone elements integrated for flexible/sealing functions
+- Color matching: pigment integration into concrete works (can color-match characters, environments)
+
+These are technique extensions of the workflow in RESEARCH-001 Thread 3 (3D print → clay → mold → cast). Wood filler smoothing belongs in `3d-print-prep.md`.
