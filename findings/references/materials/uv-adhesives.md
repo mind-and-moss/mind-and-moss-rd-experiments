@@ -40,4 +40,15 @@ Different category from UV adhesive — these are pour-on, self-leveling, glass-
 - [ ] Optical-bonding application notes / case studies from Norland's site
 - [ ] Forum threads on UV adhesive longevity in continuously-lit terrarium environments
 - [ ] Comparison: Norland vs Wacker SilGel vs Dow optical silicones for clarity + bond strength
-- [ ] Refractive-index-matched UV adhesives that match soda-lime (1.52) or borosilicate (1.47) — Norland NOA 61's 1.56 is close but not a true match; possibly Norland NOA 65 or other index-matching products worth investigating
+- [x] Refractive-index-matched UV adhesives — done (see RI-match section below)
+
+## Refractive-index-matched grades (added 2026-05-05)
+
+> **Important finding for The Gem.** Norland NOA 61 (RI 1.56) is *not* a true match for soda-lime (1.52) or borosilicate (1.47) glass — the seam will be faintly visible. Better grades exist:
+
+- **NOA 65 (RI 1.524) — soda-lime match.** Essentially perfect for soda-lime glass. Designed as a low-strain flexible bond for dissimilar-CTE pairings (plastic-to-glass, lens-in-metal-mount). **The strongest soda-lime candidate Norland makes.** URL: https://norlandproducts.com/product/noa-65/ — TDS: https://norlandproducts.com/wp-content/uploads/2025/02/NOA-65-TDS.pdf
+- **NOA 148 (RI 1.48) — borosilicate match.** Closest mainstream Norland grade to borosilicate (~1.47). Norland markets it explicitly for "glass-to-glass bonding." ~0.01 RI mismatch is essentially invisible. URL: https://shop.amstechnologies.com/NOA-148-Optical-Adhesive-1oz-bottle/C007106-6
+- **NOA 138 (RI 1.38) and NOA 1315 (RI 1.315)** — too low for borosilicate; only useful for fluoropolymer / low-index media bonding. Not for The Gem.
+- **NOA 1625 (RI 1.625) and NOA 170 (RI 1.705)** — high-index, intended for dense flint glass, not soda-lime / borosilicate. URL: https://norlandproducts.com/wp-content/uploads/2025/03/NOA-170-TDS.pdf
+
+**Bottom line:** for The Gem, NOA 65 (soda-lime) or NOA 148 (borosilicate) — pick based on glass type. NOA 61 was wrong by 0.04 RI; NOA 65 is wrong by 0.004. Visually a meaningful difference.

@@ -36,4 +36,16 @@ These are the hobbyist analogues to public-aquarium engineering — concrete as 
 
 - [x] Public-aquarium fabrication firms — done above (Reynolds Polymer, Aqua Logic)
 - [x] GFRC datasheets — done above (Concrete Countertop Institute, Formglas, GC Products, Stromberg, Buddy Rhodes)
-- [ ] Concrete curing time / leaching guidance specifically for fish-safe builds (multi-week alkalinity drop)
+- [x] Fish-safe concrete curing — done below
+
+## Fish-safe concrete curing & alkalinity leaching (added 2026-05-05)
+
+Raw concrete leaches calcium hydroxide and pushes pH dangerously high. Cure protocol options:
+
+- **Faako Aquaponics — "How to Treat New Concrete Pond Before Stocking Fish"** — Vinegar protocol: 1 gal household vinegar per 200 gal water, soak 3 days, drain, rinse. Accelerates leach. URL: https://faakoaquaponics.com/how-to-treat-new-concrete-pond/
+- **Van Ness Water Garden — Cement Pond Tips** — Established koi/water-garden builder's curing guidance. URL: https://vnwg.com/Pond-Building/Pond-Building-Tips/Cement-Pond-Tips
+- **Reef2Reef — "Proper way to cure cement/lime"** — Community consensus: 6 weeks freshwater + 4 weeks saltwater minimum, repeat fill/drain cycles until pH stays flat for 7 days unchanged. URL: https://www.reef2reef.com/threads/proper-way-to-cure-cement-lime.944321/
+- **Reef2Reef — "Cement curing to raise pH and alkalinity?"** — Explains the calcium hydroxide leach mechanism. URL: https://www.reef2reef.com/threads/cement-curing-to-raise-ph-and-alkalinity.635538/
+- **Dendroboard — "Concrete backgrounds and lime leaching"** — Vivarium-context discussion (closer to Mind and Moss's terrarium use). URL: https://www.dendroboard.com/threads/concrete-backgrounds-and-lime-leaching.2620/
+
+**Practical synthesis (from across these sources):** 28-day initial cure → repeated water-soak with daily changes → optional vinegar acid wash to accelerate → don't stock until tank water pH stays flat for 7+ consecutive days. Sealing with epoxy (Pond Armor / Drylok) bypasses the leach problem at the cost of permanent porosity.

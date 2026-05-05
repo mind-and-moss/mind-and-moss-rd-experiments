@@ -29,7 +29,13 @@ Real built work, named builders, and commercial / research references that resem
 
 ## Long-form / cascade aquarium installations
 
-> No strong matches found. Searched: "cascade waterfall aquarium multi tier gravity fed installation", "tiered terraced aquarium installation art gallery cascade tanks waterfall". Results dominated by in-tank waterfall aquascapes (sand-falls, plant tiers) — not true tank-to-tank gravity-cascade systems. Closest tangents are aquaponics tower stacks and koi cascade ponds, neither aquarium-to-aquarium. **Genuine white-space opportunity rather than a search failure.**
+> Initially flagged as whitespace, but a second-pass research found a strong direct match: Casco Pet's Cascade Plant Display. Whitespace was real for hobbyist DIY cascades — the commercial precedent below is the reference.
+
+- [imitation-example] **Casco Pet — Cascade Plant Display** — Stacked, water-shared cascading aquariums with sump filtration and 5000 L/h pump; built for retail aquatic-plant display. Water flows top-down through stacked tanks as one integrated system. **Direct precedent for The Machine's tank-to-tank cascade.** URL: https://cascopet.com/us/products-and-services/aquatic/aquatic-plant-displays/cascade-aquarium/
+- [imitation-example] **Casco Pet — Cascading Wave Aquarium** — Companion product, same hydraulic principle. URL: https://cascopet.com/us/products-and-services/aquatic/aquatic-plant-displays/cascading-wave-aquarium/
+- [imitation-example] **Aquatic Design Centre — Damien Hirst "Lost Love" (Milan, 2000)** — Large bespoke art-installation aquarium. Reference for treating an aquarium as a single-object art installation. URL: https://www.aquaticdesign.co.uk/damien-hirst-lost-love-2000-aquarium-installation-milan-italy/
+- [imitation-example] **Reef2Reef — "Gravity-feeding frag tank from main display"** — Hobbyist precedent for tank-to-tank gravity overflow with cautions about overflow risk. URL: https://www.reef2reef.com/threads/gravity-feeding-frag-tank-from-main-display.904264/
+- **Vertical aquaponics tower stacks** — Same hydraulic principle (water pumped up, gravity-cascades down through planted columns, returns to fish tank). Adjacent industry, useful for hydraulic design. URL: https://gogreenaquaponics.com/blogs/news/vertical-aquaponics-system
 
 ## University zebrafish core facilities (added 2026-05-05)
 
@@ -59,4 +65,4 @@ Real built work, named builders, and commercial / research references that resem
 - [x] University zebrafish core facilities — done above (UCLA, CHOP/UPenn, ZIRC/Oregon)
 - [x] Aquaculture raceway photo galleries — done above (Superior Raceways + eXtension + FAO)
 - [x] Speece cone commercial units — done above (Pentair, AST PolyGeyser)
-- [ ] Any documented aquarium-to-aquarium cascade build, if one ever surfaces
+- [x] Aquarium-to-aquarium cascade — Casco Pet Cascade Plant Display found above (commercial direct match)

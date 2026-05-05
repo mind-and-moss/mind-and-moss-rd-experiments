@@ -28,4 +28,16 @@ External sources and imitation examples for consolidating many mini-terraria int
 
 - [x] Reptile-breeder rack systems — done above (Vision Products, Animal Plastics, Boaphile Plastics)
 - [x] Commercial dart-frog breeders — done above (Josh's Frogs + dart frog businesses directory; Black Jungle Terrarium Supply has no public facility tour content found)
-- [ ] Mushroom-cultivation rack systems (same humidity-management problem at production scale)
+- [x] Mushroom-cultivation rack systems — done below
+
+## Mushroom-cultivation rack systems (added 2026-05-05)
+
+Mushroom growers solve high-RH multi-shelf cultivation routinely — direct adjacent industry for terrarium production-rack design. Pattern: enclosed PE tent, ultrasonic humidifier piped in from top, FAE (fresh-air exchange) fan exhausting from bottom, multi-shelf wire rack inside.
+
+- [imitation-example] **North Spore — BoomRoom II Automated Martha Tent + Grow Rack** — Direct analogue to a humidity-managed terrarium production rack: ultrasonic humidifier + FAE fan + wire rack inside enclosed PE tent. URL: https://northspore.com/products/boomroom-ii-automated-martha-tent-mushroom-grow-system
+- [imitation-example] **North Spore — Lab + production facility tour (YouTube)** — Matt McInnis walks the Portland, ME substrate-production facility. Direct precedent for humidity zoning at scale. URL: https://www.youtube.com/watch?v=cbfhG_Fi8yY
+- [imitation-example] **Active Grow — 3-Tier Walden White LED Mushroom Tent Kit** — Tier-spaced fruiting rack with integrated lighting in a sealed humid envelope. URL: https://activegrowled.com/products/active-grow-mushroom-fruiting-incubation-3-tier-led-walden-white-grow-tent-kit
+- **MushroomShelves.com (industrial shiitake/oyster racks)** — Galvanized/stainless commercial shelving sized for high-RH rooms. Material specs (no plastic, no plain steel) directly relevant to long-term humidity tolerance. URL: https://www.mushroomshelves.com/mushroom-shelving/
+- [imitation-example] **Martha tent DIY walkthrough (YouTube)** — Covers humidifier sizing, FAE timing, condensate management. URL: https://www.youtube.com/watch?v=paFFVcCtHrs
+
+> **Black Jungle Terrarium Supply note:** their brick-and-mortar in Turners Falls, MA closed in March 2017 — most facility content is pre-2017 and largely third-party (Atlas Obscura entry, Yelp photos, customer blog posts). No verified video facility tour or owner-led content. **Josh's Frogs is the better-documented active competitor** for production-line precedent.
