@@ -36,3 +36,6 @@ Isaiah asked about feeding rolly polys to a black widow.
   - Eats leftover prey carcasses, shed exoskeletons, waste
   - A. vulgare tolerates dry conditions (good fit — widows need dry)
 - Better widow feeders: crickets, dubia roaches, mealworms, waxworms, house flies
+
+### Relevance to Mind and Moss
+Fits the bioactive cleanup-crew model (RESEARCH-001 Thread 3 "Bioactive Terrarium Insight"). Wild-caught local isopods could be a cheap source for production terrariums. Confirms moisture-gradient setup as standard.
