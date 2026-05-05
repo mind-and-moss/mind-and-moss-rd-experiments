@@ -18,9 +18,10 @@ Real built work, named artists, and commercial products that resemble pieces of 
 
 ## Mycelium-bound base / biomaterial composite
 
-- [imitation-example] **Maria Schechter — "The Gatekeepers" (2022)** — 142 mycelium bricks, 260 lbs, integrated with seashells, foraged mushrooms in gold leaf, and gems. Uses mycelium as both structural mass and substrate for embedded organic objects — directly parallel to The Gem's "biomaterial base under crystalline top." URL: https://www.influx-gallery.com/interviews/maria-schechter
+- [imitation-example] **Maria Schechter — "The Gatekeepers" (Arrowmont, 2023 juried exhibition)** — Mycelium sculpture grown with indigo dye and Japanese Maple resin; offered to Arrowmont after the "Degrees of Commitment: Climate, Ecosystems, and Society" exhibition and now decomposing outdoors on the school's grounds in Gatlinburg, TN. Direct parallel to The Gem's "biomaterial base under crystalline top." URL: https://arrowmont.org/arrowmont-welcomes-bio-artist-maria-schechters-mycelium-sculpture-the-gatekeepers-to-campus/
+- [imitation-example] **Maria Schechter — interview at Influx Gallery** — Long-form interview about her mycelium-art practice in general (process, materials, philosophy). Background context for studying her work. URL: https://www.influx-gallery.com/interviews/maria-schechter
 - [imitation-example] **Phil Ross — Mycotectural Alpha (Kunsthalle Düsseldorf, 2009)** — 6×6 ft shelter grown from reishi mycelium bricks, stronger pound-for-pound than concrete. Original reference for structural mycelium sculpture. URL: https://www.moma.org/interactives/exhibitions/2013/designandviolence/mycotecture-phil-ross/
-- [imitation-example] **The Living / Ecovative — MoMA PS1 "Hy-Fi" (2014)** — Tower of mycelium bricks, the canonical institutional precedent for mycelium-as-structure. URL: https://en.wikipedia.org/wiki/Fungi_in_art (the linked Wikipedia entry indexes Hy-Fi alongside other works; Ecovative's own site is the primary)
+- [imitation-example] **The Living / Ecovative — MoMA PS1 "Hy-Fi" (2014)** — 40-ft tower of 10,000 mycelium bricks grown from agricultural waste, with light-refracting 3M film inserts. The canonical institutional precedent for mycelium-as-structure; bricks were composted after the summer exhibition. URL: https://www.archdaily.com/521266/hy-fi-the-organic-mushroom-brick-tower-opens-at-moma-s-ps1-courtyard
 
 ## Combined open terrarium + closed aquarium / sculptural paludarium
 

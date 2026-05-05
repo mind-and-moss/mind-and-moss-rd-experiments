@@ -4,7 +4,7 @@ Real built work, named builders, and commercial / research references that resem
 
 ## Multi-tank racetrack / loop aquariums
 
-- [imitation-example] **Jack and Dan (YouTube) — Triple aquarium fish bridge** — Father-and-son build connecting three tanks with two clear acrylic bridges so clown loaches swim a continuous circuit between tanks. Closest hobby-scale version of Isaiah's racetrack idea. URL: https://www.youtube.com/watch?v=seBch2HWlZs
+- [imitation-example] **The King of DIY (Joey Mullen) — Triple aquarium fish bridge** — Build connecting three tanks with two clear acrylic bridges so clown loaches swim a continuous circuit between tanks. Closest hobby-scale version of Isaiah's racetrack idea. URL: https://www.youtube.com/watch?v=seBch2HWlZs
 - [imitation-example] **Infinity Aquarium Design — 1200-gallon Race Track Reef** — Commercial racetrack-shaped reef tank (Las Vegas firm) where fish swim a continuous loop around a central island. Aesthetically a faux reef, but the geometry is exactly the racetrack. URL: https://infinityaquarium.com/1200-gallon-race-track-with-faux-reef/
 - [imitation-example] **ZIRC (Zebrafish International Resource Center) recirculating rack** — Two-faced rack system with 2×49 3.6 L tanks all plumbed into one shared recirculating water system. Engineering reference for zebrafish-specific multi-tank flow (aesthetics are wrong but the engineering is the most relevant precedent). URL: https://www.researchgate.net/figure/ZIRC-racks-and-tanks-ZIRC-uses-two-faced-rack-systems-with-2x49-36-L-tanks-A-Side_fig2_304522801
 
