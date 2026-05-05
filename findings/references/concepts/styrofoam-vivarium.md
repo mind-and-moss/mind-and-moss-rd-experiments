@@ -1,6 +1,6 @@
 # References — Styrofoam-Box Vivarium (imitation examples)
 
-Real built work and tutorial references for the large-format (4ft+) XPS-foam-board vivarium chassis concept. Cross-references `concepts/styrofoam-vivarium.md` for the AI-excavation content (lives on `main`, will be on this branch after merge). See `findings/references/README.md` for tag conventions.
+Real built work and tutorial references for the large-format (4ft+) XPS-foam-board vivarium chassis concept. Cross-references `concepts/styrofoam-vivarium.md` for the AI-excavation content. See `findings/references/README.md` for tag conventions.
 
 ## Foam-board / XPS vivarium builds
 

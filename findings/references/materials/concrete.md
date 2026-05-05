@@ -1,6 +1,6 @@
 # References — Concrete
 
-External sources and imitation examples for concrete as a structural / pressure-vessel material in aquariums and vivariums. Cross-references `topics/materials/concrete.md` (lives on `main`, will be on this branch after merge), `products/the-machine/acrylic-windows.md` (the "concrete carries load, acrylic = window" principle, also on `main`), and `concepts/concrete-pillar.md`. See `findings/references/README.md` for tag conventions.
+External sources and imitation examples for concrete as a structural / pressure-vessel material in aquariums and vivariums. Cross-references `topics/materials/concrete.md`, `products/the-machine/acrylic-windows.md` (the "concrete carries load, acrylic = window" principle), and `concepts/concrete-pillar.md`. See `findings/references/README.md` for tag conventions.
 
 ## Concrete-shell + acrylic/glass-window aquariums (the principle)
 

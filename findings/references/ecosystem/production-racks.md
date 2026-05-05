@@ -1,6 +1,6 @@
 # References — Production-Scale Terrarium / Vivarium Racks
 
-External sources and imitation examples for consolidating many mini-terraria into a single rack system at production scale. Cross-references `topics/ecosystem/humidity-airflow.md` (lives on `main`, will be on this branch after merge) and `topics/ecosystem/isopods.md`. See `findings/references/README.md` for tag conventions.
+External sources and imitation examples for consolidating many mini-terraria into a single rack system at production scale. Cross-references `topics/ecosystem/humidity-airflow.md` and `topics/ecosystem/isopods.md`. See `findings/references/README.md` for tag conventions.
 
 ## Production-scale rack systems
 

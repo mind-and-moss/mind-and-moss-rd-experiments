@@ -1,6 +1,6 @@
 # References — Sealed Planter Box (imitation examples)
 
-Real built work and product references for the sealed-planter concept (resin-coated standard planter that holds standing water for water-loving / semi-aquatic plants or hybrid mini-vivarium use). Cross-references `concepts/sealed-planter-box.md` for the AI-excavation content (lives on `main`, will be on this branch after merge). See `findings/references/README.md` for tag conventions.
+Real built work and product references for the sealed-planter concept (resin-coated standard planter that holds standing water for water-loving / semi-aquatic plants or hybrid mini-vivarium use). Cross-references `concepts/sealed-planter-box.md` for the AI-excavation content. See `findings/references/README.md` for tag conventions.
 
 ## Planter sealing — products and conversions
 

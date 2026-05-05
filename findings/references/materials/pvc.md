@@ -1,6 +1,6 @@
 # References — PVC
 
-External sources and imitation examples for PVC sheet / pipe used as structural framing or panels in DIY aquariums. Cross-references `topics/materials/pvc.md` (lives on `main`, will be on this branch after merge) and `products/the-machine/structure.md`. See `findings/references/README.md` for tag conventions.
+External sources and imitation examples for PVC sheet / pipe used as structural framing or panels in DIY aquariums. Cross-references `topics/materials/pvc.md` and `products/the-machine/structure.md`. See `findings/references/README.md` for tag conventions.
 
 ## PVC-framed and PVC-paneled DIY aquariums
 
