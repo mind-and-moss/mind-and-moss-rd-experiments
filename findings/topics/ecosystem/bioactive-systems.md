@@ -2,6 +2,8 @@
 
 Cross-cutting research on bioactive terrariums: how a properly seeded cleanup crew (springtails, isopods) eliminates the need to disassemble hardscape for cleaning. This insight reshapes hardscape design — see "Implication for The Gem" below.
 
+> **Related deeper-dive files** (external research synthesis, not AI excavation): `soil-chemistry.md` covers the substrate-chemistry layer underneath, `microorganisms.md` covers the bacteria/archaea/fungi running the nitrogen cycle, and `decomposers.md` covers the broader decomposer community beyond isopods/springtails (millipedes, predatory mites, nematodes, etc.).
+
 ---
 
 Source: RESEARCH-001 Thread 3 — "Clay-coated 3D print with UV resin terrarium display"
