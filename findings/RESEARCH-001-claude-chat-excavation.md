@@ -110,11 +110,12 @@ In a properly bioactive terrarium — springtails, isopods, good substrate, bala
 
 ---
 
-## Still To Excavate
-- [ ] ChatGPT history (export or browser search)
-- [ ] Third AI site (Isaiah to confirm which one)
-- [ ] Claude.ai: "Foggy window liner for sealed terrariums"
-- [ ] Claude.ai: "Clay substrates for terrariums" (temporarily unavailable)
-- [ ] Claude.ai: "3D CAD software for hobbyists"
-- [ ] Claude.ai: "Choosing gears and equipment"
-- [ ] Claude.ai: "AI-controlled surgical robot with 3D printing" (may be unrelated)
+## Excavation Status
+- [x] Claude.ai: "Foggy window liner for sealed terrariums" — documented in RESEARCH-002 Thread 4
+- [x] Claude.ai: "Clay substrates for terrariums" — documented in RESEARCH-002 Thread 5
+- [x] Claude.ai: "3D CAD software for hobbyists" — documented in RESEARCH-002 Thread 6
+- [x] Claude.ai: "Choosing gears and equipment" — documented in RESEARCH-002 Thread 8 (low product relevance)
+- [x] Claude.ai: "AI-controlled surgical robot with 3D printing" — documented in RESEARCH-002 Thread 9 (non-product)
+- [x] Claude.ai: Second "Clay-coated 3D print with UV resin terrarium display" — documented in RESEARCH-002 Thread 7
+- [ ] ChatGPT history — not yet started
+- [ ] Third AI site — Isaiah to confirm which one
