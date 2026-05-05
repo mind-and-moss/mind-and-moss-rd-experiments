@@ -1,6 +1,6 @@
 # The Machine — Concept
 
-Top-level vision and fish biology for the room-scale connected aquarium system. See sibling files for structural engineering (`structure.md`), water flow design (`water-flow.md`), and acrylic-specific build details (`acrylic-build.md`).
+Top-level vision and fish biology for the room-scale connected aquarium system. See sibling files for structural engineering (`structure.md`), water flow design (`water-flow.md`), and the acrylic-as-windows pattern (`acrylic-windows.md`).
 
 ---
 

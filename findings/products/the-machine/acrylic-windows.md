@@ -1,6 +1,6 @@
-# The Machine — Acrylic Build (sealing tiers + invisible internal structures)
+# The Machine — Acrylic Windows
 
-How acrylic is welded, sealed, and used as invisible internal structure in The Machine. Specific to the thin-acrylic + concrete-hybrid construction approach.
+The "concrete carries the load, acrylic acts as windows" principle for The Machine. Sealing tiers, invisible internal acrylic, edge techniques, and the acrylic-to-concrete bond.
 
 ---
 

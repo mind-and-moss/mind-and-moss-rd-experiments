@@ -1,4 +1,4 @@
-# Concrete Aquarium-Furniture Column — Concept
+# Concrete Pillar — Concept (load-bearing aquarium-furniture column)
 
 > **Pitch:** A load-bearing concrete column that integrates a glass aquarium and supports books or other weight on top. Architectural aquarium-furniture hybrid.
 

@@ -1,6 +1,6 @@
-# Glass Edge Grinder — Custom Build
+# Glass Edge Grinder
 
-Custom belt-grinder/sander build for polishing glass panel edges to invisible-seam tolerance. Bond-line specs that drive the design also live in `products/the-gem/seam-construction.md`.
+Bond-line specs, grit progression, and architecture choices for a custom belt-grinder/sander that polishes glass panel edges to invisible-seam tolerance. Plus clamp options for thin-panel assembly. The "build instructions" themselves are not yet written — most content here is the engineering targets and tradeoffs that constrain the design.
 
 ---
 

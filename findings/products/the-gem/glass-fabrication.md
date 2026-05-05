@@ -1,6 +1,6 @@
 # The Gem — Glass Fabrication
 
-Cutting, marking, fusing, slumping, and grinding glass for The Gem. Stained-glass soldering and patina also lives here. Fine-detail edge polishing for invisible seams is in `seam-construction.md` and `topics/fabrication/glass-grinder-build.md`.
+Cutting, marking, fusing, slumping, and grinding glass for The Gem. Stained-glass soldering and patina also lives here. Fine-detail edge polishing for invisible seams is in `seam-construction.md` and `topics/fabrication/glass-edge-grinder.md`.
 
 ---
 

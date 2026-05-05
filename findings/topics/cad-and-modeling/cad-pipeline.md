@@ -1,6 +1,6 @@
-# Blender vs Plasticity — CAD Tooling Decision
+# CAD Pipeline — Tools, iPad Workflow, Decisions
 
-Research on switching from Blender to Plasticity for precision modeling, plus iPad-native sculpting options that bridge into the desktop pipeline.
+The full CAD-to-print pipeline for Mind and Moss: comparing Blender vs Plasticity for desktop, evaluating iPad apps (Shapr3D, Nomad Sculpt) for sketching/sculpting, and the handoff path through to Bambu Lab printing.
 
 ---
 

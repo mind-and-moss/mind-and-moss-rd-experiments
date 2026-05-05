@@ -1,19 +1,6 @@
-# Plants & Substrates — Material Notes
+# Plants
 
-Cross-cutting research on substrate clays and substrate layers used under terrarium plants.
-
----
-
-Source: RESEARCH-002 Thread 5 — "Clay substrates for terrariums" (Part A)
-
-### Clay Substrate Types
-Context: Isaiah cross-referencing ome.design terrarium putty recipe ("terrarium clay powder" = likely bentonite + kaolin blend).
-
-- Bentonite clay powder: waterproof barrier, swells when wet, used in putty. Sodium bentonite cat litter (unscented, no additives) is a cheap source.
-- Calcined clay: resists compaction, wicks moisture upward toward roots.
-- LECA: lightweight expanded clay aggregate, creates air gap, prevents drowned roots.
-- Fresh Step cat litter: NOT usable. Ammonia blockers + activated carbon are inseparable from the clay — cannot be removed.
-- These three do different jobs and are not interchangeable.
+Cross-cutting research on plants used across Mind and Moss terrarium and aquarium products: anchor plants, propagation playbook, mosses and grasses, plant species Isaiah has on hand. Substrate research is in `substrates.md`.
 
 ---
 
@@ -71,10 +58,7 @@ Each species has a high-yield growing protocol from this source.
 - Spiky plant planting technique
 - Craft mesh / sticks positioning for plant anchoring
 
-### Substrate
-- **Decaying wood for isopods** — can substitute dead bamboo, hard dead-on-tree wood when natural decaying wood unavailable
-- Substrate ratio for substitutes (in source thread)
-- **Fluval Stratum vs Fluval Bio Stratum** — comparison in source thread for plant substrate choice
+(Substrate notes from this same source moved to `substrates.md`.)
 
 ---
 

@@ -1,6 +1,6 @@
-# Concrete & PVC — Material Notes
+# Concrete — Material Notes
 
-Cross-cutting research on concrete (as a structural material in/around aquariums) and PVC (as frame material). Specific product applications live in the relevant `products/` files.
+Cross-cutting research on concrete as a structural material in and around aquariums. Specific product applications live in `products/the-machine/acrylic-windows.md` (concrete-as-pressure-vessel + acrylic-as-window pattern) and `concepts/concrete-pillar.md` (load-bearing column + integrated aquarium).
 
 ---
 
@@ -20,17 +20,6 @@ Source: RESEARCH-005 Thread 16 — "Acrylic Aquarium Build Tips" (chat #14)
 - **Aquarium silicone wins** as the bonding agent — flexible, tolerates differential movement, excellent water resistance, bonds well to porous concrete, easy to service, long track record.
 - Public aquariums often use silicone gaskets even with acrylic windows.
 
-## PVC as frame material for acrylic
-- Slightly flexible (matches acrylic's flex)
-- Doesn't wick water
-- Machines easily
-- Underrated — cheaper and more forgiving than glass or concrete for many use cases.
-
-## Best frame materials ranked (for acrylic interfaces)
-1. **Glass** — silicone bonds chemically to glass. Joint very reliable even though silicone only mechanically grips the acrylic side.
-2. **PVC sheet** — slightly flexible, doesn't wick water, machines easily.
-3. **Concrete** — rigid, porous. Works for the bottom only (where rigidity is fine).
-
 ---
 
 Source: RESEARCH-005 Thread 24 — "Fiber Concrete vs Sealing" (chat #2)
@@ -44,7 +33,7 @@ Source: RESEARCH-005 Thread 24 — "Fiber Concrete vs Sealing" (chat #2)
 - Custom curved concrete forms can be made with mold work
 - Achievable shapes include staircase forms
 
-## Sandwich stack pattern (for the architectural-furniture concept)
+## Sandwich stack pattern (for the concrete pillar concept)
 Vertical layers:
 1. Glass
 2. Wood puck
@@ -54,4 +43,4 @@ Vertical layers:
 
 Middle layer (wood pucks + concrete cylinder) is resin-coated. Whole column gets encased in resin then sanded smooth.
 
-This pattern feeds the `concepts/concrete-aquarium-furniture.md` concept.
+This pattern feeds the `concepts/concrete-pillar.md` concept.

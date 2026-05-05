@@ -1,6 +1,6 @@
 # The Gem — Seam Construction (Invisible Bond Lines)
 
-How the glass panels of The Gem actually get joined. The visual goal is "invisible seam — looks bonded by nothing." This file covers seam method ranking, resin/adhesive choices, and the bond-line dimensional specs that drive the whole fabrication approach. The custom edge-grinder build that physically achieves these specs lives in `topics/fabrication/glass-grinder-build.md`.
+How the glass panels of The Gem actually get joined. The visual goal is "invisible seam — looks bonded by nothing." This file covers seam method ranking, resin/adhesive choices, and the bond-line dimensional specs that drive the whole fabrication approach. The custom edge grinder that physically achieves these specs lives in `topics/fabrication/glass-edge-grinder.md`.
 
 ---
 
