@@ -11,8 +11,20 @@ Real built work and commercial references for the polymer-clay-over-3D-print →
 
 - [imitation-example] **Sculpteo — "Urethane Casting from a 3D Printed Master"** — Step-by-step build log: 3D print master → silicone mold → urethane cast, with finished part photos. Not aquarium-specific, but the cleanest documented version of the print-master-then-cast pipeline. Pair it with polymer-clay surface detailing on the print before molding. URL: https://www.sculpteo.com/blog/2016/04/07/diy-tutorial-urethane-casting-with-a-3d-printed-master/
 
+## Coral replica makers (same molded-organic-shape problem)
+
+- [imitation-example] **Custom Coral Creations** — Studio handcrafting custom artificial coral and inserts for aquariums and zoos; closest analog to a one-off cast hardscape maker. URL: https://www.customcoralcreations.com/
+- [imitation-example] **Living Sea Sculpture** — Artist using cast/sculpted artificial reef forms for restoration projects — sculptural-meets-functional reference. URL: https://livingseasculptures.com/about-lss
+- [imitation-example] **Ocean Aquaria — Artificial Coral Inserts** — Custom artificial coral inserts for residential, commercial, and public aquaria. URL: https://oceanaquaria.com/artificial-corals/
+- [imitation-example] **SeaQuatic Aquariums — Custom Artificial Coral Reef Inserts** — Another commercial maker of cast custom reef inserts. URL: https://www.seaquaticaquariums.com/custom-artificial-coral-reef-inserts/
+
+## Reef-safe / aquarium-safe casting resins
+
+- **D-D — "Aquascape construction epoxy warning" page** — D-D's note on Aquascape epoxy use in tanks; safety/longevity reference for casting bonds. URL: https://www.theaquariumsolution.com/aquascape-epoxy-warning-against-incorrect-use
+- **MAX ACR A/B aquarium-safe epoxy resin** — Marketed as aquarium-safe casting/coating resin (fresh and saltwater); reef-safe casting brand reference. URL: https://www.amazon.com/Aquarium-Safe-Epoxy-Resin-Fiberglassing/dp/B07WBVQX9V
+
 ## TODO — sources Isaiah may want to seed when ready
 
-- [ ] An individual sculptor (Etsy, Instagram) doing one-off cast aquarium hardscape pieces — closer to Mind and Moss's boutique scale than Universal Rocks' production volume
-- [ ] Coral replica makers (real coral is illegal to sell from the wild; replica makers solve a similar "molded organic shape" problem)
-- [ ] Reef-safe casting resin brand names (manufacturer datasheets, not just "use epoxy resin")
+- [x] Coral replica makers — done above (Custom Coral, Living Sea, Ocean Aquaria, SeaQuatic)
+- [x] Reef-safe casting resin brand names — partially (D-D Aquascape warning + MAX ACR); more brand-specific datasheets still useful
+- [ ] An individual sculptor (Etsy, Instagram) doing one-off cast aquarium hardscape pieces — closer to Mind and Moss's boutique scale (Etsy market is dominated by natural-rock arrangers, not casters; recommend a direct Instagram search for "cast aquascape" handles)

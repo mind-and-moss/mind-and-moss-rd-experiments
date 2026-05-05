@@ -10,8 +10,21 @@ Real built work and commercial reference points for the load-bearing concrete-co
 - [imitation-example] **CaVenza (Florence, Italy)** — Artisanal Italian shop building modular steel/aluminum frames clad in stone slabs, marketed as "monolithic" aquarium furniture. Treats the tank as architectural furniture rather than a glass box on a stand. URL: https://cavenza.com/
 - [imitation-example] **PlantedTank.net — "Bookshelf-of-Aquariums" build** — Hobbyist build sequencing four 6-gal Mr. Aqua tanks into a bookshelf with the bottom unit serving as a sump. Not concrete, but the closest documented "tank replaces a shelf section" furniture pattern. URL: https://www.plantedtank.net/threads/bookshelf-of-aquariums.975649/
 
+## Concrete countertop fabricators (same casting techniques)
+
+- [imitation-example] **Trueform Concrete** — High-end US concrete countertop fabricator with extensive portfolio of poured surfaces and forms. URL: https://www.trueformconcrete.com/pages/custom-concrete-countertops
+- [imitation-example] **Concreteworks East** — Precast concrete countertop and surface fabricator (Hamptons / DC / Boston). URL: https://www.concreteworkseast.com/countertops/
+- [imitation-example] **Chicago Concrete Studio** — Midwest concrete countertop / furniture fabricator with portfolio. URL: https://chicagoconcretestudio.com/
+- [imitation-example] **Stone Soup Concrete** — New England concrete fabricator (countertops, sinks, fireplaces, vanities, tubs). URL: https://stonesoupconcrete.com/
+- [imitation-example] **Studio Make** — Award-winning concrete countertop and concrete sink fabricator (Washington); multi-material studio. URL: https://www.the-studiomake.com/
+
+## Engineered-concrete furniture brands
+
+- [imitation-example] **Concrete LCDA (Ober Surfaces)** — European leader in fibre-reinforced concrete furniture and Panbeton/Slimbeton/Beton Lege panels — direct hit for the engineered-concrete furniture brand TODO. URL: https://www.ober-surfaces.com/en/company-concrete-lcda.html
+- [imitation-example] **Concrete LCDA — Products page** — Catalog of Concrete LCDA's panels and bespoke furniture. URL: https://www.ober-surfaces.com/en/products-concrete-lcda.html
+
 ## TODO — sources Isaiah may want to seed when ready
 
-- [ ] An actual integrated concrete-column-with-window build, if one exists (likely worth searching architecture / brutalist-furniture circles, not just aquarium ones)
-- [ ] Concrete countertop fabricators — same casting techniques transfer to a concrete pillar with embedded glass
-- [ ] Engineered-concrete furniture brands (CAESAR Concrete, Concrete LCDA) for material specs
+- [ ] An actual integrated concrete-column-with-aquarium-window build (gap remains — worth searching brutalist-furniture circles)
+- [x] Concrete countertop fabricators — done above (Trueform, Concreteworks East, Chicago Concrete Studio, Stone Soup, Studio Make)
+- [x] Engineered-concrete furniture brands — done above (Concrete LCDA / Ober Surfaces)

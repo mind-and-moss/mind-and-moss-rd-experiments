@@ -42,6 +42,8 @@ These are the dimensional tolerances for invisible seam to actually be invisible
 | Panel-to-panel dimensional | within ±0.5mm | |
 | Cut squareness (corner-corner) | within 0.5° (~1mm across 6" panel) | |
 
+> **⚠️ This spec table was verified 2026-05-05 against primary sources and found to have multiple errors.** See `topics/fabrication/glass-edge-grinder.md` for the corrected table with citations to Norland NOA datasheets, DOWSIL structural-glazing guides, and ASTM standards. The biggest issue: the silicone bond-line row conflates UV optical adhesive thicknesses (50–250 µm per Norland) with structural silicone glazing (6 mm minimum per Dow/ASTM) — two different products with different target ranges. Decide which seam type before locking the spec.
+
 ### Why Squareness is Harder than Flatness
 - Flatness 0.002–0.004" over 24" = good shop tooling territory (achievable with steel platen + linear guide)
 - Squareness 0.25° = where most invisible-seam attempts fail

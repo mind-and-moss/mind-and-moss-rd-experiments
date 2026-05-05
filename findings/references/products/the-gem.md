@@ -29,9 +29,36 @@ Real built work, named artists, and commercial products that resemble pieces of 
 - [imitation-example] **Custom Aquariums × SerpaDesign — 350-gallon paludarium build** — 4-foot-tall tank with ~2 ft of water below and terrestrial planting above; documented two-part build. Closest large-format reference to the vertical "aquarium below / terrarium above" stack. URL: https://www.customaquariums.com/videos/scaping-the-350-gallon-paludarium-build-part-1/
 - [imitation-example] **DOOA (ADA's vivarium brand)** — Japanese product line specifically for emersed/submerged hybrid displays. Wabi-Kusa and Neo Glass containers. Most refined commercial precedent for treating a paludarium as a single sculptural object. URL: https://www.dooa.jp/en/
 
+## Sphere-form glass artists (added 2026-05-05)
+
+> Gap remains: no working artist whose entire practice is dedicated specifically to fused-glass spheres. The artists below do spheres alongside other forms.
+
+- [imitation-example] **John Kiley Studio — Spherical Forms** — Contemporary glass-sphere sculptures: distinct fused-color sections in spherical form. URL: https://www.johnkiley.com/spherical-forms
+- [imitation-example] **Josh Simpson Glass — Planets / spherical works** — Iconic sphere-form glass artist (Planets series). URL: https://www.joshsimpsonglass.com/
+
+## Cold-glass lamination courses (Jack Storms style)
+
+- **UrbanGlass — "Language of Glass Lamination" class** — NYC-based class explicitly teaching cold-glass lamination effects. URL: https://coursehorse.com/nyc/classes/art/glass-blowing/language-of-glass-lamination
+- **Corning Museum of Glass — Glassmaking Institute** — Programs include cold-working: cutting, grinding, polishing, assemblage, and laminating. URL: https://glassmaking.cmog.org/glassmaking-institute
+- **Public Glass — Classes** — SF studio offering coldworking and lamination instruction. URL: https://www.publicglass.org/classes
+
+## Mycelium composite suppliers (US)
+
+> ⚠️ **Stale-reference warning:** MycoWorks became insolvent and was liquidated in October 2025 — IP sold to a Denver-based PE fund. Not a viable current supplier. **Ecovative is the active US source going forward.**
+
+- [imitation-example] **Ecovative** — US mycelium-composite manufacturer (Green Island, NY). MycoComposite line, custom packaging and material partnerships. The active supplier. URL: https://ecovative.com/
+- **Ecovative shop / mycelium materials** — Direct-to-consumer / sample purchase for mycelium materials. URL: https://shop.ecovative.com/
+- **Mushroom Packaging (Ecovative division)** — Ecovative's commercial mushroom-packaging arm — entry point for bulk MycoComposite. URL: https://mushroompackaging.com/
+
+## Sub-100-gallon paludarium build logs
+
+- [imitation-example] **75-gallon Paludarium build log (PlantedTank)** — Detailed build log of a sub-100gal paludarium with terraced pools and foam hardscape. URL: https://www.plantedtank.net/threads/75g-paludarium-build-log-56k.148536/
+- [imitation-example] **20-gallon Vertical Paludarium build log (Dendroboard)** — Vertical sub-100gal paludarium build for dart frogs. URL: https://www.dendroboard.com/threads/build-log-custom-20-gal-vertical-paludarium.122353/
+- [imitation-example] **10-gallon Paludarium build log (Dendroboard)** — Small-scale paludarium with foam construction and waterfall. URL: https://dendroboard.com/forum/parts-construction/83220-10-gallon-paludarium-build-log.html
+
 ## TODO — sources Isaiah may want to seed when ready
 
-- [ ] A dedicated fused-glass-sphere artist (still an open gap)
-- [ ] Workshop/courses for cold-glass lamination (Jack Storms style)
-- [ ] Mycelium composite suppliers in the US (Ecovative direct? Mycoworks?)
-- [ ] Build logs for paludariums under 100 gallons (closer to The Gem's likely scale)
+- [ ] A dedicated fused-glass-sphere artist (gap remains; only sphere-as-part-of-broader-practice artists found)
+- [x] Workshop/courses for cold-glass lamination — done above (UrbanGlass, Corning, Public Glass)
+- [x] Mycelium composite suppliers — done above (Ecovative; MycoWorks is dead)
+- [x] Build logs for paludariums under 100 gallons — done above (75-gal, 20-gal vertical, 10-gal)
