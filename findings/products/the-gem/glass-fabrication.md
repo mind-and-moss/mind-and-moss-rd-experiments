@@ -55,3 +55,32 @@ No-compromise setup recommendation:
 - DIY belt grinder with diamond belts — for occasional large panels (24"+)
 - Total: ~$1000-1500 used + DIY
 - If DIY ends up handling everything, sell the commercial machine and recoup most of the cost.
+
+---
+
+Source: RESEARCH-005 Thread 21 — "Glass cutting technique" (chat #68)
+
+## Precision-cut workflow for scrap aquarium glass
+
+### 1. Prep the glass (50% of success)
+- Remove all silicone with a razor scraper
+- Wash with hot water + dish soap, dry completely
+- Wipe cutting surface AND glass with isopropyl alcohol — no dust or oils
+- Check for micro-chips on edges (aquarium glass commonly has them — mark or discard those sections)
+
+### 2. True flat cutting surface
+- Curved surface → curved score line (cuts will not stay straight)
+- Use: laminated desktop, MDF, or plywood
+- NOT: cardboard, towels, carpet
+- Tape ruler down so it can't drift; clamp if needed
+
+### 3. Measure like a butcher
+- Glass doesn't care about "close enough"
+- Subtract 1-2mm tolerance per edge
+
+### Other topics covered in same chat
+- Pink insulating foam + silicone + 65D resin terrarium model construction (observed builder)
+- Strengthening foam-resin model joints
+- Vertical aquarium water pump capacity (2/4 inch hose)
+- Monte Carlo plant care
+- Football field grass for terrarium use

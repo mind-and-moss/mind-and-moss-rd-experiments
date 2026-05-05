@@ -39,3 +39,29 @@ Isaiah asked about feeding rolly polys to a black widow.
 
 ### Relevance to Mind and Moss
 Fits the bioactive cleanup-crew model (RESEARCH-001 Thread 3 "Bioactive Terrarium Insight"). Wild-caught local isopods could be a cheap source for production terrariums. Confirms moisture-gradient setup as standard.
+
+---
+
+Source: RESEARCH-005 Thread 30 — "Breeding isopods setup guide" (chat in "Business" project folder — 42 turns)
+
+## Production-scale breeding (the operations playbook)
+
+### Giant canyon isopods (*Porcellio dilatatus* or similar)
+- Starting count: 12 (Isaiah's actual starter group)
+- Container: 68 oz square deli containers (matches the wild-caught A. vulgare setup above)
+- Lifecycle covered before scaling
+- Scaling system designed for production volume
+
+### Substrate
+- **Decaying wood for isopods** is the key food/shelter input
+- Substitutes when natural decaying wood unavailable:
+  - Dead bamboo
+  - Hard dead-on-tree wood (woody but dried in place)
+- Substrate ratio for substitutes specified in source
+- For terrarium-display crossover: Fluval Stratum vs Fluval Bio Stratum comparison in source
+
+### Springtails as parallel culture (cross-reference)
+Springtail breeding is in `bioactive-systems.md` — but lives in the same source thread because Isaiah is breeding both in parallel for the production line.
+
+### Why this matters
+With ~40 wild-caught A. vulgare + 12 starter Giant Canyon + parallel springtail cultures, Isaiah has the foundation for scaling cleanup-crew supply across all Mind and Moss terrarium SKUs. The bottleneck is container count and time, not species access.

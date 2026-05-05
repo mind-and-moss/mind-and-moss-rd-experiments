@@ -25,3 +25,24 @@ Ideal pipeline (proposed): iPad sketch → desktop modeling → Bambu STL export
 ### Recommendation
 For The Machine (precision parts, brackets, connectors): Plasticity wins for CAD-style precision over Blender's polygon focus.
 For The Gem (organic glass/clay forms): Either tool works; sculpting-style apps (Blender, Nomad) better for organic forms.
+
+---
+
+Source: RESEARCH-005 Thread "3D Modeling Apps iPad" + "3D modeling software options" (chats #54 + #58)
+
+## iPad CAD pipeline (duplicate questions across two chats)
+- Both chats asked the same fundamental question: how to do CAD work on iPad and translate to Blender / Bambu Lab
+- Confirms Isaiah is actively trying to find an iPad-first workflow
+- Suggested apps in earlier excavation: Shapr3D (subscription) and Nomad Sculpt (~$30 one-time)
+
+## The unresolved question
+> "Can I make 3D art on the iPad and then transport it to Blender or [the printer]?"
+
+Answer (synthesizing across all CAD threads): yes, but the workflow has handoffs.
+- iPad: sketch / sculpt in Shapr3D or Nomad Sculpt
+- Export: STL or OBJ
+- Desktop: open in Plasticity or Blender for refinement / Boolean ops / parametric edits
+- Slicer: Bambu Studio
+- Printer: Bambu Lab
+
+The handoff between iPad and desktop is the friction point. No single tool covers the full chain.

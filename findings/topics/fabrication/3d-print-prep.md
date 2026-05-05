@@ -101,3 +101,18 @@ Winner for Isaiah's workflow: SHELLAC. UV resin's glass-smooth surface works aga
 - Extends RESEARCH-002 Thread 7 (abandoned seed chat on same topic)
 - Key new info: plasticizer degradation risk, sanding grits, shellac vs UV resin comparison
 - This fills in the specific intermediate steps missing from both prior threads
+
+---
+
+Source: RESEARCH-005 Thread 28 — "Layer count calculation" (chat #59 — Squidward bust personal project, but technique is gem-relevant)
+
+## Wood filler as smoothing alternative
+- For prints where layer lines need to disappear (e.g., when the print itself is the mold master, not just a clay armature)
+- Wood filler can be applied as a smoothing layer instead of just sanding
+- Removes layer lines for cleaner mold surface
+- Faster than sanding for some prep cases (especially large flat areas)
+
+## Layer count math (from same chat)
+- Standard PLA on Bambu Lab A1 mini
+- For 18" tall prints: layer count varies by layer height setting
+- Useful when planning print time + slicing strategy
