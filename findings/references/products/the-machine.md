@@ -29,7 +29,36 @@ Real built work, named builders, and commercial / research references that resem
 
 ## Long-form / cascade aquarium installations
 
-> No strong matches found. Searched: "cascade waterfall aquarium multi tier gravity fed installation", "tiered terraced aquarium installation art gallery cascade tanks waterfall". Results dominated by in-tank waterfall aquascapes (sand-falls, plant tiers) — not true tank-to-tank gravity-cascade systems. Closest tangents are aquaponics tower stacks and koi cascade ponds, neither aquarium-to-aquarium. **Genuine white-space opportunity rather than a search failure.**
+> Initially flagged as whitespace, but a second-pass research found a strong direct match: Casco Pet's Cascade Plant Display. Whitespace was real for hobbyist DIY cascades — the commercial precedent below is the reference.
+
+- [imitation-example] **Casco Pet — Cascade Plant Display** — Stacked, water-shared cascading aquariums with sump filtration and 5000 L/h pump; built for retail aquatic-plant display. Water flows top-down through stacked tanks as one integrated system. **Direct precedent for The Machine's tank-to-tank cascade.** URL: https://cascopet.com/us/products-and-services/aquatic/aquatic-plant-displays/cascade-aquarium/
+- [imitation-example] **Casco Pet — Cascading Wave Aquarium** — Companion product, same hydraulic principle. URL: https://cascopet.com/us/products-and-services/aquatic/aquatic-plant-displays/cascading-wave-aquarium/
+- [imitation-example] **Aquatic Design Centre — Damien Hirst "Lost Love" (Milan, 2000)** — Large bespoke art-installation aquarium. Reference for treating an aquarium as a single-object art installation. URL: https://www.aquaticdesign.co.uk/damien-hirst-lost-love-2000-aquarium-installation-milan-italy/
+- [imitation-example] **Reef2Reef — "Gravity-feeding frag tank from main display"** — Hobbyist precedent for tank-to-tank gravity overflow with cautions about overflow risk. URL: https://www.reef2reef.com/threads/gravity-feeding-frag-tank-from-main-display.904264/
+- **Vertical aquaponics tower stacks** — Same hydraulic principle (water pumped up, gravity-cascades down through planted columns, returns to fish tank). Adjacent industry, useful for hydraulic design. URL: https://gogreenaquaponics.com/blogs/news/vertical-aquaponics-system
+
+## University zebrafish core facilities (added 2026-05-05)
+
+- [imitation-example] **UCLA Zebrafish Core (CTSI)** — Direct site for UCLA's zebrafish core in Life Sciences Bldg 1101; lists services, location, contacts. URL: https://ctsi.ucla.edu/zebrafish-core-ucla
+- [imitation-example] **UCLA Zebrafish facility** — Facility-direct URL with husbandry / housing scope. URL: https://zebrafish.ucla.edu/
+- [imitation-example] **CHOP / UPenn Aquatic Zebrafish Core** — Children's Hospital of Philadelphia + Penn shared zebrafish core; full husbandry, screening, disease-model services. URL: https://www.research.chop.edu/zebrafish
+- [imitation-example] **CHOP — "Tour the Cores: Aquatic Zebrafish Core" article** — Photo-rich tour-style writeup of the CHOP/Penn zebrafish facility. URL: https://www.research.chop.edu/cornerstone-blog/tour-the-cores-aquatic-zebrafish-core-and-its-underwater-superheroes
+- [imitation-example] **Zebrafish International Resource Center (ZIRC) — University of Oregon** — Canonical zebrafish stock and husbandry center; biosecurity, health monitoring, and racks at scale. URL: https://zebrafish.org/
+- [imitation-example] **University of Oregon Research — Zebrafish landing** — UO's institutional landing page for ZIRC and related zebrafish programs. URL: https://research.uoregon.edu/zebrafish
+- **ZIRC biosecurity & health monitoring (PMC)** — Open-access paper detailing ZIRC's facility biosecurity practices. URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC4931758/
+
+## Speece cone / oxygenation commercial units
+
+- **Pentair AES — Oxygen Cones product page** — Pentair's commercial Speece-cone (oxygen cone) product page. URL: https://pentairaes.com/products/aeration-oxygenation/oxygen-cones
+- **Pentair AES — Product Data Sheets index** — Hub page for Pentair AES datasheets including oxygen cones and tank systems. URL: https://pentairaes.com/about/product-data-sheets
+- **Pentair Aquaculture Master Catalog (Tanks) PDF** — Long-form Pentair aquaculture catalog including raceway, cone-bottom, and circular tank specs. URL: https://pentairaes.com/media/docs/07_Pentair_Aquaculture_Master_Catalog_40th_edition_Tanks_low-res.pdf
+- **AST PolyGeyser product page** — Aquaculture Systems Technologies' PolyGeyser bead filter product page. URL: https://astfilters.com/aquatic-systems/products/polygeyser-filters/
+
+## Aquaculture raceway design references
+
+- **eXtension Freshwater Aquaculture — Raceways** — Extension-service overview of raceway design with photos. URL: https://freshwater-aquaculture.extension.org/raceways/
+- [imitation-example] **Superior Raceways** — Commercial raceway-fabrication firm; product photo gallery of installed flow-through raceways. URL: https://www.superiorraceways.com/
+- **FAO — Design and Construction of Raceways and Other Flow-Through Systems (Ch.13)** — Authoritative engineering chapter on raceway design. URL: https://www.fao.org/4/x5744e/x5744e0e.htm
 
 ---
 
@@ -68,10 +97,10 @@ The following sections are imitation references for the **gem-component within T
 
 ## TODO — sources Isaiah may want to seed when ready
 
-- [ ] University zebrafish core facilities — direct site links (UCLA, Penn, Oregon zebrafish centers)
-- [ ] Aquaculture raceway photo galleries (commercial fish farms — closest engineering precedent for long-form flow)
-- [ ] Speece cone commercial unit datasheets (PolyGeyser, Pentair)
-- [ ] Any documented aquarium-to-aquarium cascade build, if one ever surfaces
+- [x] University zebrafish core facilities — done above (UCLA, CHOP/UPenn, ZIRC/Oregon)
+- [x] Aquaculture raceway photo galleries — done above (Superior Raceways + eXtension + FAO)
+- [x] Speece cone commercial units — done above (Pentair, AST PolyGeyser)
+- [x] Aquarium-to-aquarium cascade — Casco Pet Cascade Plant Display found above (commercial direct match)
 - [ ] A dedicated fused-glass-sphere artist (gap remains for the gem-component)
 - [ ] Workshop/courses for cold-glass lamination (Jack Storms style)
 - [ ] Mycelium composite suppliers in the US (Ecovative is current; MycoWorks insolvent Oct 2025)

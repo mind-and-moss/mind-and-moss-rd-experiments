@@ -25,6 +25,32 @@ These are the dimensional tolerances for invisible seam to actually be invisible
 | Panel-to-panel dimensional | within ±0.5mm | |
 | Cut squareness (corner-corner) | within 0.5° (~1mm across 6" panel) | |
 
+### Spec verification (2026-05-05)
+
+The table above was originally flagged in the source research as "specs from another bot, worth confirming source if used in production decisions." A verification pass against primary sources (Norland NOA datasheets, DOWSIL structural-glazing guides, ASTM C1036 / C1184 / C1401, Edmund Optics) found multiple issues that should be resolved before committing the build. **The original table should not be used as a production spec doc as-is.**
+
+| Original row | Verified status | Correction |
+|---|---|---|
+| Silicone bond line 0.05–0.15mm "sweet spot" | **Wrong if read as structural silicone** (Dow DOWSIL 983: 6 mm minimum, 13 mm max glueline; ASTM C1184 / C1401 confirm). Plausible only as a non-structural cosmetic silicone film. Original spec conflates two different things. | Split into two rows: (a) **UV optical adhesive (Norland NOA)** = 50–250 µm general bonding, 3–50 µm precision (per Incure / Norland). (b) **Cosmetic silicone film** ≈ 0.1–0.5 mm, *not load-bearing*. (c) If load-bearing, use ASTM-compliant 6 mm minimum. |
+| Max bond line 0.25mm "= optically visible" | **Unsupported by any primary source found.** Fabricated heuristic. | Remove the optical-visibility claim; depends entirely on adhesive's refractive index match to glass. NOA 61/81 cure to ~1.56 RI vs soda-lime ~1.52 / borosilicate ~1.47 — *not* a true index match. |
+| Edge flatness 0.05–0.10mm | **Plausible but unsourced.** No ASTM/Edmund/Bullseye standard at this number. Achievable with hand coldworking. Too loose for true optical contact bonding (which targets λ-fractions, ~0.6 µm at 633 nm). | Keep as practitioner target, drop the "spec" framing. Verify against an actual coldworking trial on 6 mm stock. |
+| Squareness 0.25° (~0.05mm across 6mm) | **Internally inconsistent** — tighter than the 0.05–0.10 mm flatness target. Can't have tighter squareness than flatness. | Loosen to 0.5° (≈0.05 mm across 6 mm) so it matches flatness. |
+| Edge polish 3000–8000 grit, no cerium oxide | **Contrarian and partially wrong.** Industry standard: 80 → 220 → 400 → 600 grit then **cerium oxide** for transparent edges. Skipping cerium leaves a frosted micro-surface that scatters light at the bond. | Pick a lane: (a) accept matte look, stop at 600–1200 grit (much faster); or (b) go 1200 grit then cerium-buff for true optical edge. Avoid the "3000–8000 no cerium" middle path — slow *and* not fully clear. |
+| Panel-to-panel ±0.5mm | **Confirmed.** Within ASTM C1036 commercial-grade and achievable with coldwork. | Keep as-is. |
+| Cut squareness 0.5° | **Reasonable** but not directly cited in primary docs. | Keep as-is. |
+
+**Sources for the verification:**
+- Norland NOA 61 / 81 / 88 product pages and TDS PDFs ([norlandproducts.com](https://norlandproducts.com/))
+- [Incure — Bond Line Thickness Guide](https://incurelab.com/wp/how-thick-is-optical-adhesive-navigating-bond-line-thickness-for-optimal-performance/)
+- [DOWSIL 983 Guide Specifications](https://www.buildsite.com/pdf/dowcorning/DOWSIL-983-Structural-Glazing-Sealant-Base-and-Curing-Agent-Guide-Specifications-2152197.pdf), [DOWSIL 795 TDS](https://www.dow.com/content/dam/dcc/documents/en-us/productdatasheet/63/63-12/63-1217-dowsil-795-structural-glazing.pdf)
+- ASTM C1036 (flat glass), C1184 (structural silicone sealants), C1401 (structural glazing guide)
+- [Edmund Optics — Optical Specifications](https://www.edmundoptics.com/knowledge-center/application-notes/optics/understanding-optical-specifications/)
+- [Rocketrose — Polished Edge Glass Guide](https://rocketroseart.com/seamed-edge-vs-polished-edge-glass-complete-guide-2025/)
+
+**Bottom line for the build:** The grinder's geometry targets (rigid platen, perpendicular jig, even pressure) are still correct — those don't depend on which specs were wrong. What changes: the polish endpoint (consider cerium-oxide buffing instead of pushing past 3000 grit) and whether the "invisible seam" target needs to be re-defined as either *UV-adhesive optical bonding* (Norland, thin film) or *cosmetic silicone film* (decorative, not structural). Pick one before the spec table goes into production.
+
+---
+
 ### Why Squareness is Harder than Flatness
 - Flatness 0.002–0.004" over 24" = good shop tooling territory (achievable with steel platen + linear guide)
 - Squareness 0.25° = where most invisible-seam attempts fail
