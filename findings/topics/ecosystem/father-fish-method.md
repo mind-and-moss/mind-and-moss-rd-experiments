@@ -141,9 +141,9 @@ Father Fish is the most visible voice but he isn't alone. The natural / ecosyste
 
 (Mirrors the analysis in `walstad-method.md`; the differences are method-specific.)
 
-- **The Gem (aquarium portion):** good fit, with caveats. The deep-sand-cap aesthetic of an FF tank is visually distinctive — clean white sand floor, rooted plants, no visible equipment. That's strong gem-light contrast material. Caveat: FF's recommendation of *high* lighting may compete with the gem light show. Practical compromise: use FF substrate philosophy but tune lighting down so the gem's optical event remains the focal point.
 - **The Machine (mechanically expressive):** bad fit, same reason as Walstad. The Machine's brand promise is visible engineering; FF's promise is invisible biology.
 - **The Machine's open racetrack:** *strongly* incompatible. The deep sand cap is the entire method, and any sustained current will strip the cap and expose the soil — catastrophic.
+- **The Machine's gem-component (aquarium tank under the gem element):** good fit, with caveats. The deep-sand-cap aesthetic of an FF tank is visually distinctive — clean white sand floor, rooted plants, no visible equipment. That's strong gem-light contrast material. Caveat: FF's recommendation of *high* lighting may compete with the gem light show. Practical compromise: use FF substrate philosophy but tune lighting down so the gem-component's optical event remains the focal point.
 - **Cylindrical bioactive terrarium:** the FF parallel is even tighter than the Walstad one, because both rely on **deep, stratified, biologically-active substrate** with a microbial inoculation step. The "pond mud as inoculant" practice in FF maps directly onto seeding a terrarium with springtail / isopod culture media or established forest substrate. This is the cleanest cross-method principle Mind and Moss can carry between aquarium and terrarium product lines.
 
 ---

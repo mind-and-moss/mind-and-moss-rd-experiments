@@ -120,9 +120,9 @@ Source: https://www.aquaticplantcentral.com/threads/plants-and-ammonium.145099/
 
 ## Compatibility with Mind and Moss
 
-- **The Gem (cylindrical aquarium portion):** strong fit. A still-water cylinder with deep planting, soil substrate, and no visible filter would line up perfectly with the "impossible-looking ecosystem" wow factor — guests see plants, fish, gem-light, and *no machinery*. The Walstad ban on visible equipment IS the aesthetic premise of The Gem.
 - **The Machine (concrete pillars + geometric tanks):** poor fit by default. The Machine's brand promise is *visible* filtration and embedded mechanics. Walstad rejects exactly that. However, a *single* tank in The Machine line could be deliberately a Walstad tank to create internal contrast — "this one runs on biology, the other two run on hardware." This would only work if explicitly designed as a counterpoint, not as the default.
 - **The Machine's open racetrack:** incompatible. Walstad depends on still water for the soil-cap interface and for floating-plant coverage. A racetrack flow would resuspend mulm, scour the cap, and disrupt floaters.
+- **The Machine's gem-component (light-scattering glass element):** Walstad's no-visible-equipment principle pairs well with the gem-component's "impossible-looking" aesthetic. If one of The Machine's tanks under the gem-component is run Walstad-style, guests see plants, fish, gem-light, and no machinery — a strong contrast within the brutalist-mechanical surrounding tanks.
 - **The cylindrical bioactive terrarium:** *conceptually* the closest analog already in the lineup — both lean on biology over hardware, both use a layered substrate, both depend on a properly seeded microbial community. The terrarium-to-Walstad-aquarium translation is the Mind-and-Moss-native bridge.
 
 ---
