@@ -11,8 +11,7 @@ findings/
   README.md                ← you are here
   archive/                 ← raw excavation files, untouched (audit trail)
   products/                ← things actively in development
-    the-machine/           ← lead product: room-scale racetrack aquarium / industrial brutalism + ecosystem
-    the-gem/               ← NOT a standalone product — small glass/light component within The Machine. Folder contents are fabrication research for that detail-element. See the-gem/concept.md scope note.
+    the-machine/           ← lead product: room-scale racetrack aquarium / industrial brutalism + ecosystem. Includes gem.md (gem-component) and base-materials.md inside.
     cylindrical-terrarium/ ← existing sealed cylinder build
   concepts/                ← unvalidated ideas + random inventions (flat .md files)
   topics/                  ← cross-cutting research used across products
