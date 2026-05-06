@@ -16,25 +16,9 @@ The rest of this audit is **what's NOT yet captured.**
 
 ---
 
-## A. The Gem — geometric / dimensional unknowns (S)
+## A. The Machine — geometric / dimensional unknowns (S)
 
-These are completely unspecified in the repo. Without them, you can't calculate water volume, weight, glass quantity, lighting power, or shipping dimensions.
-
-| Question | Triage |
-|---|---|
-| Overall Gem height (table piece, floor piece, centerpiece scale)? | S/U |
-| Overall Gem footprint (base diameter, square, hex)? | S/U |
-| Base material thickness / profile | S |
-| Glass frame geometry — cube, hex column, curved, faceted? | D/S |
-| Glass panel thickness — your inventory has 6 mm; is that the spec? | S |
-| Number of glass panels in the frame | S (depends on geometry) |
-| Open-terrarium-half volume | S (depends on geometry) |
-| Closed-aquarium-half water volume | S (depends on geometry) |
-| Centerpiece diameter (sphere/hemisphere) | S |
-| Frame-to-base interface — flush, recessed, lip? | S |
-| Total assembled weight (drives shipping + display surface load) | calc once dims locked |
-
-## B. The Machine — geometric / dimensional unknowns (S)
+> **Restructured 2026-05-05:** Sections A (The Gem) and B (The Machine) were merged after the gem restructure (PR #7). The Gem is a small component within The Machine, not a peer product. Gem-component-specific dimensions are listed under "Gem-component sub-section" below.
 
 Some specified in R001 T1 but big gaps remain.
 
@@ -48,7 +32,20 @@ Some specified in R001 T1 but big gaps remain.
 | Pump capacity (L/h or GPH) | S |
 | Cascade head height per stage | S |
 | Embedded mechanical features — which are real, which are aesthetic? | D/U |
-| Total assembled weight | calc |
+| Total assembled weight (drives shipping + display surface load) | calc |
+| Aquarium-portion water volume | calc |
+| Terrarium-portion volume | calc |
+| Base material thickness / profile | S |
+
+### Gem-component sub-section
+
+| Question | Triage |
+|---|---|
+| Glass frame geometry — cube, hex column, curved, faceted? | D/S |
+| Glass panel thickness — your inventory has 6 mm; is that the spec? | S |
+| Number of glass panels in the frame | S (depends on geometry) |
+| Centerpiece diameter (sphere/hemisphere) | S |
+| Frame-to-Machine-base interface — flush, recessed, lip? | S |
 
 ## C. Livestock specifications (D + U)
 
@@ -56,10 +53,10 @@ The brand promise is "living ecosystems" — but what actually lives in each pro
 
 | Question | Triage |
 |---|---|
-| The Gem aquarium half — fish species and stocking count | D/U |
-| The Gem aquarium half — invertebrates (shrimp? snails? both?) | D/U |
-| The Gem terrarium half — animals (frogs? isopods? springtails only?) | D/U |
-| The Gem terrarium half — plants (anchor plant decided? others?) | D/U |
+| The Machine aquarium portion — fish species and stocking count | D/U |
+| The Machine aquarium portion — invertebrates (shrimp? snails? both?) | D/U |
+| The Machine terrarium portion — animals (frogs? isopods? springtails only?) | D/U |
+| The Machine terrarium portion — plants (anchor plant decided? others?) | D/U |
 | The Machine — confirmed zebrafish per R001 T1, but stocking density? | S |
 | The Machine — co-stockers (neon tetras mentioned, locked in?) | D |
 | Cylindrical terrarium — current stocking | known? document |
@@ -72,9 +69,9 @@ Not specified anywhere in the repo.
 
 | Question | Triage |
 |---|---|
-| Gem terrarium-half light — type, color temp, photoperiod | D/S |
-| Gem aquarium-half light — type, color temp, photoperiod | D/S |
-| Gem centerpiece illumination — internal? external? edge-lit? | D |
+| Machine terrarium-portion light — type, color temp, photoperiod | D/S |
+| Machine aquarium-portion light — type, color temp, photoperiod | D/S |
+| Machine gem-component illumination — internal? external? edge-lit? | D |
 | The Machine — lighting per tank or area-wide? | D |
 | Total wattage per product (drives plug count, GFCI, customer install) | calc once spec'd |
 | Voltage / region — US 120V only, or future international? | D |
@@ -87,10 +84,10 @@ Critical for any aquarium portion. None specified.
 
 | Question | Triage |
 |---|---|
-| Gem aquarium target pH | S |
-| Gem aquarium target GH/KH (hardness) | S |
-| Gem aquarium target temp | S |
-| Gem aquarium turnover rate / filtration plan (Walstad-derived per #8?) | D |
+| Machine aquarium target pH | S |
+| Machine aquarium target GH/KH (hardness) | S |
+| Machine aquarium target temp | S |
+| Machine aquarium turnover rate / filtration plan (Walstad-derived per #8?) | D |
 | Water source — tap + dechlorinator? RO/DI? | D |
 | Top-off strategy — auto, manual, customer's responsibility? | D |
 | Water change schedule — Walstad's "twice yearly" or different? | D |
@@ -100,8 +97,8 @@ Critical for any aquarium portion. None specified.
 
 | Question | Triage |
 |---|---|
-| Gem terrarium target humidity | S |
-| Gem terrarium target temp | S |
+| Machine terrarium target humidity | S |
+| Machine terrarium target temp | S |
 | Heating method — heater, ambient, none? | D |
 | Cooling/airflow — passive vent, fan, sealed? | D |
 | Room-temperature assumptions for the customer's space | S/U |
@@ -114,10 +111,10 @@ These are pure Isaiah calls — no research substitutes.
 | Question | Triage |
 |---|---|
 | Target customer profile (collector? interior designer? hobbyist?) | U |
-| Target price point for The Gem | U |
+| Target price point for The Machine (separate from base price?) | U |
 | Target price point for The Machine | U |
-| Estimated cost of materials per Gem | calc once spec'd |
-| Estimated build hours per Gem | U |
+| Estimated cost of materials per Machine | calc once spec'd |
+| Estimated build hours per Machine | U |
 | Customer ordering process — direct? gallery? Etsy? Shopify? | U |
 | Lead time customer-facing (weeks? months?) | U |
 | Customization options offered or fixed designs only? | U |
@@ -134,7 +131,7 @@ Each path has very different tooling implications.
 | Who builds them — Isaiah only, helpers, contracted fabrication? | U |
 | Mold reuse strategy — single-piece master or production molds? | D |
 | Standard sizes vs every-piece-bespoke | D/U |
-| QC checklist — what makes a Gem "ready to ship"? | S |
+| QC checklist — what makes a Machine "ready to ship"? | S |
 
 ## I. Distribution & fulfillment (D + U)
 
@@ -194,8 +191,8 @@ Each is a customer support question with a SOP behind it. None documented.
 |---|---|
 | Hours per week available for Mind and Moss | U |
 | Day job / school constraints | U |
-| Target date — first complete prototype Gem | U |
-| Target date — first sold Gem | U |
+| Target date — first complete prototype Machine | U |
+| Target date — first sold Machine | U |
 | Target date — first profitable month | U |
 
 ## N. Competitive positioning (R + U)
@@ -221,7 +218,7 @@ Each is a customer support question with a SOP behind it. None documented.
 
 ## Summary — counts
 
-- **A. Gem geometry:** 11 unknowns
+- **A. Machine geometry (incl. gem-component):** 17 unknowns
 - **B. Machine geometry:** 9
 - **C. Livestock:** 9
 - **D. Lighting/power:** 8
@@ -262,8 +259,8 @@ Anything U-tagged. Especially the geometry, customer profile, and price point �
 
 Solve these and 50+ other unknowns auto-resolve as derivatives:
 
-1. **The Gem's overall geometry** (height, footprint, frame shape). Drives glass count, water volume, weight, lighting, shipping. Pure Isaiah call.
-2. **The Gem's target price point**. Drives material budget, build-hours target, who the customer is. Pure Isaiah call.
+1. **The Machine's overall geometry (and the gem-component within it)** (height, footprint, frame shape). Drives glass count, water volume, weight, lighting, shipping. Pure Isaiah call.
+2. **The Machine's target price point**. Drives material budget, build-hours target, who the customer is. Pure Isaiah call.
 3. **Production strategy** — one-off art vs replicable. Drives molds, tooling, time, brand voice. Mostly Isaiah call.
 4. **First-customer plan**. Real or speculative. Drives the time pressure on everything else. Pure Isaiah call.
 5. **Hours per week for Mind and Moss**. Drives every timeline.
