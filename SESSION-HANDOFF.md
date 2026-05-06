@@ -23,9 +23,9 @@ PRs #1, #2, #4, #5 are independent of each other. PR #3 depends on #1. Recommend
 **`decisions-pending.md` at repo root** consolidates 13 open calls — engineering specs, scope/product-shape, and process/workflow. Each has options, trade-offs, Claude's recommendation, and what committing requires. **This is the single doc to share with another AI bot for a second opinion** — don't have other bots try to read the whole repo.
 
 The most decision-forcing ones, in priority order:
-1. **The Gem's seam type** (UV optical adhesive vs cosmetic silicone vs structural silicone) — gates the grinder design and the entire fabrication pipeline. Claude's rec: UV optical adhesive (NOA 65 for soda-lime, NOA 148 for borosilicate).
+1. **The Machine's gem-component seam type** (UV optical adhesive vs cosmetic silicone vs structural silicone) — gates the grinder design and the entire fabrication pipeline. Claude's rec: UV optical adhesive (NOA 65 for soda-lime, NOA 148 for borosilicate).
 2. **The Machine's variant** — open-air, sealed, or both? Claude's rec: open-air for v1.
-3. **The Gem's base material** — mycelium, concrete, or hybrid? Claude's rec: hybrid for v1, full mycelium for v2.
+3. **The Machine's base material** — mycelium, concrete, or hybrid? Claude's rec: hybrid for v1, full mycelium for v2.
 
 ### What's actually still in someone's head, not in the repo
 - **Materials inventory** — `setup.md` exists but tables are empty. Isaiah said he'd fill it in when home.

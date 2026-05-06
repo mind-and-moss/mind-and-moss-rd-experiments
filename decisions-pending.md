@@ -10,8 +10,8 @@ Updated: 2026-05-05.
 
 ## Material / spec decisions
 
-### 1. The Gem's seam type
-**Question:** What actually bonds the glass panels of The Gem? This drives the grinder design, the bond-line specs, and the overall fabrication pipeline.
+### 1. The Machine's gem-component seam type
+**Question:** What actually bonds the glass panels of The Machine's gem-component? This drives the grinder design, the bond-line specs, and the overall fabrication pipeline.
 
 **Options:**
 - **(a) UV optical adhesive** — Norland NOA series, thin film (50–250 µm), bonded under UV light.
@@ -34,7 +34,7 @@ Updated: 2026-05-05.
 
 ---
 
-### 2. Glass type for The Gem
+### 2. Glass type for the gem-component
 **Question:** Soda-lime or borosilicate?
 
 **Options:**
@@ -67,7 +67,7 @@ Updated: 2026-05-05.
 ---
 
 ### 4. Hardscape master mold: tin-cure vs platinum-cure silicone
-**Question:** Which silicone family for The Gem's hardscape master mold?
+**Question:** Which silicone family for The Machine's hardscape master mold?
 
 **Options:**
 - **Tin-cure (Smooth-On Oomoo, etc.)** — tolerates sulfur clays (Sculpey) without inhibition. Cheaper. Shorter library life (silicone degrades over years).
@@ -93,13 +93,13 @@ Updated: 2026-05-05.
 
 **Trade-offs:** Epoxy and polyurethane are the standard for aquarium/terrarium hardscape (used by Universal Rocks, Aquadecor commercially). Concrete is dramatic but adds the cure-and-leach step. Foam is lightweight but feels less premium.
 
-**Claude's rec:** **Epoxy** for The Gem's hardscape pieces — premium feel, long-term water-stable, matches the boutique brand. Save concrete for The Machine's load-bearing parts (different product, different aesthetic).
+**Claude's rec:** **Epoxy** for The Machine's gem-component hardscape pieces — premium feel, long-term water-stable, matches the boutique brand. Save concrete for The Machine's load-bearing parts (different product, different aesthetic).
 
 **What committing requires:** Pick a brand + grade. MAX ACR A/B is in the references as aquarium-safe.
 
 ---
 
-### 6. The Gem's base: mycelium composite vs concrete
+### 6. The Machine's base: mycelium composite vs concrete
 **Question:** What's the structural base under the glass top?
 
 **Options:**
@@ -112,7 +112,7 @@ Updated: 2026-05-05.
 - Concrete = predictable, available, but doesn't hit the "biomaterial under crystalline top" key differentiator from R002 Thread 6.
 - Hybrid = best of both, more complex build.
 
-**Claude's rec:** **Hybrid for v1**, mycelium for v2. Get a working Gem out the door with a concrete base + mycelium decorative top layer; iterate to full mycelium once you have time + supplier reliability.
+**Claude's rec:** **Hybrid for v1**, mycelium for v2. Get a working Machine out the door with a concrete base + mycelium decorative top layer; iterate to full mycelium once you have time + supplier reliability.
 
 **What committing requires:** Decide which version is v1 and order materials.
 
@@ -152,7 +152,7 @@ Updated: 2026-05-05.
 
 **Claude's rec:** **(c) hybrid, Walstad-derived.** Cite Walstad as the methodology basis. Tune empirically. Skip Father Fish's leaf-litter prescription specifically.
 
-**What committing requires:** Decide and document the choice in `products/the-gem/concept.md` for The Gem's aquarium half.
+**What committing requires:** Decide and document the choice in `products/the-machine/concept.md` for The Machine's aquarium portion.
 
 ---
 
@@ -171,7 +171,7 @@ Updated: 2026-05-05.
 
 ---
 
-### 10. The Gem's centerpiece: structural or suspended
+### 10. The Machine's gem-component: structural or suspended
 **Question:** Is the fused-glass sphere/hemisphere centerpiece structural (load-bearing in the frame) or suspended (visually floating, no structural role)?
 
 **Trade-offs:**
