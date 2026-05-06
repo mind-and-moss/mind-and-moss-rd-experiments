@@ -1,6 +1,6 @@
 # Soldering Basics
 
-Cross-cutting research on solder selection, iron temperature, and flux. Stained-glass-specific soldering is also referenced from `products/the-gem/glass-fabrication.md`. LED-build soldering specifics live in `led-wiring.md`.
+Cross-cutting research on solder selection, iron temperature, and flux. Stained-glass-specific soldering is also covered in `topics/fabrication/glass-fabrication.md`. LED-build soldering specifics live in `led-wiring.md`.
 
 ---
 

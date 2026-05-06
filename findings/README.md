@@ -11,8 +11,7 @@ findings/
   README.md                ← you are here
   archive/                 ← raw excavation files, untouched (audit trail)
   products/                ← things actively in development
-    the-machine/           ← zebrafish racetrack aquarium system
-    the-gem/               ← stained-glass + impossible-gem hardscape piece
+    the-machine/           ← lead product: room-scale racetrack aquarium / industrial brutalism + ecosystem. Includes gem.md (gem-component) and base-materials.md inside.
     cylindrical-terrarium/ ← existing sealed cylinder build
   concepts/                ← unvalidated ideas + random inventions (flat .md files)
   topics/                  ← cross-cutting research used across products (AI-conversation excavation)
