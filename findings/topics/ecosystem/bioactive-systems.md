@@ -1,6 +1,6 @@
 # Bioactive Ecosystems — Cleanup Crew Principle
 
-Cross-cutting research on bioactive terrariums: how a properly seeded cleanup crew (springtails, isopods) eliminates the need to disassemble hardscape for cleaning. This insight reshapes hardscape design — see "Implication for The Gem" below.
+Cross-cutting research on bioactive terrariums: how a properly seeded cleanup crew (springtails, isopods) eliminates the need to disassemble hardscape for cleaning. This insight reshapes hardscape design — see "Implication for The Machine" below.
 
 > **Related deeper-dive files** (external research synthesis, not AI excavation): `soil-chemistry.md` covers the substrate-chemistry layer underneath, `microorganisms.md` covers the bacteria/archaea/fungi running the nitrogen cycle, and `decomposers.md` covers the broader decomposer community beyond isopods/springtails (millipedes, predatory mites, nematodes, etc.).
 
@@ -16,7 +16,7 @@ In a properly bioactive terrarium — springtails, isopods, good substrate, bala
 - Mold blooms in first weeks: cleanup crew eats it
 - Algae on wet surfaces: lighting/placement issue, not a cleaning issue
 
-> **Implication for The Gem:** Hardscape can be fully bonded and permanent. No need to design for disassembly. This eliminates the seam problem entirely and opens up more ambitious bonded structures.
+> **Implication for The Machine** (originally framed as "for The Gem" in the source thread; rescoped 2026-05-05): Hardscape can be fully bonded and permanent. No need to design for disassembly. This eliminates the seam problem entirely and opens up more ambitious bonded structures.
 
 ---
 
