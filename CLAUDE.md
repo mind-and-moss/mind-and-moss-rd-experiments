@@ -9,13 +9,14 @@ Mind and Moss makes living ecosystems that stop people and make them ask: "how t
 ## Design Philosophy
 Every product must have a WOW element — something engineered or crafted at a level that feels impossible. Beauty is not enough. Precision is not enough. The combination of both at an unexpected level is the standard.
 
-## The Two Flagship Concepts (in development)
+## The Lead Concept (in development)
 
-**Concept A — "The Machine"**
+**The Machine**
 A concrete base with pillars housing 3 geometric tanks in pristine shapes. The concrete has embedded machines (filtration, mechanics, visible systems). Industrial brutalism meets living ecosystem.
 
-**Concept B — "The Gem"**
-An artistically molded hardscape frame with an impossible gem at the center that scatters light across the room. Below: a mostly closed aquarium. Above: an open terrarium. One object that transforms a room.
+**"The Gem" is a small component within The Machine** — a featured detail like an impossible-looking glass element or light-scattering centerpiece — not a standalone product. Earlier excavation files treated it as a peer product; that framing is wrong. References to "The Gem" in the repo are now scoped as "the gem element within The Machine."
+
+The brand's actual through-line is **biotope fidelity** — environments built so accurately that the species inside express behaviors and growth patterns hobbyist setups don't produce. Form factors (The Machine, future products) are vessels for biotopes.
 
 ## How We Work Together
 This is not a tool-and-user relationship. Isaiah and Claude are both chefs. Isaiah is learning to build a real business from the ground up. Claude is learning this business, its vision, and its standards alongside him — building internal knowledge session by session.
