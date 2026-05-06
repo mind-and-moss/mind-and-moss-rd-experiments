@@ -1,6 +1,6 @@
 # References — Silicone
 
-External sources for silicone selection (aquarium-safe sealants, mold-making silicones, optical-grade options). Cross-references `topics/materials/silicone.md` and `products/the-gem/seam-construction.md`.
+External sources for silicone selection (aquarium-safe sealants, mold-making silicones, optical-grade options). Cross-references `topics/materials/silicone.md` and `products/the-machine/gem.md`.
 
 ## Aquarium-safe sealants (100% silicone, no mildewcide)
 
@@ -21,7 +21,7 @@ Industry brands hobbyists use for casting molds. Find their datasheets for cure 
 
 ## Optical-grade / structural silicones (for invisible-seam panels)
 
-The Gem's invisible-seam construction (`products/the-gem/seam-construction.md`) needs silicones with optical clarity AND structural strength. The AI threads were vague here — this is a strong "need real datasheets" topic.
+The Machine's gem-component invisible-seam construction (`products/the-machine/gem.md`) needs silicones with optical clarity AND structural strength. The AI threads were vague here — this is a strong "need real datasheets" topic.
 
 - [unvetted] **Dow Corning structural silicones** — used in glass curtain wall construction. Worth investigating for bond-line strength specs.
 - [unvetted] **Wacker structural silicones** — same category, European glass-construction supplier.

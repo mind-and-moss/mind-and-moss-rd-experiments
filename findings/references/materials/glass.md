@@ -1,6 +1,6 @@
 # References — Glass
 
-External sources for glass selection, fusing, and slumping. Cross-references `topics/materials/` (no `glass.md` yet there) and `products/the-gem/glass-fabrication.md`.
+External sources for glass selection, fusing, and slumping. Cross-references `topics/materials/` (no `glass.md` yet there) and `topics/fabrication/glass-fabrication.md`.
 
 ## Glass manufacturers (fusing-compatible art glass)
 
@@ -11,7 +11,7 @@ These names came up across multiple AI threads as the standard fusing glass opti
 - **Spectrum Glass** — part of the COE 96 family. Sheet glass and fusing-compatible.
 - **Uroboros Glass** — also COE 96 family. Specialty colors and reactions.
 
-> Reminder from `products/the-gem/glass-fabrication.md`: pick ONE COE system and stay there. Mixing COE systems = guaranteed cracking during cooling.
+> Reminder from `topics/fabrication/glass-fabrication.md`: pick ONE COE system and stay there. Mixing COE systems = guaranteed cracking during cooling.
 
 ## Stained glass (NOT fusing-compatible — different product)
 
