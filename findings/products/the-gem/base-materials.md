@@ -1,5 +1,7 @@
 # The Gem — Base Materials (Mycelium / Hempcrete / Cork)
 
+> **⚠️ Scope note:** "The Gem" is a small component within The Machine, not a standalone product — see `concept.md`. The biomaterial-base research below was framed for a Gem-as-product context. As a Machine component, the gem element doesn't need its own structural base — The Machine's base carries the load. The mycelium-composite material research is still relevant as a *Mind and Moss material option* for The Machine's base or other future products, just not specific to "the gem."
+
 What the bottom of The Gem is made of — the structural-and-substrate hybrid that holds up the glass and houses the live ecosystem in one material.
 
 ---

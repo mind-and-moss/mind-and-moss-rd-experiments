@@ -1,6 +1,8 @@
 # The Gem — Hardscape Workflow
 
-The end-to-end fabrication pipeline for The Gem's molded hardscape pieces: 3D print master → polymer clay sculpting → shellac seal → silicone mold → cast in terrarium-safe material. The 3D print never enters the tank — it's just the master. Adjacent topics: print prep details in `topics/fabrication/3d-print-prep.md`, mold-making materials in `topics/fabrication/mold-making.md`, bioactive cleanup logic in `topics/ecosystem/bioactive-systems.md`.
+> **⚠️ Scope note:** "The Gem" is a small component within The Machine, not a standalone product — see `concept.md`. The print→clay→silicone→cast pipeline below is a generic fabrication workflow that applies to *any* cast hardscape piece, not just the gem element. The Machine's larger hardscape work uses the same pipeline.
+
+The end-to-end fabrication pipeline for molded hardscape pieces: 3D print master → polymer clay sculpting → shellac seal → silicone mold → cast in terrarium-safe material. The 3D print never enters the tank — it's just the master. Adjacent topics: print prep details in `topics/fabrication/3d-print-prep.md`, mold-making materials in `topics/fabrication/mold-making.md`, bioactive cleanup logic in `topics/ecosystem/bioactive-systems.md`.
 
 ---
 

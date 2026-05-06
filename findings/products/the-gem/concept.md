@@ -1,5 +1,7 @@
 # The Gem — Concept
 
+> **⚠️ SCOPE CORRECTION (2026-05-05):** "The Gem" is **not a standalone product** in Mind and Moss. It is a small component within The Machine — a featured glass / light-scattering detail, not a peer flagship. Earlier excavation framed it as one of two flagship products; that framing is wrong. The fabrication research in this folder (glass cutting, seams, hardscape workflow, base materials) is still useful but should be read as **techniques for one detail-element inside The Machine**, not as a self-contained product spec. The brand's actual through-line is biotope fidelity (see `CLAUDE.md`).
+
 Top-level vision for the artistically molded hardscape frame with an impossible-looking gem at its center. Sub-files cover: glass fabrication (`glass-fabrication.md`), invisible seam construction (`seam-construction.md`), the print→clay→silicone→cast hardscape workflow (`hardscape-workflow.md`), and the mycelium / cork composite base (`base-materials.md`).
 
 ---
