@@ -301,7 +301,7 @@ Items stay inline here while they're one-liners. When something accumulates real
 
 - **Mini stamper** — 3D print core → cover in acrylic shell → fill with concrete for weight. (Use case TBD.) Status: not started.
 - **DIY aquascaping tools** — long tweezers, scissors, substrate flatteners, etc. Bend stainless rod / repurpose lab tools / 3D-print handles. Status: not started.
-- **Custom glass edge grinder** — see `topics/fabrication/glass-edge-grinder.md`. Bond-line spec verified per PR #3. Big project; gates The Gem fabrication. Status: design phase, no parts ordered.
+- **Custom glass edge grinder** — see `topics/fabrication/glass-edge-grinder.md`. Bond-line spec verified per PR #3. Big project; gates The Machine's gem-component fabrication. Status: design phase, no parts ordered.
 
 ---
 
