@@ -1,6 +1,30 @@
-# The Gem — Seam Construction (Invisible Bond Lines)
+# The Machine — Gem Component
 
-How the glass panels of The Gem actually get joined. The visual goal is "invisible seam — looks bonded by nothing." This file covers seam method ranking, resin/adhesive choices, and the bond-line dimensional specs that drive the whole fabrication approach. The custom edge grinder that physically achieves these specs lives in `topics/fabrication/glass-edge-grinder.md`.
+The "gem" is a small featured detail within The Machine — a fused-glass sphere or hemisphere with an invisible-seam glass setting that scatters light. Not a standalone product; a sub-feature of The Machine that delivers part of the visual "wow" moment. This file consolidates everything specific to the gem-component: concept, fusing for the sphere, and invisible-seam construction for the glass setting.
+
+Cross-cutting glass-work techniques (cutting, marking, soldering, grinding) live in `topics/fabrication/glass-fabrication.md`. The custom edge grinder that hits invisible-seam tolerances lives in `topics/fabrication/glass-edge-grinder.md`. Imitation-example references for similar glass artists live in `references/products/the-machine.md` under the gem-component section.
+
+---
+
+Source: RESEARCH-002 Thread 5 — "Clay substrates for terrariums" (Part C)
+
+### Glass Fusing for Sphere/Hemisphere — Direct Gem Research
+Isaiah explored making a fused glass sphere or hemisphere (the light-scattering gem component).
+
+Kiln requirements:
+- Small (6-8" spheres): Evenheat Studio Pro STP or Paragon SC-2 — ~$700-1200
+- Medium (10-12"): Skutt GM1014 or Evenheat GTS — ~$2000-3000
+- Look for "glass kiln" (heats from top), not "ceramic kiln" (heats from sides). Used kilns on Facebook Marketplace often half price.
+
+COE compatibility — critical:
+- Bullseye (COE 90) — most popular for art glass, huge color range
+- System 96 / Spectrum / Uroboros (COE 96) — also common
+- Pick one system and stay there. Mixing COEs = guaranteed cracking during cooling.
+- Traditional stained glass cathedral sheets are COE 82-85 — NOT fusing-compatible. Different product entirely.
+
+Slump molds for hemisphere shape:
+- Buy: Bullseye, Slumpy's, Creative Paradise sell ceramic hemisphere molds 6"-12", ~$40-150. Best starting point.
+- DIY: 50/50 plaster + silica blend, cast around a ball. Advanced, can fail if not dried fully.
 
 ---
 
@@ -26,7 +50,7 @@ Source: RESEARCH-002 Thread 6 — "3D CAD software for hobbyists" (Part E)
 Source: RESEARCH-004 Thread 15 — "Untitled" (chat #18 — Glass edge grinder, 100-turn deep dive)
 
 ### Project Goal
-Build a custom belt grinder/sander to polish the EDGES of glass panels (up to 2 ft long) for **invisible silicone-seam construction**. Spot-polishing isn't accurate enough — need full-edge consistency.
+Build a custom belt grinder/sander to polish the EDGES of glass panels (up to 2 ft long) for **invisible-seam construction**. Spot-polishing isn't accurate enough — need full-edge consistency.
 
 ### The Engineering Specs (Isaiah's bond-line targets)
 These are the dimensional tolerances for invisible seam to actually be invisible:
@@ -56,4 +80,4 @@ Bond-line tolerance pushes the design harder than the polish does. The grinder d
 ### Relation to Previous Research
 - Builds on RESEARCH-002 Thread 6 ("Seam options ranked: 1) UV optical adhesive (invisible)")
 - Adds the **fabrication side** of how to actually achieve the edge precision the invisible seam requires
-- The bond-line specs Isaiah pasted in came from another bot — worth confirming source if used in production decisions
+- The bond-line specs originated from another bot — verified 2026-05-05 against primary sources, see `topics/fabrication/glass-edge-grinder.md`

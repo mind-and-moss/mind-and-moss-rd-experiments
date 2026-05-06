@@ -1,6 +1,6 @@
 # UV Adhesives — Material Notes
 
-Cross-cutting research on UV-cure adhesives and resins, including yellowing/clarity behavior under light exposure. Used as the invisible-seam adhesive option for The Gem (see `products/the-gem/seam-construction.md`).
+Cross-cutting research on UV-cure adhesives and resins, including yellowing/clarity behavior under light exposure. Used as the invisible-seam adhesive option for The Machine's gem-component (see `products/the-machine/gem.md`).
 
 ---
 

@@ -1,6 +1,8 @@
 # Editorial Review — 2026-05-05
 
 > **This file is advisory.** No content was edited based on this review — these are flagged tensions for Isaiah to read and decide on. Any actual edits to the underlying files will be tracked separately.
+>
+> **2026-05-05 update:** This review was written when "The Gem" was treated as a standalone product. After the gem restructure (PR #7), "The Gem" is now understood as a small component within The Machine. References to "The Gem" below should be read as "The Machine's gem-component." File paths were updated to reflect the new structure (`products/the-gem/*` no longer exists; that content lives in `products/the-machine/gem.md`, `products/the-machine/base-materials.md`, and `topics/fabrication/glass-fabrication.md`).
 
 Each item below follows the same structure: **what each side says**, the **specific point of difference**, the **hidden assumption** each version is making, and the **scenario under which each is right**. The goal is to surface design decisions that are silently embedded in the research, so they can become explicit choices.
 
@@ -11,8 +13,8 @@ Each item below follows the same structure: **what each side says**, the **speci
 ### 1. The Gem's invisible seam: UV optical adhesive *or* silicone film?
 
 **Where it appears:**
-- `products/the-gem/seam-construction.md` lines 9–12 (R002 T6 Part A)
-- `products/the-gem/seam-construction.md` lines 28–43 (R004 T15)
+- `products/the-machine/gem.md` lines 9–12 (R002 T6 Part A)
+- `products/the-machine/gem.md` lines 28–43 (R004 T15)
 - `topics/fabrication/glass-edge-grinder.md` lines 9–26 (R004 T15)
 
 **What each side says:**
@@ -37,7 +39,7 @@ Each item below follows the same structure: **what each side says**, the **speci
 ### 2. Plasticizer attack vs. sulfur inhibition: which one is Isaiah actually defending against?
 
 **Where it appears:**
-- `products/the-gem/hardscape-workflow.md` lines 24–34 (R001 T3)
+- `topics/fabrication/3d-print-prep.md` lines 24–34 (R001 T3)
 - `topics/fabrication/3d-print-prep.md` lines 50–55 (R003 T10)
 
 **What each side says:**
@@ -61,7 +63,7 @@ Each item below follows the same structure: **what each side says**, the **speci
 ### 3. The 3D print: disposable, or permanent armature?
 
 **Where it appears:**
-- `products/the-gem/hardscape-workflow.md` line 15 (R001 T3)
+- `topics/fabrication/3d-print-prep.md` line 15 (R001 T3)
 - `topics/fabrication/3d-print-prep.md` lines 56–73 (R003 T10)
 
 **What each side says:**
@@ -131,7 +133,7 @@ Each item below follows the same structure: **what each side says**, the **speci
 
 ### A. The R001 Thread 3 hardscape workflow appears verbatim in 3 files
 
-- `products/the-gem/hardscape-workflow.md` — has the workflow + material decisions
+- `topics/fabrication/3d-print-prep.md` — has the workflow + material decisions
 - `topics/fabrication/3d-print-prep.md` — has the workflow (lines 9–15)
 - `topics/fabrication/mold-making.md` — has the material decisions (lines 9–25)
 
@@ -151,13 +153,13 @@ Smaller content blocks repeat between adjacent topic files when they cross-cut t
 
 ## STALE / OUTDATED CONTENT
 
-### A. Bond-line spec table in `products/the-gem/seam-construction.md`
+### A. Bond-line spec table in `products/the-machine/gem.md`
 
 Already flagged in PR #3 with a verification notice + pointer to corrected table. Status: **resolved**.
 
 ### B. MycoWorks as mycelium composite supplier
 
-Already flagged in `references/products/the-gem.md` (PR #3). Status: **resolved**.
+Already flagged in `references/products/the-machine.md` (formerly `references/products/the-gem.md` before the gem restructure). Status: **resolved**.
 
 ### C. The Machine's "0.04" (1mm) acrylic" notes
 

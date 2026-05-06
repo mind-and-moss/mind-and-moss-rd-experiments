@@ -1,6 +1,6 @@
 # References — Hardscape Cast Workflow (imitation examples)
 
-Real built work and commercial references for the polymer-clay-over-3D-print → silicone mold → cast hardscape pipeline used in The Gem. Cross-references `products/the-gem/hardscape-workflow.md` and `topics/fabrication/3d-print-prep.md` for the AI-excavation content. See `findings/references/README.md` for tag conventions.
+Real built work and commercial references for the polymer-clay-over-3D-print → silicone mold → cast hardscape pipeline used in The Machine and other Mind and Moss products. Cross-references `topics/fabrication/3d-print-prep.md` and `topics/fabrication/mold-making.md` for the AI-excavation content. See `findings/references/README.md` for tag conventions.
 
 ## Polymer-clay → silicone mold → cast hardscape (commercial production)
 

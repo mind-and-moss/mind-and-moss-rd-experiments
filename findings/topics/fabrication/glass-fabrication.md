@@ -1,6 +1,6 @@
-# The Gem — Glass Fabrication
+# Glass Fabrication — Cross-Cutting Techniques
 
-Cutting, marking, fusing, slumping, and grinding glass for The Gem. Stained-glass soldering and patina also lives here. Fine-detail edge polishing for invisible seams is in `seam-construction.md` and `topics/fabrication/glass-edge-grinder.md`.
+Cutting, marking, soldering, polishing, and grinding glass. Covers stained-glass and fusing-grade work. Cross-cutting research used across The Machine and any future glass-bearing products. Sphere-fusing and invisible-seam techniques specific to The Machine's gem-component live in `products/the-machine/gem.md`. The custom edge-grinder build-out is in `glass-edge-grinder.md` in this folder.
 
 ---
 
@@ -11,28 +11,6 @@ Source: RESEARCH-002 Thread 5 — "Clay substrates for terrariums" (Part B)
 - Solder: 60/40 (tin/lead) flows smoother. Lead-free (silver-bearing) achievable after 5-10 pieces of practice.
 - Polishing: 400-grit wet/dry → 600 → 1000 → 1500 → 2000, used wet with dish soap. Work along the seam, not across it.
 - Patina: lead-free doesn't take Novacan Black the same way — gives gunmetal not deep black. Copper patina works fine.
-
----
-
-Source: RESEARCH-002 Thread 5 — "Clay substrates for terrariums" (Part C)
-
-### Glass Fusing for Sphere/Hemisphere — Direct Gem Research
-Isaiah explored making a fused glass sphere or hemisphere (the light-scattering gem component of The Gem).
-
-Kiln requirements:
-- Small (6-8" spheres): Evenheat Studio Pro STP or Paragon SC-2 — ~$700-1200
-- Medium (10-12"): Skutt GM1014 or Evenheat GTS — ~$2000-3000
-- Look for "glass kiln" (heats from top), not "ceramic kiln" (heats from sides). Used kilns on Facebook Marketplace often half price.
-
-COE compatibility — critical:
-- Bullseye (COE 90) — most popular for art glass, huge color range
-- System 96 / Spectrum / Uroboros (COE 96) — also common
-- Pick one system and stay there. Mixing COEs = guaranteed cracking during cooling.
-- Traditional stained glass cathedral sheets are COE 82-85 — NOT fusing-compatible. Different product entirely.
-
-Slump molds for hemisphere shape:
-- Buy: Bullseye, Slumpy's, Creative Paradise sell ceramic hemisphere molds 6"-12", ~$40-150. Best starting point.
-- DIY: 50/50 plaster + silica blend, cast around a ball. Advanced, can fail if not dried fully.
 
 ---
 

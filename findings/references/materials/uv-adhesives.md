@@ -1,6 +1,6 @@
 # References — UV Adhesives
 
-External sources for UV-cure adhesives and resins. Cross-references `topics/materials/uv-adhesives.md` and `products/the-gem/seam-construction.md`.
+External sources for UV-cure adhesives and resins. Cross-references `topics/materials/uv-adhesives.md` and `products/the-machine/gem.md`.
 
 ## Optical-grade UV adhesives (for invisible seams)
 

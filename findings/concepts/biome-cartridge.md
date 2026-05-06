@@ -1,6 +1,6 @@
 # Biome Cartridge — Concept
 
-> **Pitch:** A single outer chassis containing 4 independent "biome cartridges" — underwater + desert + tropical + open field — each in its own sealed atmosphere. Could become Mind and Moss's third flagship product alongside The Machine and The Gem.
+> **Pitch:** A single outer chassis containing 4 independent "biome cartridges" — underwater + desert + tropical + open field — each in its own sealed atmosphere. Could become Mind and Moss's second flagship product alongside The Machine. (Earlier excavation listed "The Gem" as a peer flagship; that framing was corrected 2026-05-05 — The Gem is a small component within The Machine, not a standalone product.)
 
 ## Why it might matter
 - Hits the "how the fuck did they make that" brand standard.
@@ -54,7 +54,7 @@ Without sealing:
 - Cab Yick $45 dehumidifier on Amazon mentioned for prototyping
 
 ## Why this matters strategically
-This is the kind of "how the fuck did they make that" product Mind and Moss was named for. Sellable, novel, technically distinctive. **Strongest candidate for the third flagship product alongside The Machine and The Gem.**
+This is the kind of "how the fuck did they make that" product Mind and Moss was named for. Sellable, novel, technically distinctive. **Strongest candidate for the second flagship product alongside The Machine.**
 
 ## Open questions
 - Cartridge swap-ability — can customers buy "biome refill packs" or are cartridges fixed at build time? (recurring revenue angle)

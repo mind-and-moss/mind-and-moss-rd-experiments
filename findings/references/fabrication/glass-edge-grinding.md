@@ -1,6 +1,6 @@
 # References — Glass Edge Grinding (imitation examples)
 
-Real built work and instructional references for the custom edge-grinding rig that produces glass panels accurate enough for invisible-seam construction (the <0.25mm bond-line target in `products/the-gem/seam-construction.md`). Cross-references `topics/fabrication/glass-edge-grinder.md` for the AI-excavation content. See `findings/references/README.md` for tag conventions.
+Real built work and instructional references for the custom edge-grinding rig that produces glass panels accurate enough for invisible-seam construction (the <0.25mm bond-line target in `products/the-machine/gem.md`). Cross-references `topics/fabrication/glass-edge-grinder.md` for the AI-excavation content. See `findings/references/README.md` for tag conventions.
 
 ## Wet belt sanding glass edges (technique reference)
 

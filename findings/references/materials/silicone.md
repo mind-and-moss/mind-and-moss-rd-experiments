@@ -1,6 +1,6 @@
 # References — Silicone
 
-External sources for silicone selection (aquarium-safe sealants, mold-making silicones, optical-grade options). Cross-references `topics/materials/silicone.md` and `products/the-gem/seam-construction.md`.
+External sources for silicone selection (aquarium-safe sealants, mold-making silicones, optical-grade options). Cross-references `topics/materials/silicone.md` and `products/the-machine/gem.md`.
 
 ## Aquarium-safe sealants (100% silicone, no mildewcide)
 
@@ -24,7 +24,7 @@ Industry brands hobbyists use for casting molds. Find their datasheets for cure 
 
 ## Optical-grade / structural silicones (for invisible-seam panels)
 
-The Gem's invisible-seam construction (`products/the-gem/seam-construction.md`) needs silicones with optical clarity AND structural strength. The AI threads were vague here — this is a strong "need real datasheets" topic.
+The Machine's gem-component invisible-seam construction (`products/the-machine/gem.md`) needs silicones with optical clarity AND structural strength. The AI threads were vague here — this is a strong "need real datasheets" topic.
 
 - **Dow Silicone Structural Glazing Manual (EMEAI) PDF** — Comprehensive Dow manual including bond-line sizing, design wind-load tables, and panel-size load worked examples. **CRITICAL for The Gem's seam-construction sizing — Dow's minimum glueline is 6 mm (1/4"), maximum 13 mm (1/2"), per DOWSIL 983 Guide Specs. Two orders of magnitude tighter than what AI threads suggested.** URL: https://www.dow.com/documents/62/62-0/62-0979-01-structural-glazing-manual.pdf
 - **DOWSIL 995 Silicone Structural Sealant TDS PDF** — TDS for the workhorse one-component structural silicone. URL: https://www.buildsite.com/pdf/dowcorning/DOWSIL-995-Silicone-Structural-Sealant-Product-Data-2407402.pdf
