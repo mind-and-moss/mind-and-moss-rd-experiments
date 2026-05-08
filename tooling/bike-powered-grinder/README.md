@@ -1,16 +1,18 @@
 # Bike-Powered Glass Grinder — Tooling
 
-**Date created:** 2026-05-07 (genesis voice session, "FreeCAD 1.1 and AI-assisted 3D printing")
-**Last updated:** 2026-05-07 (Phase 0 review voice session, "Bike-powered grinder Phase 0 review")
+**Date created:** 2026-05-07 (genesis voice session)
+**Last updated:** 2026-05-08 (Q1–Q4 lock-in session, FreeCAD readiness phase)
 **Branch:** `tooling/bike-powered-grinder`
 
 This folder is **tooling, not product**. It's the machine that makes the machine. But it's still held to Mind and Moss's "how the fuck did they make that" standard — visible mechanical beauty, deliberate engineering, not a cobbled-together hack.
 
 ---
 
-## TL;DR (current locked spec)
+## TL;DR (current locked spec, v3)
 
-A **seated, bike-powered, single-platen glass grinder** with a **24"-long horizontal platen**, 2x72 silicon carbide belts (120→1000), **8:1 gear reduction** from 75 RPM cadence to **750 RPM at the belt**, screw-driven tensioner (no springs), 5" crowned drive pulley, 2" crowned idler. 3D-printed PETG structure with embedded stainless rod reinforcement and stainless bolts at every joint for replaceability. Used as the **finishing** stage after Isaiah's existing wet glass grinder pre-finishes the panel edge.
+A **seated, bike-powered, single-platen glass grinder** with a **22"-long horizontal platen** (sized to a hard 18" max-glass-edge envelope), 2x72 silicon carbide belts (120→1000), **two-chain-stage drivetrain** at 10:1 speed-up from 75 RPM cadence to **750 RPM at the belt** (1180 SFM, upper-glass-spec). 6" crowned drive pulley, 3" crowned idler. Screw-driven tensioner (no springs). **Modular 3-section portable frame** built from hand-cut metal tube + 3D-printed PETG joint nodes with embedded heat-set inserts. Quick-release joints between modules so the whole machine breaks down to fit through a 30" interior door.
+
+Used as the **finishing** stage after Isaiah's existing handheld wet glass grinder pre-finishes the panel edge.
 
 ---
 
@@ -20,159 +22,160 @@ Isaiah cannot precision-finish glass panel edges to optical-clarity standard wit
 
 ## Brand reframe context
 
-Per `CLAUDE.md` and `findings/SESSION-HANDOFF.md`: "The Gem" is no longer a standalone product. It's a glass component within The Machine. The brand's through-line is **biotope fidelity** — environments built so accurately that species express behaviors hobbyist setups don't produce. This grinder serves that mission by enabling the precision required for the form factors that house biotopes.
+Per `CLAUDE.md` and `findings/SESSION-HANDOFF.md`: "The Gem" is no longer a standalone product. It's a glass component within The Machine. The brand's through-line is **biotope fidelity** — environments built so accurately that species express behaviors hobbyist setups don't produce.
 
 ---
 
 ## Locked design decisions
 
-Decisions are split between the **genesis voice session** (2026-05-06) and the **Phase 0 review voice session** (2026-05-07). The Phase 0 review tightened ranges into single values and resolved several open questions. Where this README disagrees with the original handoff, **this README wins** — the Phase 0 review supersedes.
+Decisions are split across three voice/text sessions:
+- **Genesis** (2026-05-06) — `sessions/2026-05-06-mobile-genesis-and-freecad.md`
+- **Phase 0 review** (2026-05-07) — `sessions/2026-05-07-mobile-phase-0-review.md`
+- **Q1–Q4 lock-in** (2026-05-08) — this session, decisions surfaced inline below
 
-Full transcripts: `sessions/2026-05-06-mobile-genesis-and-freecad.md`, `sessions/2026-05-07-mobile-phase-0-review.md`.
+Where this README disagrees with earlier handoffs, **this README wins**. The latest session supersedes.
 
 ### 1. Belt: 2x72 silicon carbide, 120 → 1000 grit
 
-Sackorange 6-pack 2x72 silicon carbide on Amazon (~$20/pack ≈ $3.30/belt). 120/240/400/600/800/1000 grit progression. **2x82 was investigated and rejected** — silicon carbide at glass-grade fine grits is not standardly stocked at 2x82, custom builds run 2–3× the cost. 2x72 is the sweet spot for supply chain.
+Sackorange 6-pack 2x72 silicon carbide on Amazon (~$20/pack ≈ $3.30/belt). 120/240/400/600/800/1000 grit progression. **2x82 rejected** (custom-build pricing, 2–3× cost for SiC at glass-grade fine grits). **2x48 rejected** (insufficient platen length for single-pass finishing).
 
-Higher grits (1500+, polishing compounds) deferred to a later session.
+### 2. Platen: 22" usable length, glass-only, single-purpose
 
-### 2. Platen: 24" usable length, glass-only, single-purpose
+**22" platen** (revised from earlier 24" spec to leave room for larger pulleys — see decision #3). Two-pass finishing rejected — glass seam edges for optical adhesive bonding need single-pass consistency.
 
-Two-pass finishing is unacceptable. Glass seam edges for optical adhesive bonding need single-pass consistency.
+**18" max glass edge** is the hard design envelope: platen − 4" approach/exit margin so the edge enters and leaves cleanly. **Every Mind and Moss panel design must have its longest edge ≤ 18".** See `findings/design-constraints.md`.
 
-**Dual-zone idea (slack belt or multi-bearing zone for curves) was considered and rejected** — single-purpose tool, glass-only. Dual-zone would have forced compromises on tensioner design, belt tracking, and frame stiffness. Glass needs the platen flat and rigid. Anything else compromises that.
+### 3. Pulleys: 6" crowned drive, 3" crowned idler, 3D-printed PETG with stainless hub reinforcement
 
-Realistic max glass edge on a 24" platen is ~20–21" (need approach + exit on the platen so the edge enters and leaves cleanly). **Open question:** longest single glass edge in The Machine's gem-component panels — if any panel exceeds ~20", the platen needs to grow.
+**Revised from earlier 5"/2" spec.** Going 6"/3" buys:
+- More belt-to-pulley contact (better tracking, especially horizontal layout)
+- Room for a robust crowned profile
+- Bigger bearing seat for stainless reinforcement
+- More thermal mass for sustained grinding
+- Cost: 2" of platen — accepted
 
-### 3. Layout: horizontal — belt runs in a horizontal plane
+Crown depth ~0.020–0.040" (final value TBD against confirmed Sackorange belt width). Construction: 3D-printed PETG body with embedded stainless rod spokes radiating from a center boss; CNC last resort if printed-and-reinforced fails physical load testing.
 
-The grinder lies sideways. Glass panels lay flat on a fixture, edge presented up into the belt at the **top edge of the belt where it crests over the platen**. This is the contact line — single-line contact across the belt width, not a full platen face.
+### 4. Layout: horizontal — belt runs in a horizontal plane
+
+The grinder lies sideways. Glass panels lay flat in a fixture, edge presented up into the belt at the **top edge of the belt where it crests over the platen** — single-line contact across the belt width.
 
 Implications:
-- **Crowned pulleys non-negotiable.** Horizontal layout means gravity tries to pull the belt off the bottom of the pulleys. Both drive and idler pulleys must be crowned ~0.020–0.040" higher in the middle than the edges so the belt naturally centers.
-- **Tensioner direction flips.** Idler is sprung outward against pure spring/screw force — no gravity assist. Spring rate / screw thrust needs to be higher than vertical layouts.
-- **Coolant routing is gravity-friendly.** Drip line above platen, slurry catch tray below. (See decision #10.)
-- **Operator stance: seated.** See decision #4.
+- **Crowned pulleys non-negotiable** (gravity tries to pull belt off the bottom of the pulleys in horizontal layout)
+- **Tensioner direction flips:** idler is sprung outward against pure screw force, no gravity assist
+- **Coolant routing is gravity-friendly:** drip line above platen, slurry catch tray below
+- **Operator stance: seated** (see decision #5)
 
-### 4. Operator: seated rider position
+### 5. Operator: seated rider position
 
-Aero/TT-bike position with hands forward at the platen height. Standing pedaling fatigues fast (it's a sprint posture, not endurance). Seated keeps cadence sustainable and matches Isaiah's "conversational pace" target.
+Aero/TT-bike position with hands forward at platen height. Standing pedaling fatigues fast (sprint posture, not endurance). Seated keeps cadence sustainable and matches Isaiah's "conversational pace" target.
 
-The work surface needs to be at the right height for a seated rider's reach. **Open question:** seat-to-platen geometry, frame footprint, frame height.
+### 6. Workpiece fixture: rail-guided sled with full-width straight-edge pusher
 
-### 5. Workpiece fixture: rail-guided sled with straight-edge pusher
+Glass panel sits flat in the sled, a straight-edge pusher across the full panel width keeps the edge perfectly parallel to the belt as the whole sled moves forward. Solves: (a) operator doesn't guess where the middle is, (b) belt inconsistencies don't translate to high/low spots on the edge.
 
-Glass panel sits flat in the sled, a straight-edge pusher across the full panel width keeps the edge perfectly parallel to the belt as the whole sled moves forward. The platen underneath supports the belt; the glass edge presses up into the belt; the sled controls approach speed and angle.
+### 7. Drivetrain: two chain stages, 10:1 speed-up
 
-This solves two problems at once:
-- Operator doesn't have to guess where the middle is and push from there
-- Belt inconsistencies (slight bumps) don't translate to high/low spots on the edge — the rigid sled keeps pressure even across the full edge length
-
-### 6. Drivetrain power flow
+**Architecture (Q1b lock — option A from the lock-in session):**
 
 ```
-pedals
-  ↓
-crank
-  ↓
-freewheel / one-way clutch        ← bike-style; lets belt coast when pedaling stops
-  ↓
-gear reduction stage 1 (bicycle cassette)
-  ↓
-bike chain (same chain — one chain, two jobs: shifts pedal speed AND drives grinder)
-  ↓
-final sprocket bolted to drive pulley shaft
-  ↓
-5" crowned drive pulley (target 750 RPM)   ← RPM sensor here
-  ↓
-2x72 silicon carbide belt
-  ↓
-2" crowned idler pulley (returns belt; tensioner pivot point)
-  ↓
-24" flat platen between idler and drive
-  ↓
-glass panel edge presented to top of belt at platen crest
-  (held in rail-guided sled with straight-edge pusher)
+pedals → crank → freewheel/one-way clutch
+  → STAGE 1: 42T chainring → bike chain → 13T cog on intermediate shaft (3.23:1)
+  → STAGE 2: 32T sprocket on intermediate shaft → bike chain → 8T pinion on grinder pulley shaft (4:1)
+  → 6" crowned drive pulley (target 750 RPM)
+  → 2x72 SiC belt → 22" platen → 3" crowned idler
 ```
 
-**Re-verify with Isaiah** before FreeCAD geometry locks: is the freewheel placed at the crank as shown, or somewhere else in the chain?
+**Why two stages:** stock bike gearing maxes out at ~4.8:1 (53T chainring × 11T cog) in a single chain run. Hitting 10:1 in one stage requires either oversized custom chainrings (60T+) or internal-geared hubs (Rohloff $1500+, Sturmey-Archer can't reach 10:1 alone). **Option B (oversized chainring) and option C (internal hub) both rejected.**
 
-### 7. Cadence and gear reduction
+**Why 10:1 (and the SFM tradeoff):** target belt RPM = 750. Cadence = 75. So total ratio = 10:1. At 6" pulley × 750 RPM = 1180 SFM, upper edge of 500–1500 SFM glass-grinding spec. Mid-spec 7.5:1 was considered and rejected — Isaiah trusted the client research's 600–750 RPM range as a hard constraint, locked Option A. See `research/sprocket-stress-corrected.md` Section "SFM analysis" for the full tradeoff math.
 
-- **Target cadence:** 75 RPM (mid-range conversational, talk-while-pedaling threshold)
-- **Target belt RPM:** 750 RPM
-- **Gear reduction:** **8:1 LOCKED** (from crank to drive pulley)
+**Stage materials:**
+- Stage 1: stock donor-bike steel chainring (42T) + steel cassette cog (13T)
+- Stage 2 large sprocket (32T): 3D-printed PETG, module 1.5, face 12 mm
+- Stage 2 small pinion (8T): **machined steel or 6061 aluminum** (~$15 from SDP-SI or Boston Gear), module 2.0, face 16 mm. PETG fails the fatigue check at 8T at this load level.
+- Two chains: 1/2" × 3/32" bicycle (KMC Z8.3 or equivalent), ~$15 each
 
-8:1 was chosen over 10:1 for material durability. 10:1 puts ~25% more torque on every gear tooth, chain link, bearing, and print layer. For 2-min-on / 1-min-off intermittent duty, 8:1 stays comfortably within a PETG-printed gear's fatigue envelope. 10:1 starts approaching it.
+### 8. Speed control: pedal cadence + RPM sensor (closed-loop)
 
-**Open question:** how to split the 8:1 across two stages. Cassette ratio (e.g., 3:1) × chain-to-pulley ratio (e.g., 2.7:1)? Different split? Affects sprocket sizes and printability of intermediate gears.
-
-### 8. Pulleys: 5" drive, 2" idler, crowned, 3D-printed PETG with stainless reinforcement
-
-- **Drive pulley:** 5" diameter. With 75 RPM cadence × 8:1 reduction = 750 RPM at the belt — middle of the 600–800 RPM glass-finishing window.
-- **Idler:** 2" diameter (consensus standard for 2x72 grinders; doesn't affect belt speed).
-- **Both crowned** ~0.020–0.040" (final crown TBD against confirmed Sackorange belt width and material).
-- **Construction:** 3D-printed PETG bodies with embedded stainless rod spokes radiating from a center hub. CNC is **last resort** if the printed-and-reinforced design fails physical load testing.
+Pedal cadence directly modulates belt speed (no electric motor, no VFD). Cheap Amazon RPM sensor logs actual belt RPM in real time → personal dataset of "this grit, this glass, this pressure, this RPM = best finish." Replaces guesswork with measured data. Target operating range: **600–750 pulley RPM** at the drive pulley (per client research).
 
 ### 9. Tensioner: screw-driven, no springs, feel-based tuning
 
-**Mechanism:** A pure screw-driven tensioner. The idler wheel bolts to a rigid pivot arm; the arm pivots on a pin at one end; the adjustment screw on the other end pushes the arm outward as you turn it. No spring fatigue risk, fewer failure modes, dirt cheap (just a stainless bolt + threaded hole in the arm).
+Pure mechanical: idler wheel on a rigid pivot arm, adjustment screw pushes the arm outward as you turn it. **Springs explicitly rejected** — fatigue path Isaiah doesn't want to engineer around, no value for hand-cranked intermittent use.
 
-**Why no springs:** Springs auto-maintain tension as belts wear and stretch — useful for high-duty-cycle electric grinders, irrelevant for a hand-cranked tool that gets re-tensioned manually before each session anyway. Springs also add cost, sourcing complexity, and a fatigue path Isaiah doesn't want to engineer around.
-
-**Tuning method:** **By feel, not by gauge.** Reference: push the belt sideways with your thumb at mid-span; it should deflect about ¼" under moderate hand pressure, then snap back. **Document this in the assembly guide** so future-Isaiah (or anyone else building one) has the calibration target.
+**Tuning reference:** push belt sideways with thumb at mid-span; should deflect ~¼" under moderate hand pressure, snap back. Document in assembly guide.
 
 ### 10. Coolant: water drip line above platen, slurry catch tray below
 
-Silicon carbide runs cooler wet, and water flushes glass dust (which is nasty to breathe). Horizontal layout makes this gravity-routable: drip line above the platen → slurry runs across the platen → falls into a catch tray below.
-
-**Open questions:**
-- Tray material: stainless steel pan, or printed drain manifold draining to bucket? Stainless wins on corrosion resistance but adds sourcing.
-- Recirculating pump or one-way drain to bucket? One-way is simpler; recirculating wastes less water but adds plumbing.
-- Slurry handling: how does Isaiah dispose of the spent grit + glass dust slurry? (Glass dust = silicosis risk if it dries and aerosolizes.)
+Silicon carbide runs cooler wet, water flushes glass dust (silicosis risk). Horizontal layout makes routing gravity-friendly: drip → slurry → catch tray. Tray material/recirculation/disposal still open — see `open-questions.md`.
 
 ### 11. Hardware: stainless steel bolts, right-sized per joint, replaceable everywhere
 
-**Spec:**
-- M5 stainless steel as the baseline for general assembly (matches Isaiah's existing inventory)
-- Larger stainless (e.g., ½") at high-stress anchor points only — frame corners, drive pulley axle mount, bearing block pivots — wherever load is genuinely concentrated
-- **No oversizing for its own sake.** Right-size per joint. Save overkill engineering for products sold to customers. Internal tooling stays lean.
-- Sourced from Amazon (consistent inventory) or Home Depot (for the larger or oddly-sized fasteners)
-- **304 stainless** as the inventory baseline (per `setup.md`)
+M5 stainless as the baseline; larger stainless (e.g., ½") at high-stress anchors only (frame corners, drive pulley axle mount). **No oversizing for its own sake.** 304 stainless inventory baseline. Heat-set inserts (CNC Kitchen brass M3/M5) in PETG for blind threaded holes. See `research/heat-set-inserts.md`.
 
-**Joining:** Heat-set inserts in PETG (CNC Kitchen brass M3/M5) for blind threaded holes; through-bolts with nylock nuts for thru-joints. Both compatible with the "every part replaceable, no glued-in fasteners" principle.
+### 12. Frame: portable 3-module architecture, hybrid metal + 3D-printed nodes
 
-See `research/heat-set-inserts.md` for the full insert spec, torque targets, and 3 open questions.
+**Three modules, each ~24–36" long, fits through 30" door, liftable by one person:**
 
-### 12. Operator workflow context (clarifies what this grinder does)
+1. **Rider module** — saddle, BB, cranks, chainring, freewheel
+2. **Drivetrain bridge** — intermediate shaft + stage-1 driven cog + stage-2 driver sprocket
+3. **Grinder module** — drive pulley, idler, platen, tensioner, belt path, sled rails, coolant tray
+
+Connection joints: ~4 quick-release points total (wing-nut bolts or quarter-turn cam locks). Chains uncouple at master links for transport.
+
+**Hybrid construction:**
+- **Structural members:** mild steel or stainless tube/angle stock, hand-cut to length on Isaiah's table saw
+- **Joint nodes:** 3D-printed PETG with embedded heat-set inserts for the bolts
+- **Stainless rod reinforcement** at bearing-block locations
+
+Aesthetic: knock-down trade-show booth — looks deliberate, breaks down clean, every part replaceable.
+
+### 13. Donor bike: $40 floor, 7+ speed mountain bike
+
+Facebook Marketplace target. Harvest crankset (cranks + chainring), bottom bracket, cassette/freewheel, possibly rear hub for the freewheel ratchet. Buy fresh from Amazon: chains (×2), sealed bearings (608-2RS or 6202-2RS), small driven pinion for the grinder pulley shaft.
+
+**Pre-purchase checklist:** cassette spins/ratchets correctly, chainring teeth not bent or worn into "shark fin," cranks turn smoothly, no BB-area frame corrosion. Avoid: cruisers (single-speed coaster brake), frozen BBs, kids' bikes.
+
+### 14. Operator workflow context
 
 Isaiah's full glass workflow:
-1. Cut glass to size with score tool + pliers
-2. **Pre-finish edges with the existing handheld wet grinder** (3/4" water-wheel grinder Isaiah already owns) — gets the edge close to clean
-3. **This bike-powered grinder is the FINISHING stage** — takes a pre-cleaned edge from ~220-grit roughness down to 600–1000 for optical-adhesive bonding
+1. Cut glass with score tool + pliers
+2. Pre-finish edges with **existing handheld wet grinder** (3/4" water-wheel, already owned)
+3. **This bike grinder is the FINISHING stage** — takes a pre-cleaned edge from ~220-grit roughness down to 600–1000 for optical-adhesive bonding
 
-**Implication:** This is light finishing work, not stock removal. Slow belt speed is correct (700–800 RPM target). Coarse grits (120–240) are mostly there to "walk down" the surface progression cleanly between grits, not to remove material.
+**Implication:** light finishing work, not stock removal. Belt SFM at 1180 is upper-spec, accepted because cuts here are minimal. Optimize for stability, repeatability, surface quality.
 
-This clarification means the grinder doesn't need to be aggressive. Optimize for stability, repeatability, and surface quality — not maximum cut rate.
+---
+
+## Bearings + chains spec (from corrected stress analysis)
+
+- Intermediate shaft: 12 mm 304 stainless rod, 2× SKF 6202-2RS sealed deep-groove ball bearings
+- Grinder pulley shaft: 8 mm 304 stainless rod, 2× NSK 608-2RS
+- Both chains: KMC Z8.3 (1/2" × 3/32") bicycle, breaking strength ≥7,800 N (SF ≥6× at peak chain tension)
+- L₁₀ life on both bearing pairs exceeds 4,200 hours — far past 100 hr cumulative use target
+
+Total bought-parts cost beyond the donor bike: **~$73**.
 
 ---
 
 ## Status
 
 - [x] Genesis handoff received from voice session (2026-05-06)
-- [x] Phase 0 review locked 14 additional decisions (2026-05-07)
-- [x] Folder scaffold created
+- [x] Phase 0 review locked 14 design decisions (2026-05-07)
+- [x] Q1–Q4 readiness lock-in (2026-05-08): math conflict resolved, architecture locked, envelope locked, donor spec locked, frame architecture locked, ratio locked at 10:1
 - [x] Heat-set inserts research (`research/heat-set-inserts.md`)
-- [x] **Architecture diagram verified against Isaiah's voice-session intent** (Phase 0 review)
-- [ ] FreeCAD 1.1 readiness research — what context I need to model parametrically
-- [ ] FreeCAD 1.1 parametric model of drivetrain
-- [ ] FreeCAD 1.1 parametric model of frame + platen mount + sled
-- [ ] Stainless reinforcement plan
-- [ ] Bill of materials (cycling parts: crank, freewheel, cassette, chain; bearings; pulleys; sensors; coolant tray)
-- [ ] First print + test — bearing block load test under pedal torque
-- [ ] Confirm longest gem-component panel edge ≤ 20" (drives whether 24" platen is enough)
+- [x] FreeCAD 1.1 readiness research (`research/freecad-1.1-readiness.md`)
+- [x] Corrected sprocket stress analysis (`research/sprocket-stress-corrected.md`)
+- [ ] FreeCAD 1.1 parametric model: master sketch (drivetrain centers, frame footprint)
+- [ ] FreeCAD 1.1 parametric model: each printable part as a linked .FCStd file
+- [ ] FreeCAD 1.1 assembly: simulation-validate gear ratios visually before printing
+- [ ] Bambu A1 Mini test-coupon for fit calibration (peg+socket pairs at clearances 0.10/0.15/0.20/0.25/0.30 mm)
+- [ ] First print + load test — bearing block under pedal torque
+- [ ] Donor bike acquired
+- [ ] 8T machined-metal pinion sourced (~$15, SDP-SI or Boston Gear)
 
-See `open-questions.md` for the punch list of what Isaiah needs to answer before FreeCAD 1.1 work starts.
+See `open-questions.md` for the punch list of what's still open.
 
 ---
 
@@ -180,9 +183,12 @@ See `open-questions.md` for the punch list of what Isaiah needs to answer before
 
 - Brand context: `CLAUDE.md` (root)
 - Current state: `findings/SESSION-HANDOFF.md`
+- **Top-level constraints: `findings/design-constraints.md`** ← 18" max glass edge lives here
 - Decisions pending: `findings/decisions-pending.md`
 - Glass technique research: `findings/topics/fabrication/glass-edge-grinder.md`
 - Material inventory: `setup.md`
 - Heat-set inserts: `research/heat-set-inserts.md`
-- Open questions for FreeCAD: `open-questions.md`
+- FreeCAD 1.1 readiness: `research/freecad-1.1-readiness.md`
+- Corrected sprocket stress: `research/sprocket-stress-corrected.md`
+- Open questions: `open-questions.md`
 - Voice session transcripts: `sessions/`
