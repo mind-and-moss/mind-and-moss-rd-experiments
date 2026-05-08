@@ -1,8 +1,19 @@
-# Session Handoff — End of Session 4 (2026-05-05)
+# Session Handoff — End of Session 5 (2026-05-07)
 
 **For:** Next Claude Code session (or any AI / collaborator picking up this repo)
-**From:** Session 4 — completed reorg/refs/ecosystem deep-dives, voice-dictation inventory, NASA-grade unknowns audit, brand reframe (Gem → Machine component, biotope-fidelity through-line)
+**From:** Session 5 — bike-powered glass grinder spec received via voice handoff; PR #8 opened with full handoff doc + heat-set inserts research; Project knowledge refreshed with all current docs.
 **Read this before doing anything else.**
+
+---
+
+## Session 5 additions (latest)
+
+- **PR #8 opened:** `tooling/bike-powered-grinder` — new top-level `tooling/` folder. Captures Isaiah's Session 5 voice-mode handoff (transferred via Chrome MCP). Two files:
+  - `tooling/bike-powered-grinder/README.md` — full spec doc with 7 locked design decisions (24" platen, 2x72 SiC belts 120-1000 grit, freewheel drivetrain, RPM-sensor closed loop, 10-20:1 gear reduction, 3D-print + stainless reinforcement hierarchy, concern hierarchy). Includes a reconstructed architecture diagram **flagged for Isaiah to verify** (original didn't transfer cleanly through clipboard).
+  - `tooling/bike-powered-grinder/research/heat-set-inserts.md` — research synthesis. Bottom line: CNC Kitchen / Ruthex brass M3 (4.0mm hole) and M5 (6.4mm hole), premium grade. PETG over PLA. Iron temp = print temp + 10–20°C. Cheap AliExpress is 4× weaker in pull-out (181kg vs 39kg). 3 open questions for Isaiah at bottom (environment, filament confirmed for structural, load path through stainless plates).
+- **Mind and Moss Project on Claude.ai now has 6 files** in knowledge (refreshed via Chrome MCP this session): CLAUDE.md, SESSION-HANDOFF.md (this file's prior version), decisions-pending.md, unknowns-audit.md, bike-grinder-README.md, bike-grinder-heat-set-inserts.md.
+- **Working iPhone voice loop established:** Isaiah voice-chats with Project Claude on iPhone → Project Claude generates artifacts → Claude Code (this session) drives Chrome via MCP → fetches transcripts/artifacts → commits to repo. End-to-end working.
+- **Bike grinder context:** this is **tooling, not product** — the prerequisite machine that makes precision-cut glass for The Machine's gem-component (and every other Mind and Moss product using glass). Held to "how the fuck did they make that" standard. NOT a peer flagship product.
 
 ---
 
@@ -14,23 +25,24 @@
 
 This was a mid-session clarification from Isaiah. PR #7 (`fix/gem-as-machine-component`) restructured the repo accordingly. All other open PRs were rebased onto it so they merge cleanly regardless of order.
 
-### 7 PRs open, all consistent with the new framing
+### 8 PRs open, all consistent with the new framing
 
 | PR | Branch | What it carries |
 |---|---|---|
 | #1 | `reorg/topic-folders` | Foundation: original reorg + `references/` folder + ~80 verified URLs. Folded gem references into `the-machine.md`. |
-| #2 | `setup/inventory` | `setup.md` populated 2026-05-05 from voice-dictation inventory pass via the Mind and Moss Project + Chrome MCP. ~15 categorized tables, 11 cross-reference flags, 10 open questions. |
+| #2 | `setup/inventory` | `setup.md` populated 2026-05-05 from voice-dictation inventory pass. ~15 categorized tables, 11 cross-reference flags, 10 open questions. |
 | #3 | `auto/improvements` | Bond-line spec verification (corrected R004 T15 against Norland NOA + DOWSIL + ASTM), references TODO chase, `EDITORIAL-REVIEW-2026-05-05.md`. Depends on PR #1. |
-| #4 | `research/ecosystem-microbiology` | Three external-research-synthesis files: `topics/ecosystem/{soil-chemistry,microorganisms,decomposers}.md` with peer-reviewed citations. |
+| #4 | `research/ecosystem-microbiology` | `topics/ecosystem/{soil-chemistry,microorganisms,decomposers}.md` with peer-reviewed citations. |
 | #5 | `research/aquarium-methods` | Walstad method + Father Fish method (Lou Foxwell Jr.) files in `topics/ecosystem/`. |
-| #6 | `meta/decisions-and-handoff` | `decisions-pending.md` (13 open decisions, several rescoped to "Machine's gem-component") + this `SESSION-HANDOFF.md`. |
-| #7 | `fix/gem-as-machine-component` | The Gem restructure: dissolved `findings/products/the-gem/`, folded into `the-machine/gem.md`, `the-machine/base-materials.md`, `topics/fabrication/glass-fabrication.md`. CLAUDE.md updated. |
+| #6 | `meta/decisions-and-handoff` | `decisions-pending.md` (13 open decisions) + this `SESSION-HANDOFF.md`. |
+| #7 | `fix/gem-as-machine-component` | The Gem restructure: dissolved `findings/products/the-gem/`, folded into `the-machine/gem.md`, `the-machine/base-materials.md`, `topics/fabrication/glass-fabrication.md`. |
+| #8 | `tooling/bike-powered-grinder` | **NEW (Session 5):** voice-handoff spec doc + heat-set inserts research. Branched off main (independent). |
 
-**Plus a non-PR branch:** `audit/full-unknowns-pass` — `unknowns-audit.md` surfaces ~108 open questions in 15 categories (~55 need Isaiah input). Rebased onto PR #7.
+**Plus a non-PR branch:** `audit/full-unknowns-pass` — `unknowns-audit.md` surfaces ~108 open questions in 15 categories.
 
 ### Recommended merge order
 
-7 → 1 → 3 → 2 → 4 → 5 → 6 (or any order — they were rebased onto #7 so they're consistent).
+7 → 1 → 3 → 2 → 4 → 5 → 6 → 8 (or any order — all consistent).
 
 ### Decisions awaiting Isaiah's judgment
 
@@ -101,15 +113,17 @@ Isaiah uses the **Mind and Moss Project on Claude.ai** (https://claude.ai/projec
 ## Next session — recommended first moves
 
 ### Immediate
-1. **Read `decisions-pending.md` and `unknowns-audit.md` end-to-end.** Many decisions await Isaiah; many questions can only be answered by him.
+1. **Read `decisions-pending.md`, `unknowns-audit.md`, AND `tooling/bike-powered-grinder/README.md`** end-to-end. The bike-grinder spec is now the active build target — it gates The Machine's manufacturability.
 2. **Check `git log --oneline -5 main` and `git branch -a`** before doing anything. Multiple parallel sessions modify state.
-3. **Refresh CLAUDE.md / SESSION-HANDOFF.md / decisions-pending.md in the Mind and Moss Claude.ai Project** if they've changed since last upload. Use the `claude-ai-project-push` skill.
+3. **Refresh files in the Mind and Moss Claude.ai Project** if they've changed since last upload. Use the `claude-ai-project-push` skill or replicate the Chrome MCP workflow used in Sessions 4–5.
 
 ### High-priority work blocks
-4. **Help Isaiah dial in The Machine product definition** — geometry, customer, price point, livestock. Without these, the audit unknowns can't be resolved. He explicitly said he's not ready for "physical calculations" yet but wants to develop on the technology front first.
-5. **Start a biotope library** in `findings/biotopes/` if Isaiah wants to operationalize the biotope-fidelity through-line. Pick one species and walk through what its biotope-spec looks like end-to-end.
-6. **Resolve gem-component seam type** (decision #1) so the grinder design can proceed.
-7. **Apply the editorial review's 5 small clarification edits** (decision #12) — quick win.
+4. **Verify the architecture diagram** in `tooling/bike-powered-grinder/README.md` against Isaiah's voice-session intent. The current diagram is reconstructed because the original didn't transfer cleanly through the clipboard pipeline — Isaiah needs to confirm or replace it.
+5. **Answer the 3 open questions in `heat-set-inserts.md`:** operating environment (indoor vs humid garage), filament confirmation (PETG for structural?), and load path through stainless reinforcement plates. These gate quantity ordering for the inserts.
+6. **Start FreeCAD 1.1 parametric model** of drivetrain + frame + platen mount per the locked decisions in the bike-grinder README. Isaiah is comfortable in Blender; FreeCAD parametric is the proposed shift.
+7. **Resolve gem-component seam type** (decision #1 in `decisions-pending.md`) so the bond-line spec for the grinder is locked.
+8. **Apply the editorial review's 5 small clarification edits** (decision #12) — quick win.
+9. **Help Isaiah dial in The Machine product definition** — geometry, customer, price point, livestock. He explicitly said he's not ready for "physical calculations" yet but is now actively building tooling toward it.
 
 ### Lower priority
 8. **Phone-AI excavation** — still pending, Isaiah hasn't picked the source.
