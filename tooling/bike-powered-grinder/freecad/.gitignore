@@ -1,0 +1,14 @@
+# FreeCAD backup files (auto-created on save)
+*.FCStd1
+*.FCBak
+
+# FreeCAD lock files (created when a file is open)
+*.FCLock
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Python compiled
+__pycache__/
+*.pyc
