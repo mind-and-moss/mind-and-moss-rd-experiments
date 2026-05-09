@@ -85,11 +85,18 @@ anything you need to see. For test scripts, also write a side-channel report fil
 | 01 | `01_create_grinder_params.py` | Creates the doc + 7 VarSets + empty MasterSketch |
 | 02 | `02_scaffold_drivetrain_geometry.py` | Adds 10 construction elements with hardcoded values |
 | 03 | `03_bind_geometry_to_varsets.py` | Wipes + rebuilds with 21 constraints + 9 expr bindings |
-| 04 | `04_constrain_shafts_and_chain_distances.py` | **Current head.** Supersedes 03. Adds 4 shaft locks + 2 computed CD properties |
+| 04 | `04_constrain_shafts_and_chain_distances.py` | Supersedes 03. Adds 4 shaft locks + 2 computed CD properties |
+| 05 | `05_create_drive_pulley_part.py` | **Current head for parts.** Creates `parts/drive_pulley.FCStd` (PartDesign Body + Sketch + Revolution). v1: cylinder + bore, no crown, hardcoded values from master. |
 
 Diagnostic (not part of the chain): `verify_parametric_binding.py` — mutates
 `Pulleys.drive_pulley_dia` 152.4→180, checks the drive pulley circle radius
 recomputed, reverts. Run as a sanity check after touching any expression code.
+
+## Open issues / gotchas (Session 7)
+
+- **Cross-doc expression bindings (`<<Grinder_Params#Pulleys>>.drive_pulley_dia`) are flaky in part files.** The syntax resolves correctly when set in isolation (diagnostic confirms 152.4) but Revolution.Shape stays null in-session when constraints have such bindings. Macro 05 v1 hardcodes values from master at macro-build time; macro 06 will revisit live cross-doc binding once the recompute-time resolution is understood. Try App::Link objects as an alternative to `<<>>` syntax.
+- **Headless STL export hangs on `MeshPart.meshFromShape` + `mesh.write`.** Tried in-session (after macro build) and as a separate freecadcmd invocation loading the saved FCStd — both hang. Workaround: export STL manually from the FreeCAD GUI (open part FCStd → right-click feature → Export → STL). One-time per print.
+- **Macro 05 cylinder axis is along global Y, not Z.** Sketcher Placement quirk. Doesn't affect first print (slicer reorients freely) but assembly will need axis on Z. Fix in macro 06.
 
 ---
 
