@@ -81,7 +81,7 @@ Glass panel sits flat in the sled, a straight-edge pusher across the full panel 
 ```
 pedals → crank → freewheel/one-way clutch
   → STAGE 1: 42T chainring → bike chain → 13T cog on intermediate shaft (3.23:1)
-  → STAGE 2: 32T sprocket on intermediate shaft → bike chain → 8T pinion on grinder pulley shaft (4:1)
+  → STAGE 2: 25T sprocket on intermediate shaft → bike chain → 8T pinion on grinder pulley shaft (3.125:1)
   → 6" crowned drive pulley (target 750 RPM)
   → 2x72 SiC belt → 22" platen → 3" crowned idler
 ```
@@ -92,7 +92,7 @@ pedals → crank → freewheel/one-way clutch
 
 **Stage materials:**
 - Stage 1: stock donor-bike steel chainring (42T) + steel cassette cog (13T)
-- Stage 2 large sprocket (32T): 3D-printed PETG, module 1.5, face 12 mm
+- Stage 2 large sprocket (25T): 3D-printed PETG, module 1.5, face 12 mm
 - Stage 2 small pinion (8T): **machined steel or 6061 aluminum** (~$15 from SDP-SI or Boston Gear), module 2.0, face 16 mm. PETG fails the fatigue check at 8T at this load level.
 - Two chains: 1/2" × 3/32" bicycle (KMC Z8.3 or equivalent), ~$15 each
 
