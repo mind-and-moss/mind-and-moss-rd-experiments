@@ -1,6 +1,6 @@
 # Silicone — Material Notes
 
-Cross-cutting research on silicone selection: aquarium-safe formulations, tin-cure vs platinum-cure, cure inhibition, and seam/bond-line considerations. Mold-making specifics live in `topics/fabrication/mold-making.md`. Bond-line dimensional specs for The Gem live in `products/the-gem/seam-construction.md`.
+Cross-cutting research on silicone selection: aquarium-safe formulations, tin-cure vs platinum-cure, cure inhibition, and seam/bond-line considerations. Mold-making specifics live in `topics/fabrication/mold-making.md`. Bond-line dimensional specs for The Machine's gem-component live in `products/the-machine/gem.md`.
 
 ---
 
