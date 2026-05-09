@@ -1,173 +1,228 @@
-# Session Handoff — End of Session 5 (2026-05-07)
+# Session Handoff — End of Session 6 (2026-05-09)
 
 **For:** Next Claude Code session (or any AI / collaborator picking up this repo)
-**From:** Session 5 — bike-powered glass grinder spec received via voice handoff; PR #8 opened with full handoff doc + heat-set inserts research; Project knowledge refreshed with all current docs.
-**Read this before doing anything else.**
+**From:** Session 6 — bike-powered glass grinder went from concept-with-flagged-issues to a fully-parametric FreeCAD model. Q1–Q4 readiness gates locked. Math conflicts resolved. FreeCAD 1.1.1 installed and driven headlessly via `freecadcmd.exe`. Macros 01–03 produced `Grinder_Params.FCStd` with 7 VarSets, 35 properties, 21 constraints, 9 expression bindings.
+
+**Read this before doing anything else.** Then read the detailed Session 6 log at `tooling/bike-powered-grinder/sessions/2026-05-08-09-q1q4-and-freecad-pipeline.md` for the full chronicle and patterns.
 
 ---
 
-## Session 5 additions (latest)
+## TL;DR for the next bot
 
-- **PR #8 opened:** `tooling/bike-powered-grinder` — new top-level `tooling/` folder. Captures Isaiah's Session 5 voice-mode handoff (transferred via Chrome MCP). Two files:
-  - `tooling/bike-powered-grinder/README.md` — full spec doc with 7 locked design decisions (24" platen, 2x72 SiC belts 120-1000 grit, freewheel drivetrain, RPM-sensor closed loop, 10-20:1 gear reduction, 3D-print + stainless reinforcement hierarchy, concern hierarchy). Includes a reconstructed architecture diagram **flagged for Isaiah to verify** (original didn't transfer cleanly through clipboard).
-  - `tooling/bike-powered-grinder/research/heat-set-inserts.md` — research synthesis. Bottom line: CNC Kitchen / Ruthex brass M3 (4.0mm hole) and M5 (6.4mm hole), premium grade. PETG over PLA. Iron temp = print temp + 10–20°C. Cheap AliExpress is 4× weaker in pull-out (181kg vs 39kg). 3 open questions for Isaiah at bottom (environment, filament confirmed for structural, load path through stainless plates).
-- **Mind and Moss Project on Claude.ai now has 6 files** in knowledge (refreshed via Chrome MCP this session): CLAUDE.md, SESSION-HANDOFF.md (this file's prior version), decisions-pending.md, unknowns-audit.md, bike-grinder-README.md, bike-grinder-heat-set-inserts.md.
-- **Working iPhone voice loop established:** Isaiah voice-chats with Project Claude on iPhone → Project Claude generates artifacts → Claude Code (this session) drives Chrome via MCP → fetches transcripts/artifacts → commits to repo. End-to-end working.
-- **Bike grinder context:** this is **tooling, not product** — the prerequisite machine that makes precision-cut glass for The Machine's gem-component (and every other Mind and Moss product using glass). Held to "how the fuck did they make that" standard. NOT a peer flagship product.
+1. **Bike grinder is the active build.** Tooling, not product — but held to brand standard. Prerequisite for The Machine's gem-component glass panels and all future Mind and Moss products that use precision-cut glass.
+2. **All four critical readiness gates locked** (Q1: math, Q1b: drivetrain architecture, Q2: design envelope, Q3: donor bike spec, Q4: frame architecture).
+3. **FreeCAD 1.1.1 is installed** at `C:\Program Files\FreeCAD 1.1\bin\`. The CLI binary `freecadcmd.exe` lets Claude Code drive FreeCAD entirely without GUI interaction — this is a major workflow unlock.
+4. **`Grinder_Params.FCStd` exists** at `tooling/bike-powered-grinder/freecad/Grinder_Params.FCStd` with 7 VarSets, an empty MasterSketch transformed into a fully-parametric drivetrain layout.
+5. **First move next session:** verify parametric bindings actually work (open FCStd, change a VarSet value, watch geometry recompute). Then macro 04 to constrain off-axis shaft positions.
 
 ---
 
-## Where things actually stand
+## Session 6 highlights — what changed
 
-### The brand reframed mid-session
+### Locked decisions
 
-"The Gem" is **not a flagship product**. It's a small component within The Machine — a featured glass / light-scattering element. The actual through-line of Mind and Moss is **biotope fidelity** — building living environments so accurate that species inside express behaviors and growth patterns hobbyist setups don't produce. The wow factor isn't visual sculpture; it's the moss going sparse-and-traveling-up instead of cushion. Form factors are vessels for biotopes.
+Spec stack as of end-of-session (locked, won't reopen unless physical testing forces it):
 
-This was a mid-session clarification from Isaiah. PR #7 (`fix/gem-as-machine-component`) restructured the repo accordingly. All other open PRs were rebased onto it so they merge cleanly regardless of order.
-
-### 8 PRs open, all consistent with the new framing
-
-| PR | Branch | What it carries |
+| Locked | Value | Source |
 |---|---|---|
-| #1 | `reorg/topic-folders` | Foundation: original reorg + `references/` folder + ~80 verified URLs. Folded gem references into `the-machine.md`. |
-| #2 | `setup/inventory` | `setup.md` populated 2026-05-05 from voice-dictation inventory pass. ~15 categorized tables, 11 cross-reference flags, 10 open questions. |
-| #3 | `auto/improvements` | Bond-line spec verification (corrected R004 T15 against Norland NOA + DOWSIL + ASTM), references TODO chase, `EDITORIAL-REVIEW-2026-05-05.md`. Depends on PR #1. |
-| #4 | `research/ecosystem-microbiology` | `topics/ecosystem/{soil-chemistry,microorganisms,decomposers}.md` with peer-reviewed citations. |
-| #5 | `research/aquarium-methods` | Walstad method + Father Fish method (Lou Foxwell Jr.) files in `topics/ecosystem/`. |
-| #6 | `meta/decisions-and-handoff` | `decisions-pending.md` (13 open decisions) + this `SESSION-HANDOFF.md`. |
-| #7 | `fix/gem-as-machine-component` | The Gem restructure: dissolved `findings/products/the-gem/`, folded into `the-machine/gem.md`, `the-machine/base-materials.md`, `topics/fabrication/glass-fabrication.md`. |
-| #8 | `tooling/bike-powered-grinder` | **NEW (Session 5):** voice-handoff spec doc + heat-set inserts research. Branched off main (independent). |
+| Belt | 2x72 silicon carbide, 120–1000 grit (Sackorange 6-pack) | Phase 0 review |
+| Platen | 22" usable, glass-only, single-purpose | revised in Q2 |
+| Drive pulley | 6" crowned PETG with stainless rod hub | revised in Q2 |
+| Idler pulley | 3" crowned PETG with stainless rod hub | revised in Q2 |
+| Layout | horizontal, glass at top of belt | Phase 0 |
+| Operator | seated rider position | Phase 0 |
+| Workpiece fixture | rail-guided sled with full-width straight-edge pusher | Phase 0 |
+| Tensioner | screw-driven, no springs, by-feel tuning | Phase 0 |
+| Cadence target | 75 RPM (conversational) | Phase 0 |
+| Belt RPM target | 750 RPM | Phase 0, confirmed Q1 |
+| Total ratio | **10:1** (1180 SFM, upper-glass-spec) | Q1 — Isaiah picked over 7.5:1 to honor 600–750 RPM range from client research |
+| Drivetrain | two chain stages | Q1b (option A) — single-stage and internal-hub both rejected |
+| Stage 1 | 42T donor steel chainring × 13T donor steel cog (3.23:1) | corrected stress analysis |
+| Stage 2 | 25T PETG large × **machined-metal 8T pinion** (3.125:1) | corrected stress analysis — PETG fails fatigue at 8T at this load |
+| Bearings | 2× 6202-2RS (intermediate, 15mm bore) + 2× 608-2RS (grinder shaft, 8mm bore) | corrected stress analysis |
+| Chain | 2× KMC Z8.3 (1/2" × 3/32" bicycle), ~$15/each | corrected stress analysis |
+| Coolant | drip line above platen, gravity catch tray below | Phase 0 |
+| Hardware | stainless bolts right-sized per joint, M5 baseline | Phase 0 |
+| Frame | portable 3-module: rider / drivetrain bridge / grinder | Q4 |
+| Frame construction | hand-cut metal tube + 3D-printed PETG joint nodes with heat-set inserts | Q4 |
+| Door clearance | 30" (modules fit through any interior door) | Q4 |
+| Donor bike | 7+ speed MTB, ~$40 from Facebook Marketplace | Q3 |
+| **HARD CONSTRAINT** | **18" max glass edge on any Mind and Moss panel** | Q2 — `findings/design-constraints.md` |
 
-**Plus a non-PR branch:** `audit/full-unknowns-pass` — `unknowns-audit.md` surfaces ~108 open questions in 15 categories.
+Total bought-parts cost beyond donor bike: **~$73** (chains + bearings + machined pinion + intermediate shaft stock).
 
-### Recommended merge order
+### Math errors caught
 
-7 → 1 → 3 → 2 → 4 → 5 → 6 → 8 (or any order — all consistent).
+Two errors caught and corrected this session (worth flagging for future sessions):
 
-### Decisions awaiting Isaiah's judgment
+1. **Phase 0 review's locked specs didn't multiply.** 75 cadence × 8:1 reduction = 600, not the 750 RPM target also locked. Isaiah picked Path B (revisit 10:1) to resolve.
+2. **First sprocket stress agent had directional error.** Treated speed-up gearbox as torque-multiplying reduction. Real: torque flows pedal → belt with magnitude *decreasing* (19.1 N·m at crank, 1.91 N·m at belt pulley). Re-dispatched with corrected torque chain. Result: PETG drivetrain works fine at 10:1 with one machined pinion.
 
-`decisions-pending.md` at repo root (PR #6) consolidates 13 open calls across material/spec, scope/product-shape, and process/workflow. The most decision-forcing:
+The `conflict-detection-on-lock` skill (PR #9) captures this pattern as a discrete pre-commit step. **Use it.**
 
-1. **The Machine's gem-component seam type** — UV optical adhesive (NOA 65 for soda-lime, NOA 148 for borosilicate) vs cosmetic silicone film vs structural silicone glazing. Drives the grinder design.
-2. **The Machine: open-air, sealed, or both** — Claude rec: open-air for v1.
-3. **The Machine's base material** — mycelium / concrete / hybrid. Claude rec: hybrid for v1.
+### Patterns invented
 
-The `unknowns-audit.md` adds ~108 more on top — most need Isaiah input that no research can substitute.
+Detailed in the Session 6 log. Headlines:
 
-### What's NOT in the repo and matters
-
-- **Isaiah's product definition.** Per his late-session clarification: he's "barely getting started on the technology front" with a few days before "physical calculations." The product (The Machine) isn't dialed in at the level of dimensions, target customer, price point, livestock specs. The audit surfaced this; not yet resolved.
-- **A biotope library.** The biotope-fidelity through-line implies a structured library of species → conditions mappings. Discussed but not yet built. Possible structure: `findings/biotopes/` (per-species or per-location, with one biotope-spec per file).
-- **Materials list:** `setup.md` is now populated (voice-dictation pass) but has 10 open questions Isaiah needs to confirm (brand spellings, "delicate pairs" species, etc.) and a "buy" gap (800–2000 grit sandpaper for polish-grade work).
-- **The third AI excavation** (phone-based) — still pending. Isaiah hasn't decided the data pipeline.
+- **`freecadcmd.exe` headless pipeline** — Claude Code can run FreeCAD macros without GUI. User-facing macro + headless wrapper + CLI invocation. Idempotent macros. Unlocks rapid iteration.
+- **PowerShell `Start-Process -Verb RunAs -Wait`** for elevated installs from automation. Bash-invoked silent installs with /S are unreliable on Windows.
+- **VarSet expression syntax** for FreeCAD 1.1: `<<VarSetName>>.property_name` for same-doc references. `sin(180 deg / N)` for trig with degree interpretation.
+- **Sketcher constraint API** patterns documented in the session log (origin reference, vertex codes, common constraint types).
 
 ---
 
-## Working setup
+## What's actually in the repo
 
-### Local clone
-- Path: `C:\Users\Isaia\OneDrive\Desktop\Claude c\Sessions\mind-and-moss-rd-experiments`
-- This is a OneDrive folder — files sync to phone via OneDrive iOS app if needed.
+### `tooling/bike-powered-grinder/` (all on `tooling/bike-powered-grinder` branch)
 
-### Tools authenticated
-- `git` CLI: `C:\Program Files\Git\cmd\git.exe`
-- `gh` CLI: signed in as `bread646464`
-- Claude for Chrome MCP: bridges Claude Code → Claude.ai (works only when Chrome is running with the extension active)
-
-### Author identity (must pass per-commit)
 ```
-git -c user.name="bread646464" -c user.email="bread646464@users.noreply.github.com" commit -m "..."
+tooling/bike-powered-grinder/
+├── README.md                        ← v3 locked spec, 14 design decisions
+├── open-questions.md                ← punch list for Isaiah + Claude Code
+├── research/
+│   ├── heat-set-inserts.md          ← brass M3/M5 in PETG, install method
+│   ├── freecad-1.1-readiness.md     ← what changed, what context I need
+│   └── sprocket-stress-corrected.md ← Lewis equation, bearing life, chain SF
+├── sessions/
+│   ├── 2026-05-06-mobile-genesis-and-freecad.md
+│   ├── 2026-05-07-mobile-phase-0-review.md
+│   └── 2026-05-08-09-q1q4-and-freecad-pipeline.md  ← Session 6 detail
+└── freecad/
+    ├── README.md                    ← how to run macros (GUI + headless)
+    ├── .gitignore                   ← excludes FreeCAD backup files
+    ├── Grinder_Params.FCStd         ← parametric master file (4.7 KB binary)
+    └── macros/
+        ├── 01_create_grinder_params.py        ← 7 VarSets + empty sketch
+        ├── 02_scaffold_drivetrain_geometry.py ← 10 construction elements
+        ├── 03_bind_geometry_to_varsets.py     ← 21 constraints + 9 bindings (idempotent superset)
+        ├── run_macro_01_headless.py
+        ├── run_macro_02_headless.py
+        └── run_macro_03_headless.py
 ```
 
-### Branch coordination protocol (CRITICAL)
-This local clone is shared between sessions. **Always start any work block with `git fetch origin && git checkout <expected-branch>`** to avoid stepping on parallel sessions. Three concurrent Claude sessions have been active at various points: excavation, reorg, and Blender puzzle-assembly. The protocol caught and self-corrected branch flips multiple times.
+### `findings/design-constraints.md` (top-level, on bike-grinder branch)
 
-### iPhone voice-mode bridge
-Isaiah uses the **Mind and Moss Project on Claude.ai** (https://claude.ai/project/019dfa9c-8940-76b9-b67e-189f039c163f) to discuss decisions in voice mode on his iPhone. Project knowledge currently has CLAUDE.md, SESSION-HANDOFF.md, decisions-pending.md (uploaded via Chrome MCP). When those files change meaningfully, refresh in the Project. See `feedback_claude_chrome_bridge.md` memory for the procedure.
+NEW this session. Project-wide hard constraints:
+- **18" max glass edge** on any Mind and Moss panel (until tooling grows)
+- **170 mm max printable dimension** (Bambu A1 Mini 180mm cube minus margin)
+- Stainless bolts as baseline fastener
+- Material inventory baseline references
 
----
+### `.claude/skills/` (on `meta/skills-and-patterns` branch, PR #9)
 
-## What already happened (Sessions 1–3, summarized)
+Eight skills (plus `freecad-headless-pipeline` added at end of Session 6):
+- Workflow: `mobile-voice-pickup`, `decision-integration`, `parallel-research-dispatch`, `conflict-detection-on-lock`, `freecad-headless-pipeline`
+- Communication: `isaiah-communication-profile`, `one-question-at-a-time`, `length-discipline`, `decision-mode-when-trusted`
 
-- **Excavation pipeline:** Claude.ai (R001–R004), ChatGPT (R005). Third AI still pending.
-- **Reorg:** RESEARCH-001..005 migrated into topic folders. Original verbatim files preserved under `findings/archive/`.
-- **5 product candidates from R005:** canister filter, biome cartridge, concrete-pillar furniture, sealed planter box, styrofoam-vivarium chassis.
-- **Strategic insight:** Mind and Moss can't beat Amazon at scale via 3D printing. Compete on differentiation, quality, customization, brand voice — boutique end.
-
----
-
-## What happened in Session 4 specifically
-
-- Migrated R001-004 reorg PR + opened 5 more PRs (#2–#6).
-- Bond-line spec verification (turned out R004 T15's specs had multiple errors — now corrected against Norland + DOWSIL + ASTM).
-- Wrote build sequences, editorial review, ecosystem deep-dives, Walstad/Father Fish research, references TODO chase.
-- Built `decisions-pending.md` and Mind and Moss Project on Claude.ai.
-- Voice-dictation inventory pass: `setup.md` populated.
-- NASA-grade unknowns audit: ~108 questions surfaced.
-- **Brand reframe:** Gem demoted to component within The Machine. Biotope fidelity surfaced as the actual through-line.
-- Restructure: `findings/products/the-gem/` folder dissolved. All 7 dependent branches rebased and updated.
-- Skills kit created (`~/.claude/skills/`): `claude-ai-project-push`, `research-agent-with-citations`, `decisions-pending-doc`.
+Each `SKILL.md` has frontmatter (name + description for Skill tool to match) + body.
 
 ---
 
-## Next session — recommended first moves
+## PRs open (9 total)
 
-### Immediate
-1. **Read `decisions-pending.md`, `unknowns-audit.md`, AND `tooling/bike-powered-grinder/README.md`** end-to-end. The bike-grinder spec is now the active build target — it gates The Machine's manufacturability.
-2. **Check `git log --oneline -5 main` and `git branch -a`** before doing anything. Multiple parallel sessions modify state.
-3. **Refresh files in the Mind and Moss Claude.ai Project** if they've changed since last upload. Use the `claude-ai-project-push` skill or replicate the Chrome MCP workflow used in Sessions 4–5.
+| PR | Branch | What it carries | Session 6 changes |
+|---|---|---|---|
+| #1 | `reorg/topic-folders` | Foundation reorg + references/ | none |
+| #2 | `setup/inventory` | `setup.md` voice-dictation inventory | none |
+| #3 | `auto/improvements` | Bond-line spec verification, editorial review | none |
+| #4 | `research/ecosystem-microbiology` | soil-chemistry, microorganisms, decomposers | none |
+| #5 | `research/aquarium-methods` | Walstad + Father Fish methods | none |
+| #6 | `meta/decisions-and-handoff` | decisions-pending + this SESSION-HANDOFF | **SESSION-HANDOFF refreshed (this commit)** |
+| #7 | `fix/gem-as-machine-component` | Gem-as-component restructure | none |
+| #8 | `tooling/bike-powered-grinder` | Phase 0 spec + heat-set inserts | **MASSIVE: Q1-Q4 lock-in, FreeCAD pipeline, design-constraints, session log, README v3** |
+| #9 | `meta/skills-and-patterns` | 8 reusable skills | (adding `freecad-headless-pipeline` at end-of-session) |
 
-### High-priority work blocks
-4. **Verify the architecture diagram** in `tooling/bike-powered-grinder/README.md` against Isaiah's voice-session intent. The current diagram is reconstructed because the original didn't transfer cleanly through the clipboard pipeline — Isaiah needs to confirm or replace it.
-5. **Answer the 3 open questions in `heat-set-inserts.md`:** operating environment (indoor vs humid garage), filament confirmation (PETG for structural?), and load path through stainless reinforcement plates. These gate quantity ordering for the inserts.
-6. **Start FreeCAD 1.1 parametric model** of drivetrain + frame + platen mount per the locked decisions in the bike-grinder README. Isaiah is comfortable in Blender; FreeCAD parametric is the proposed shift.
-7. **Resolve gem-component seam type** (decision #1 in `decisions-pending.md`) so the bond-line spec for the grinder is locked.
-8. **Apply the editorial review's 5 small clarification edits** (decision #12) — quick win.
-9. **Help Isaiah dial in The Machine product definition** — geometry, customer, price point, livestock. He explicitly said he's not ready for "physical calculations" yet but is now actively building tooling toward it.
+**Recommended merge order:** 7 → 1 → 3 → 2 → 4 → 5 → 6 → 8 → 9.
 
-### Lower priority
-8. **Phone-AI excavation** — still pending, Isaiah hasn't picked the source.
-9. **Instrumented prototype build** for the pH-drift / NO3 / DO research opportunity (PRs #4, #5). Brand asset opportunity.
-10. **Bench tests Isaiah can run with current inventory** — hand-grind one glass panel to feel the squareness problem; light-scatter test with the right-angle prism; small-scale 3D-print → polymer clay → silicone → epoxy hardscape pipeline test (~$5 in materials). All possible without buying anything.
+PR #8 is now the highest-density branch — most of Session 6's work lives there.
 
 ---
 
-## Key context about Isaiah (carries forward)
+## Open items for Isaiah
 
-- Name: Isaiah
-- GitHub: `bread646464`
-- Email: `yourbestbuddy2004@gmail.com` (`bread646464@users.noreply.github.com` for commits)
-- Business: Mind and Moss (`github.com/mind-and-moss`)
-- Brand standard: "how the fuck did they make that"
-- **Through-line: biotope fidelity** (clarified Session 4)
-- Skills: Blender (since Jan 2025, comfortable), Python (complete beginner), FreeCAD (future), considering Plasticity for CAD-style precision
-- Working dynamic: both chefs — Isaiah brings vision, Claude brings execution
-- **Setup status:** no dedicated workshop yet — `setup.md` is a "current floating configuration" doc
-- **Key inventory items** (relevant to many decisions): Bambu A1 Mini, RTOVZON mini table saw, ~15 sq ft of 6mm recycled aquarium glass, M3+M5 stainless hardware, epoxy 41+41 oz, glass cutter + grinder + corner clamps, mold-making silicones, right-angle prism, ~30 68oz deli containers, live springtails + snails + isopods + mosses already breeding
+### Critical (blocks Session 7 work)
+
+- **Verify parametric bindings.** Open `Grinder_Params.FCStd` in FreeCAD GUI. Click `Pulleys` VarSet in model tree. Change `drive_pulley_dia` from 152.4 to 180. Press F5. Drive pulley circle should grow. If yes → bindings good. If no → debug.
+- **Drag tentative shaft positions.** Intermediate shaft and crank/BB are placeholders at (0, 200) and (0, 650). Drag in Sketcher GUI to physically-realistic positions. Save.
+- **Find a donor bike.** Facebook Marketplace, $20–40, 7+ speed MTB. Pre-purchase checklist in `tooling/bike-powered-grinder/open-questions.md`.
+
+### Important (drives detail design but not blocking)
+
+Listed in `tooling/bike-powered-grinder/open-questions.md`:
+- Coolant routing (tray material, pump vs gravity drain)
+- Belt tracking adjustment range
+- Module joint mechanism (wing-nut vs cam vs over-center latch)
+- Module dimensions / weight target
+- 8T machined pinion source (SDP-SI? Boston Gear? Local shop?)
+- Workshop reality check (where does it live?)
+
+### Nice-to-lock-early
+
+- Material color / aesthetic palette
+- Belt change time target (drives quick-release tensioner complexity)
+
+### Stack of 13 product-level decisions still pending
+
+In `decisions-pending.md` at repo root. Most decision-forcing:
+- Decision #1: gem-component seam type (UV optical adhesive vs structural silicone) — gates The Machine's manufacturability
+- Decision #5: Machine total water volume + livestock spec — blocks geometry locks
+- Decisions #2, #4, #7 — cluster around concrete base material + form factor
+
+These are PRODUCT decisions, not tooling. Bike grinder progress doesn't unblock them. They need their own session.
 
 ---
 
-## Memory persistence
+## What Session 7 should do first
 
-Outside the repo, Claude maintains user/project/feedback memory at:
-`C:\Users\Isaia\.claude\projects\C--Users-Isaia-OneDrive-Desktop-Claude-c-Sessions\memory\`
+Concrete 5-step plan:
 
-Key entries to read on session start:
-- `MEMORY.md` (index)
-- `project_mind_and_moss.md` (brand, biotope-fidelity, Gem-as-component)
-- `project_rd_repo_state.md` (state, in memory form — mirrors this file)
-- `feedback_rd_repo_branch_protocol.md` (defensive checkout protocol)
-- `feedback_claude_chrome_bridge.md` (Claude.ai bridge procedure)
-- `feedback_video_review_division_of_labor.md` (Isaiah watches videos, Claude catalogs)
-- `feedback_blender_puzzle_assembly.md` (added by parallel Blender Claude session — separate task)
+1. **Verify parametric bindings work** (Isaiah does this; 5 min). If it works → continue. If it doesn't → Claude Code debugs the expression syntax in `03_bind_geometry_to_varsets.py`.
 
-## Skills kit
+2. **Reposition off-axis shafts in Sketcher GUI.** Isaiah drags intermediate shaft and crank/BB to their physically-realistic positions (probably with the rider behind the grinder, drivetrain running back). Save the document.
 
-In `~/.claude/skills/`:
-- `claude-ai-project-push` — push files to Claude.ai Projects via Chrome MCP
-- `research-agent-with-citations` — dispatch background research agents with citation discipline
-- `decisions-pending-doc` — generate / update consolidation docs
+3. **Macro 04: constrain shaft positions and chain center distances.**
+   - Read the new shaft positions from the saved file
+   - Add DistanceX / DistanceY constraints to lock them
+   - Add chain-length / chain-center-distance computations between sprocket pairs
+   - Add VarSets for chain center distances if useful
+   - Idempotent like macros 02/03
 
-## Local plan archive (historical)
+4. **Macro 05: assembly-level part split.** Start producing individual part `.FCStd` files App-Linked to `Grinder_Params.FCStd`. Drive pulley first (simplest 3D extrusion + hub geometry). Generate STL.
 
-`C:\Users\Isaia\.claude\plans\elegant-rolling-horizon.md` — original plan for the topic-folder reorganization. Mostly historical now (execution complete) but useful context.
+5. **Test print + load test** — first physical part. Drive pulley with embedded stainless rod hub. Bench torque load test before assembling anything else.
+
+Probably 1–2 sessions to first physical print. Then iterate.
+
+---
+
+## How Session 6 was done — for the next bot to copy
+
+If you're picking this up cold, the working pattern this session settled on:
+
+1. **Read this handoff first.** Then `tooling/bike-powered-grinder/README.md`. Then the detailed log if you need depth.
+2. **Use the skills.** They're calibrated to this project, not generic. Especially `isaiah-communication-profile`.
+3. **Drive FreeCAD via `freecadcmd.exe`.** Don't ask Isaiah to open the GUI for routine macro runs.
+4. **Sanity-check agent math.** Once this session, an agent had a torque-direction error that would have produced wrong results. Cross-check the physics direction against the system before accepting.
+5. **Commit often, push often.** Each meaningful change = one commit + push. Session 6 had 12+ commits.
+6. **One question at a time when Isaiah's voice-mode or scattered.** He'll explicitly say "let's go one by one" — that's the strongest signal.
+7. **When Isaiah says "I trust your opinion"**, decide. Don't bounce the question back. Document the reasoning.
+
+Good luck, Session 7. The infrastructure is in place. Next session is where physical parts start happening.
+
+---
+
+## Index of files referenced in this handoff
+
+- `tooling/bike-powered-grinder/README.md` — v3 locked spec
+- `tooling/bike-powered-grinder/open-questions.md` — punch list
+- `tooling/bike-powered-grinder/sessions/2026-05-08-09-q1q4-and-freecad-pipeline.md` — Session 6 detail log
+- `tooling/bike-powered-grinder/research/sprocket-stress-corrected.md` — drivetrain math
+- `tooling/bike-powered-grinder/research/freecad-1.1-readiness.md` — FreeCAD 1.1 patterns
+- `tooling/bike-powered-grinder/freecad/Grinder_Params.FCStd` — the parametric model
+- `tooling/bike-powered-grinder/freecad/macros/` — macros 01-03 + headless wrappers
+- `findings/design-constraints.md` — top-level hard constraints (18" glass edge)
+- `decisions-pending.md` — 13 product-level decisions awaiting Isaiah
+- `unknowns-audit.md` — 108 open questions in 15 categories (on `audit/full-unknowns-pass`)
+- `.claude/skills/` — 8+ reusable patterns (on `meta/skills-and-patterns`)
+- `CLAUDE.md` — brand context
+- `setup.md` — material inventory baseline
