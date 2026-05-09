@@ -11,6 +11,7 @@ Things I do across sessions to move work forward.
 - **[decision-integration](decision-integration/SKILL.md)** — turn a voice transcript into committed repo changes while preserving full lineage
 - **[parallel-research-dispatch](parallel-research-dispatch/SKILL.md)** — fork a research agent before opening a heavy tool, so Isaiah arrives at a readiness packet
 - **[conflict-detection-on-lock](conflict-detection-on-lock/SKILL.md)** — math/logic cross-check on freshly locked decisions before they ossify in CAD geometry
+- **[freecad-headless-pipeline](freecad-headless-pipeline/SKILL.md)** — drive FreeCAD 1.1 macros via `freecadcmd.exe` without GUI; idempotent macro pattern, Sketcher constraint API, VarSet expression syntax (added Session 6)
 
 ## Communication discipline (talking to Isaiah)
 Things I do *during* a turn to stay connected.
