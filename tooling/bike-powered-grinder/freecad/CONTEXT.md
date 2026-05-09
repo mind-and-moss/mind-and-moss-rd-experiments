@@ -86,17 +86,39 @@ anything you need to see. For test scripts, also write a side-channel report fil
 | 02 | `02_scaffold_drivetrain_geometry.py` | Adds 10 construction elements with hardcoded values |
 | 03 | `03_bind_geometry_to_varsets.py` | Wipes + rebuilds with 21 constraints + 9 expr bindings |
 | 04 | `04_constrain_shafts_and_chain_distances.py` | Supersedes 03. Adds 4 shaft locks + 2 computed CD properties |
-| 05 | `05_create_drive_pulley_part.py` | **Current head for parts.** Creates `parts/drive_pulley.FCStd` (PartDesign Body + Sketch + Revolution). v1: cylinder + bore, no crown, hardcoded values from master. |
+| 05 | `05_create_drive_pulley_part.py` | Creates `parts/drive_pulley.FCStd` (PartDesign Body + Sketch + Revolution). v1: cylinder + bore, no crown, hardcoded values from master. |
+| 06 | `06_create_drivetrain_placeholders.py` | **Current head for parts.** Creates 7 more part placeholders in one run: idler_pulley, stage2_pinion, stage2_large, stage1_cog, chainring, intermediate_shaft, grinder_shaft. Each is a hollow-cylinder placeholder (no gear teeth) — sized to chain-pitch diameter so chain-engagement clearances are accurate. Shafts are solid (bore=0). |
+
+Diagnostic / utility (not part of the chain):
+- `verify_parametric_binding.py` — sanity check after touching any expression code
+- `export_stl.py [partname]` — writes ASCII STL alongside any part .FCStd. Bypasses MeshPart.meshFromShape (which hangs) by using `shape.tessellate()` + manual ASCII STL writing. Default partname: `drive_pulley`.
 
 Diagnostic (not part of the chain): `verify_parametric_binding.py` — mutates
 `Pulleys.drive_pulley_dia` 152.4→180, checks the drive pulley circle radius
 recomputed, reverts. Run as a sanity check after touching any expression code.
 
+## parts/ inventory (after macro 06)
+
+| File | OD (mm) | Bore (mm) | Height (mm) | Purpose |
+|---|---|---|---|---|
+| drive_pulley.FCStd | 152.4 | 8.20 | 60 | 6" drive pulley, PETG print, sits on grinder shaft |
+| idler_pulley.FCStd | 76.2 | 8.20 | 60 | 3" idler pulley, PETG print |
+| stage2_pinion.FCStd | 33.18 | 8.20 | 16 | 8T pinion, machined metal, on grinder shaft (placeholder disk) |
+| stage2_large.FCStd | 101.33 | 12.20 | 12 | 25T sprocket, PETG print, on intermediate shaft (placeholder) |
+| stage1_cog.FCStd | 53.07 | 12.20 | 5 | 13T donor steel cog, on intermediate shaft (placeholder) |
+| chainring.FCStd | 169.94 | 16 | 5 | 42T donor steel chainring, on crank/BB (placeholder) |
+| intermediate_shaft.FCStd | 12 (solid) | — | 150 | 12mm 304 stainless rod (donor stock) |
+| grinder_shaft.FCStd | 8 (solid) | — | 150 | 8mm 304 stainless rod (donor stock) |
+
+All have matching `.stl` files generated via `export_stl.py`. Sprockets/cog/chainring use chain-pitch diameter as OD — geometrically accurate for chain-engagement clearance, but no actual gear teeth (placeholder disks).
+
 ## Open issues / gotchas (Session 7)
 
-- **Cross-doc expression bindings (`<<Grinder_Params#Pulleys>>.drive_pulley_dia`) are flaky in part files.** The syntax resolves correctly when set in isolation (diagnostic confirms 152.4) but Revolution.Shape stays null in-session when constraints have such bindings. Macro 05 v1 hardcodes values from master at macro-build time; macro 06 will revisit live cross-doc binding once the recompute-time resolution is understood. Try App::Link objects as an alternative to `<<>>` syntax.
-- **Headless STL export hangs on `MeshPart.meshFromShape` + `mesh.write`.** Tried in-session (after macro build) and as a separate freecadcmd invocation loading the saved FCStd — both hang. Workaround: export STL manually from the FreeCAD GUI (open part FCStd → right-click feature → Export → STL). One-time per print.
-- **Macro 05 cylinder axis is along global Y, not Z.** Sketcher Placement quirk. Doesn't affect first print (slicer reorients freely) but assembly will need axis on Z. Fix in macro 06.
+- **Cross-doc expression bindings (`<<Grinder_Params#Pulleys>>.drive_pulley_dia`) are flaky in part files.** The syntax resolves correctly when set in isolation (diagnostic confirms 152.4) but Revolution.Shape stays null in-session when constraints have such bindings. Macros 05 + 06 hardcode values from master at macro-build time; live cross-doc binding revisited later once the recompute-time resolution is understood. Try App::Link objects as an alternative to `<<>>` syntax.
+- **MeshPart.meshFromShape + mesh.write hangs under freecadcmd.** Solved by `export_stl.py` using `shape.tessellate()` + manual ASCII STL writing — bypass works reliably for all 8 parts so far.
+- **All cylindrical parts have axis along global Y, not Z.** Sketcher Placement quirk inherited from macro 05. Doesn't affect first print (slicer reorients freely) but assembly will need axis convention fixed. Fix in a future macro.
+- **No gear teeth on sprockets/cog/chainring.** Placeholders use pitch diameter as OD. Real teeth come later via PartDesign Gear workbench or external tooth-generator macro.
+- **No crown on pulleys.** 0.75 mm rise needed per locked spec for belt tracking. v2 macro will add.
 
 ---
 
