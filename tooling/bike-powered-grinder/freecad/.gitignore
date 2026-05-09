@@ -12,3 +12,6 @@ Thumbs.db
 # Python compiled
 __pycache__/
 *.pyc
+
+# Verification / diagnostic report files (runtime artifacts)
+macros/*.report.txt

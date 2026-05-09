@@ -1,5 +1,10 @@
 # Bike-Powered Glass Grinder — FreeCAD 1.1 Files
 
+> **For session pickup, load [`CONTEXT.md`](CONTEXT.md) first.** It's the
+> dense, self-contained handoff for sessions focused on this FreeCAD
+> pipeline — supersedes `SESSION-HANDOFF.md` and `CLAUDE.md` for
+> FreeCAD work.
+
 This folder holds the FreeCAD parametric model and supporting macros for the
 bike-powered glass grinder. Pattern: one master parameter file holds every
 locked design value, every part file external-references it.
@@ -8,41 +13,68 @@ locked design value, every part file external-references it.
 
 ```
 freecad/
-├── README.md                         (this file)
-├── .gitignore                        (excludes FreeCAD backup files)
-├── Grinder_Params.FCStd              (master parameter file — created by macro 01)
-├── Grinder_Assembly.FCStd            (top-level assembly — coming later)
+├── README.md                                          (this file)
+├── .gitignore                                         (excludes FCStd backup + report files)
+├── Grinder_Params.FCStd                               (master parameter file — current state)
+├── Grinder_Assembly.FCStd                             (top-level assembly — coming later)
 ├── macros/
-│   ├── 01_create_grinder_params.py   (creates Grinder_Params.FCStd from scratch)
-│   └── (future macros)
-└── parts/                            (one .FCStd per printable part — coming later)
+│   ├── 01_create_grinder_params.py                    (creates the doc + 7 VarSets + empty MasterSketch)
+│   ├── 02_scaffold_drivetrain_geometry.py             (adds 10 construction elements with hardcoded values)
+│   ├── 03_bind_geometry_to_varsets.py                 (wipes + rebuilds with 21 constraints + 9 expr bindings)
+│   ├── 04_constrain_shafts_and_chain_distances.py    (supersedes 03 — adds 4 shaft locks + 2 computed CD props)
+│   ├── run_macro_NN_headless.py                       (one wrapper per user-facing macro, drives freecadcmd.exe)
+│   └── verify_parametric_binding.py                   (diagnostic — proves expression chain is live)
+└── parts/                                             (one .FCStd per printable part — coming later)
 ```
+
+**Macro lineage:** each macro N supersedes macro N-1 for the same domain (sketch geometry).
+Re-running an older macro after a newer one will undo the newer macro's additions. Always run
+the highest-numbered macro that exists for the domain you're touching.
 
 ## Prerequisites
 
 - **FreeCAD 1.1.1** installed (the installer is at `~/Downloads/FreeCAD_1.1.1-Windows-x86_64-py311-installer.exe`)
 - This repo cloned on the machine running FreeCAD
 
-## How to run macro 01 (`01_create_grinder_params.py`)
+## How to run macros
 
-This macro creates the master parameter file. **Run it once.** After that,
-the resulting `.FCStd` file is the source of truth for all design parameters.
+Two paths: **headless** (Claude Code's default — no GUI needed) or **GUI** (when
+you want to see the result while it builds).
+
+### Headless (preferred for routine iteration)
+
+Each user-facing macro has a `run_macro_NN_headless.py` wrapper. The wrapper
+opens `Grinder_Params.FCStd`, runs the macro, saves. Invoke with:
+
+```bash
+"C:/Program Files/FreeCAD 1.1/bin/freecadcmd.exe" path/to/run_macro_NN_headless.py
+```
+
+Output goes to stdout. Exit code 0 = success. Macro 01's wrapper creates the
+doc fresh (no pre-existing FCStd to open); macros 02+ open and mutate.
+
+### GUI (for visual inspection)
 
 1. Open FreeCAD 1.1.1.
 2. Menu: **Macro → Macros...**
-3. In the dialog:
-   - Click the folder icon at the top right to set the macro location, OR
-   - Click **Add** to add this folder to the search path:
-     `<repo>/tooling/bike-powered-grinder/freecad/macros/`
-4. Select **`01_create_grinder_params.py`**.
-5. Click **Execute**.
-6. The macro will create a new document with 6 VarSets and an empty MasterSketch.
-7. **File → Save As...** → save to:
-   `<repo>/tooling/bike-powered-grinder/freecad/Grinder_Params.FCStd`
+3. Set macro location to `<repo>/tooling/bike-powered-grinder/freecad/macros/`
+4. Select the macro file, click **Execute**.
+5. Save (File → Save) when done.
 
-If the macro errors, check the **Report View** panel (View → Panels → Report View)
-for which step failed. Most failures recover by running the macro again on a
-fresh blank document (File → New).
+If a macro errors, check the **Report View** panel (View → Panels → Report View)
+for which step failed.
+
+### Verifying the parametric chain is live
+
+`verify_parametric_binding.py` is a diagnostic that mutates a VarSet property,
+checks the geometry recomputed, then reverts (does NOT save). Run via:
+
+```bash
+"C:/Program Files/FreeCAD 1.1/bin/freecadcmd.exe" path/to/verify_parametric_binding.py
+```
+
+Exit 0 = bindings are live. Exit 1 = the expression chain is broken; check the
+`verify_parametric_binding.report.txt` side-channel report file for details.
 
 ## What macro 01 creates
 
@@ -66,26 +98,44 @@ You draw the 2D drivetrain layout into this sketch interactively — pulley
 centers, platen position, frame footprint. Reference VarSet values via
 expressions like `<<Grinder_Params#Pulleys>>.drive_pulley_dia`.
 
-## What to do after running macro 01
+## Current MasterSketch state (after macro 04)
 
-Sketcher workbench, double-click MasterSketch, draw:
+```
+geometry: 10 elements (3 pulley circles + 4 platen lines + 3 sprocket circles)
+constraints: 25 (21 from macro 03 + 4 shaft locks from macro 04)
+expression bindings: 13 (9 sketch constraint bindings + 2 VarSet computed properties + 2 nested via shaft positions)
+```
 
-1. **Drive pulley center** at origin (0, 0). Add a construction circle of
-   diameter `Pulleys.drive_pulley_dia` (152.4 mm) for visual reference.
-2. **Idler pulley center** at (-`Belt.belt_path_center_distance`, 0).
-   Construction circle of diameter `Pulleys.idler_pulley_dia` (76.2 mm).
-3. **Platen rectangle** between the two pulleys, length
-   `Platen.platen_length` (558.8 mm), centered on the line between pulley
-   centers.
-4. **Stage 2 sprocket centers** — large sprocket on the intermediate shaft,
-   small pinion on the drive pulley shaft. Position them with chain
-   center-distance using sprocket pitch diameters.
-5. **Stage 1 sprocket centers** — chainring on the crank, cog on the
-   intermediate shaft.
-6. **Frame outline** — three modules, joints between them.
+All locked-down, fully parametric. Edit any of these VarSet properties in the
+GUI's properties panel and the geometry reflows on next recompute (F5):
 
-When you're ready for the next macro (which scaffolds this geometry
-programmatically), tell Claude Code.
+| VarSet.property | Current value | Drives |
+|---|---|---|
+| `Pulleys.drive_pulley_dia` | 152.4 mm | drive pulley circle radius |
+| `Pulleys.idler_pulley_dia` | 76.2 mm | idler circle radius |
+| `Belt.belt_path_center_distance` | 734.9 mm | idler X position |
+| `Platen.platen_length` | 558.8 mm | platen rectangle length |
+| `Platen.platen_width` | 60.0 mm | platen rectangle width |
+| `Drivetrain.stage1_chainring_teeth` | 42 | chainring circle radius (chain-pitch formula) |
+| `Drivetrain.stage1_cog_teeth` | 13 | cog circle radius |
+| `Drivetrain.stage2_large_teeth` | 25 | large sprocket circle radius |
+| `Drivetrain.stage2_pinion_teeth` | 8 | pinion circle radius |
+| `Drivetrain.intermediate_shaft_x/y` | 0, 500 mm | cog/large center position |
+| `Drivetrain.crank_bb_x/y` | 0, 1100 mm | chainring center position |
+
+Two computed properties auto-update:
+
+| VarSet.property | Expression | Current value |
+|---|---|---|
+| `Drivetrain.stage1_chain_center_distance` | √((crank − intermediate)²) | 600.0 mm |
+| `Drivetrain.stage2_chain_center_distance` | √(intermediate²)            | 500.0 mm |
+
+## What's next
+
+- **Macro 05:** assembly-level part split. Start producing individual part
+  `.FCStd` files App-Linked to `Grinder_Params.FCStd` for parameters. Drive
+  pulley first (simplest 3D extrusion + hub geometry). Generate STL.
+- **Test print + load test** of the drive pulley with embedded stainless rod hub.
 
 ## Manual fallback (if macro 01 fails)
 

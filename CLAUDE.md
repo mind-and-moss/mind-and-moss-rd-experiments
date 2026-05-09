@@ -27,7 +27,7 @@ Train the chef. Both of them.
 ## Isaiah's Skill Level
 - Blender: comfortable with modeling, started Jan 2025
 - Python: complete beginner — explain everything, comment all code
-- FreeCAD: future phase
+- FreeCAD: active (1.1.1 installed, parametric pipeline live — see `tooling/bike-powered-grinder/freecad/CONTEXT.md`)
 - Business/engineering: learning as we build
 
 ## Coaching Style
@@ -44,7 +44,7 @@ Train the chef. Both of them.
 - Don't skip the "why" behind decisions
 
 ## Tech Stack
-- 3D modeling: Blender (renders), FreeCAD (engineering, future)
+- 3D modeling: Blender (renders), FreeCAD 1.1.1 (engineering — active, see `tooling/bike-powered-grinder/freecad/CONTEXT.md`)
 - AI tools: Claude Code, Shap-E (generative, future)
 - Platform: PC primary, iPad integration planned
 - Code: Python (beginner level)
