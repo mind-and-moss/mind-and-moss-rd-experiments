@@ -25,8 +25,12 @@ Reference + structural:
   RiderSeatRef            small sphere at origin (assembly anchor)
   DeskPlate               610mm (Y) x 900mm (X) x 30mm panel; top at desk_height
   FrameLeg_FL/FR/BL/BR    four corner legs, floor to desk underside.
-                          NOTE: front (Y=0) face is OPEN — no cross-rail —
+  FrameRail_Back          top rail along X between back legs
+  FrameRail_Left/Right    top rails along Y between front + back legs
+                          NOTE: front (Y=0) face is OPEN — no front rail —
                           so the rider's legs fit under from the seat side.
+                          The 3-rail topology (back + 2 sides) is the
+                          minimum that resists racking; school desks use it.
 
 Drivetrain placeholders (positions are the redesign brief defaults):
   CrankBB_Placeholder     horizontal cyl along X, Y=250, Z=290 (~bike BB height)
@@ -156,6 +160,13 @@ DESK_WIDTH_X = 900.0         # along world X. Wider than belt span (734.9) so
 LEG_DIA = 30.0
 LEG_INSET_FROM_EDGE = 25.0   # legs pulled in from desk corners for clean look
 
+# Top-rail frame members tying the legs together at the desk underside.
+# Three sides only — back, left, right. NO front rail so rider's legs
+# fit under from the seat side. This is the minimum structural frame
+# that resists racking; school desks survive on this topology.
+RAIL_THICKNESS = 30.0        # square cross-section, 30mm typical mild-steel stock
+RAIL_HEIGHT = 50.0           # tall enough for stiffness; sits under desk plate
+
 # Crank / BB placeholder (per redesign brief)
 CRANK_Y = 250.0
 CRANK_Z = 290.0              # ASSUMPTION: ~290 mm above floor is a typical
@@ -195,6 +206,7 @@ MANAGED_NAMES = [
     "RiderSeatRef",
     "DeskPlate",
     "FrameLeg_FL", "FrameLeg_FR", "FrameLeg_BL", "FrameLeg_BR",
+    "FrameRail_Back", "FrameRail_Left", "FrameRail_Right",
     "CrankBB_Placeholder",
     "Jackshaft_Placeholder",
     "RA_Drive_Placeholder",
@@ -312,6 +324,50 @@ leg_positions = [
 for (name, lx, ly) in leg_positions:
     add_cyl_z(name, LEG_DIA, leg_height, Vector(lx, ly, 0),
               label=f"{name}_floor_to_desk_underside")
+
+# --- Frame top rails (back + 2 sides; front open for rider's legs) ---
+# Rails sit just below the desk plate (top of rail = underside of plate)
+# and span between leg centerlines, plus a small overhang past leg axis
+# so the joint at each corner has material to weld/bolt into.
+rail_top_z = desk_z_bottom            # rail top flush with desk plate underside
+rail_bottom_z = rail_top_z - RAIL_HEIGHT
+# Span end-to-end from outside-of-leg to outside-of-leg gives a clean
+# corner butt-joint. Use leg outer X/Y plus half-leg as the rail extent.
+back_rail_x_min = -leg_x_outer - LEG_DIA / 2.0
+back_rail_x_max = +leg_x_outer + LEG_DIA / 2.0
+back_rail_length = back_rail_x_max - back_rail_x_min
+
+side_rail_y_min = leg_y_front - LEG_DIA / 2.0
+side_rail_y_max = leg_y_back + LEG_DIA / 2.0
+side_rail_length = side_rail_y_max - side_rail_y_min
+
+# Back rail — runs along X between BL and BR legs at the back edge
+add_box(
+    "FrameRail_Back",
+    back_rail_length, RAIL_THICKNESS, RAIL_HEIGHT,
+    Vector(back_rail_x_min,
+           leg_y_back - RAIL_THICKNESS / 2.0,
+           rail_bottom_z),
+    label="FrameRail_Back_top_under_desk_plate"
+)
+# Left rail — runs along Y between FL and BL legs
+add_box(
+    "FrameRail_Left",
+    RAIL_THICKNESS, side_rail_length, RAIL_HEIGHT,
+    Vector(-leg_x_outer - RAIL_THICKNESS / 2.0,
+           side_rail_y_min,
+           rail_bottom_z),
+    label="FrameRail_Left_top_under_desk_plate"
+)
+# Right rail — mirror of left
+add_box(
+    "FrameRail_Right",
+    RAIL_THICKNESS, side_rail_length, RAIL_HEIGHT,
+    Vector(+leg_x_outer - RAIL_THICKNESS / 2.0,
+           side_rail_y_min,
+           rail_bottom_z),
+    label="FrameRail_Right_top_under_desk_plate"
+)
 
 # --- Crank/BB placeholder (horizontal X-axis cylinder) ---
 add_cyl_x(
