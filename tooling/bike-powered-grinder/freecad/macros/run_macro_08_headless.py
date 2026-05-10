@@ -47,8 +47,15 @@ else:
 
 App.setActiveDocument(assembly_doc.Name)
 
+import traceback
 with open(MACRO_PATH, encoding="utf-8") as fh:
-    exec(fh.read(), {"__name__": "__main__"})
+    src = fh.read()
+try:
+    exec(src, {"__name__": "__main__"})
+except Exception as e:
+    print("[wrapper] EXEC FAILED:", repr(e))
+    traceback.print_exc()
+    sys.exit(2)
 
 # Save the assembly to the canonical path.
 if assembly_doc.FileName:
