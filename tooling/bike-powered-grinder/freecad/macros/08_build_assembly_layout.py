@@ -115,11 +115,13 @@ def q(qty):
     return qty.Value if hasattr(qty, "Value") else float(qty)
 
 
-# World-frame (added by macro 07, on Drivetrain VarSet)
-RIDER_SEAT_Y = q(params.Drivetrain.rider_seat_y)
-DESK_DEPTH = q(params.Drivetrain.desk_depth)
-DESK_HEIGHT = q(params.Drivetrain.desk_height)
-BELT_CENTERLINE_Y = q(params.Drivetrain.belt_centerline_y)
+# World-frame (lives on its own WorldFrame VarSet, maintained by macro 07).
+# These describe the human/desk physical setup the drivetrain mounts into,
+# so they're separated from Drivetrain (which is shafts/ratios/sprockets).
+RIDER_SEAT_Y = q(params.WorldFrame.rider_seat_y)
+DESK_DEPTH = q(params.WorldFrame.desk_depth)
+DESK_HEIGHT = q(params.WorldFrame.desk_height)
+BELT_CENTERLINE_Y = q(params.WorldFrame.belt_centerline_y)
 
 # Belt + pulleys (from macro 01)
 BELT_CENTER_DISTANCE = q(params.Belt.belt_path_center_distance)
