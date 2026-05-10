@@ -92,34 +92,38 @@ COG_TEETH = 13
 LARGE_TEETH = 25
 PINION_TEETH = 8
 
+CROWN = q(master_doc.Pulleys.pulley_crown_depth)  # 0.75 mm — non-negotiable for horizontal layout
+
+# Each tuple: (name, body_name, OD, bore, height, crown_depth, comment)
+# crown_depth > 0  -> crowned pulley (right edge is an arc bulging out)
+# crown_depth == 0 -> straight cylinder (sprockets, shafts)
 PARTS = [
-    # name, body_name, OD, bore, height, comment
     ("idler_pulley", "IdlerBody",
-        IDLER_DIA, GRINDER_SHAFT_DIA + RUNNING_FIT, PULLEY_FACE,
-        "3in idler pulley (mirror of drive pulley, smaller dia)"),
+        IDLER_DIA, GRINDER_SHAFT_DIA + RUNNING_FIT, PULLEY_FACE, CROWN,
+        "3in CROWNED idler pulley (matches drive pulley belt-tracking)"),
 
     ("stage2_pinion", "PinionBody",
-        chain_pitch_dia(PINION_TEETH), GRINDER_SHAFT_DIA + RUNNING_FIT, 16.0,
+        chain_pitch_dia(PINION_TEETH), GRINDER_SHAFT_DIA + RUNNING_FIT, 16.0, 0.0,
         "8T machined metal pinion on grinder shaft (placeholder disk)"),
 
     ("stage2_large", "LargeSprocketBody",
-        chain_pitch_dia(LARGE_TEETH), INT_SHAFT_DIA + RUNNING_FIT, 12.0,
+        chain_pitch_dia(LARGE_TEETH), INT_SHAFT_DIA + RUNNING_FIT, 12.0, 0.0,
         "25T PETG large sprocket on intermediate shaft (placeholder)"),
 
     ("stage1_cog", "CogBody",
-        chain_pitch_dia(COG_TEETH), INT_SHAFT_DIA + RUNNING_FIT, 5.0,
+        chain_pitch_dia(COG_TEETH), INT_SHAFT_DIA + RUNNING_FIT, 5.0, 0.0,
         "13T donor steel cog on intermediate shaft (placeholder)"),
 
     ("chainring", "ChainringBody",
-        chain_pitch_dia(CHAINRING_TEETH), 16.0, 5.0,
+        chain_pitch_dia(CHAINRING_TEETH), 16.0, 5.0, 0.0,
         "42T donor steel chainring on crank/BB (placeholder; bore=BB axle)"),
 
     ("intermediate_shaft", "ShaftBody",
-        INT_SHAFT_DIA, 0.0, 150.0,
+        INT_SHAFT_DIA, 0.0, 150.0, 0.0,
         "12mm 304 stainless rod, ~150mm length (donor stock)"),
 
     ("grinder_shaft", "ShaftBody",
-        GRINDER_SHAFT_DIA, 0.0, 150.0,
+        GRINDER_SHAFT_DIA, 0.0, 150.0, 0.0,
         "8mm 304 stainless rod, ~150mm length (donor stock)"),
 ]
 
@@ -148,9 +152,13 @@ def wipe_doc(doc):
             except Exception: pass
 
 
-def build_hollow_cylinder(part_name, body_name, outer_dia, bore_dia, height):
-    """Create or refresh parts/<part_name>.FCStd containing a hollow
-    cylinder (or solid if bore_dia <= 0). Returns the saved file path."""
+def build_hollow_cylinder(part_name, body_name, outer_dia, bore_dia, height,
+                          crown_depth=0.0):
+    """Create or refresh parts/<part_name>.FCStd containing a (possibly
+    crowned) hollow cylinder (or solid if bore_dia <= 0). If crown_depth
+    > 0, the right edge of the cross-section becomes a circular arc
+    bulging outward from edge_r to peak_r at midheight (locked-spec
+    crowned pulley). Returns the saved file path."""
     part_path = os.path.join(PARTS_DIR, f"{part_name}.FCStd")
 
     # Open or create
@@ -172,19 +180,41 @@ def build_hollow_cylinder(part_name, body_name, outer_dia, bore_dia, height):
         App.Rotation(App.Vector(1, 0, 0), 90)
     )
 
-    outer_r = outer_dia / 2.0
+    peak_r = outer_dia / 2.0
     bore_r = bore_dia / 2.0 if bore_dia > 0 else 0.0
+    inner_x = bore_r
 
-    # Profile: closed rectangle from (bore_r OR 0, 0) to (outer_r, height)
-    inner_x = bore_r  # 0 for solid
+    crowned = crown_depth > 0
+    edge_r = peak_r - crown_depth if crowned else peak_r
 
-    # 4 lines (counterclockwise)
+    # Bottom edge: bore -> edge_r at z=0
     L_BOT = sketch.addGeometry(
-        Part.LineSegment(Vector(inner_x, 0, 0), Vector(outer_r, 0, 0)), False)
-    L_RIGHT = sketch.addGeometry(
-        Part.LineSegment(Vector(outer_r, 0, 0), Vector(outer_r, height, 0)), False)
+        Part.LineSegment(Vector(inner_x, 0, 0), Vector(edge_r, 0, 0)), False)
+
+    # Right edge — arc if crowned, line otherwise
+    if crowned:
+        # Arc through (edge_r, 0), (peak_r, height/2), (edge_r, height)
+        # Center on z = height/2 by symmetry; solve for arc_cx
+        arc_cx = ((edge_r**2 - peak_r**2 + (height / 2.0)**2)
+                  / (2.0 * (edge_r - peak_r)))
+        arc_r = peak_r - arc_cx
+        ang_a = math.atan2(0 - height / 2.0, edge_r - arc_cx)
+        ang_b = math.atan2(height - height / 2.0, edge_r - arc_cx)
+        L_RIGHT = sketch.addGeometry(
+            Part.ArcOfCircle(
+                Part.Circle(Vector(arc_cx, height / 2.0, 0),
+                            Vector(0, 0, 1), arc_r),
+                ang_a, ang_b
+            ), False
+        )
+    else:
+        L_RIGHT = sketch.addGeometry(
+            Part.LineSegment(Vector(edge_r, 0, 0), Vector(edge_r, height, 0)),
+            False)
+
+    # Top edge: edge_r -> bore at z=height
     L_TOP = sketch.addGeometry(
-        Part.LineSegment(Vector(outer_r, height, 0), Vector(inner_x, height, 0)), False)
+        Part.LineSegment(Vector(edge_r, height, 0), Vector(inner_x, height, 0)), False)
     L_LEFT = sketch.addGeometry(
         Part.LineSegment(Vector(inner_x, height, 0), Vector(inner_x, 0, 0)), False)
 
@@ -194,17 +224,22 @@ def build_hollow_cylinder(part_name, body_name, outer_dia, bore_dia, height):
         except Exception as e: App.Console.PrintError(f"  ! {c.Type}: {e}\n")
 
     add(Sketcher.Constraint("Horizontal", L_BOT))
-    add(Sketcher.Constraint("Vertical", L_RIGHT))
     add(Sketcher.Constraint("Horizontal", L_TOP))
     add(Sketcher.Constraint("Vertical", L_LEFT))
+    if not crowned:
+        add(Sketcher.Constraint("Vertical", L_RIGHT))
     add(Sketcher.Constraint("Coincident", L_BOT, 2, L_RIGHT, 1))
     add(Sketcher.Constraint("Coincident", L_RIGHT, 2, L_TOP, 1))
     add(Sketcher.Constraint("Coincident", L_TOP, 2, L_LEFT, 1))
     add(Sketcher.Constraint("Coincident", L_LEFT, 2, L_BOT, 1))
     add(Sketcher.Constraint("DistanceY", -1, 1, L_BOT, 1, 0))
-    add(Sketcher.Constraint("DistanceX", -1, 1, L_RIGHT, 1, outer_r))
+    add(Sketcher.Constraint("DistanceX", -1, 1, L_BOT, 2, edge_r))
     add(Sketcher.Constraint("DistanceX", -1, 1, L_LEFT, 1, inner_x))
     add(Sketcher.Constraint("DistanceY", -1, 1, L_TOP, 1, height))
+    if crowned:
+        # Lock the arc center; radius implicit from center + endpoint coincidences
+        add(Sketcher.Constraint("DistanceX", -1, 1, L_RIGHT, 3, arc_cx))
+        add(Sketcher.Constraint("DistanceY", -1, 1, L_RIGHT, 3, height / 2.0))
 
     sketch.recompute()
 
@@ -232,13 +267,14 @@ def build_hollow_cylinder(part_name, body_name, outer_dia, bore_dia, height):
 # ====================================================================
 
 results = []
-for (name, body_name, OD, bore, height, comment) in PARTS:
+for (name, body_name, OD, bore, height, crown_d, comment) in PARTS:
+    crown_label = f" crown={crown_d}" if crown_d > 0 else ""
     App.Console.PrintMessage(
-        f"\n--- {name}: OD={OD:.2f} bore={bore:.2f} height={height:.2f} mm ---\n"
+        f"\n--- {name}: OD={OD:.2f} bore={bore:.2f} height={height:.2f}{crown_label} mm ---\n"
         f"    {comment}\n"
     )
     try:
-        path = build_hollow_cylinder(name, body_name, OD, bore, height)
+        path = build_hollow_cylinder(name, body_name, OD, bore, height, crown_d)
         size_kb = os.path.getsize(path) / 1024.0
         results.append((name, "OK", size_kb))
         App.Console.PrintMessage(f"    saved: {path} ({size_kb:.1f} KB)\n")

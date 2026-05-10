@@ -7,31 +7,41 @@ Creates parts/drive_pulley.FCStd — the first per-part .FCStd file in the
 build. Cross-doc App-Linked to Grinder_Params.FCStd via expression syntax:
 every dimension is bound to a master parameter, nothing hardcoded.
 
-V1 SCOPE (intentional)
-----------------------
-Cylinder + center bore. NO crown, NO spokes, NO set-screw hole. The goal
-is to prove the PartDesign Body + Sketch + Revolution workflow and
-produce a printable STL before adding refinement features.
+V2 SCOPE — crowned cylinder (the locked spec)
+---------------------------------------------
+Crowned cylinder + center bore. The crown is non-negotiable for the
+horizontal layout (without it gravity drags the belt off the bottom of
+the pulleys). v1 deferred this; that was wrong. v2 corrects it.
 
-Deferred:
-- Crown (0.75 mm rise) → macro 06. Affects belt tracking only — not
-  first-print fit/strength testing.
-- Stainless rod hub spokes → its own macro (Bambu M600 pause-and-insert).
-- Set-screw hole → drill after print for v1.
-- LIVE cross-doc parametric link → macro 06. v1 uses values BAKED from
-  Grinder_Params at macro-build time (still single source of truth — the
-  master doc — but the link is at script-run time, not at recompute time).
-  Cross-doc expressions in setExpression() succeed (diagnostic confirms
-  syntax `<<Grinder_Params#Pulleys>>.drive_pulley_dia` resolves to 152.4),
-  but Revolution.Shape stays null in-session when constraints have bound
-  expressions — needs more investigation before relying on it.
+Still deferred:
+- Stainless rod hub spokes → its own macro (Bambu M600 pause-and-insert)
+- Set-screw hole → drill after print
+- LIVE cross-doc parametric link → values still baked from master at
+  macro-build time. Cross-doc expression resolution issue not yet solved.
 
 GEOMETRY (values pulled from master VarSets at macro run time)
 --------------------------------------------------------------
-- Outer dia: master.Pulleys.drive_pulley_dia                 (152.4 mm = 6")
-- Bore dia:  master.Bearings.grinder_shaft_dia
-             + master.Fits.fit_clearance_running             (8 + 0.20 = 8.20 mm)
-- Height:    master.Pulleys.pulley_face_width                (60 mm)
+- Outer dia (peak):  master.Pulleys.drive_pulley_dia         (152.4 mm = 6")
+- Crown rise:        master.Pulleys.pulley_crown_depth       (0.75 mm)
+- Edge dia:          peak - 2 * crown                        (150.9 mm)
+- Bore dia:          master.Bearings.grinder_shaft_dia
+                     + master.Fits.fit_clearance_running     (8 + 0.20 = 8.20 mm)
+- Height:            master.Pulleys.pulley_face_width        (60 mm)
+
+CROSS-SECTION PROFILE
+---------------------
+Right half of cross-section is a 4-element loop:
+  - bottom horizontal line: bore -> edge_r at z=0
+  - right CIRCULAR ARC: arc through (edge_r, 0) - (peak_r, H/2) - (edge_r, H)
+  - top horizontal line: edge_r -> bore at z=H
+  - left vertical line: bore wall
+
+The arc center is computed from the three fixed points:
+  arc_cx = (edge_r^2 - peak_r^2 + (H/2)^2) / (2 * (edge_r - peak_r))
+  arc_radius = peak_r - arc_cx
+For the locked geometry: arc_cx = -524 mm, radius = 600 mm
+(big radius for a slight bulge — only 0.75 mm rise over 30 mm half-height)
+
 To regenerate when master values change: re-run macro 05.
 
 PRINT ORIENTATION (slicer concern, recorded for clarity)
@@ -50,6 +60,7 @@ PRE-REQUISITES
   wrapper opens it before invoking this macro.
 """
 
+import math
 import os
 import FreeCAD as App
 import Part
@@ -151,16 +162,30 @@ def q(qty):
     units; arithmetic on them needs the .Value escape."""
     return qty.Value if hasattr(qty, "Value") else float(qty)
 
-OUTER_R = q(master_doc.Pulleys.drive_pulley_dia) / 2.0
-BORE_R  = (q(master_doc.Bearings.grinder_shaft_dia)
-           + q(master_doc.Fits.fit_clearance_running)) / 2.0
-FW      = q(master_doc.Pulleys.pulley_face_width)
+PEAK_R = q(master_doc.Pulleys.drive_pulley_dia) / 2.0
+CROWN  = q(master_doc.Pulleys.pulley_crown_depth)
+EDGE_R = PEAK_R - CROWN  # outer radius at top + bottom faces of pulley
+BORE_R = (q(master_doc.Bearings.grinder_shaft_dia)
+          + q(master_doc.Fits.fit_clearance_running)) / 2.0
+FW     = q(master_doc.Pulleys.pulley_face_width)
+
+# Arc center + radius for the crowned right edge.
+# Three fixed points: (EDGE_R, 0), (PEAK_R, FW/2), (EDGE_R, FW)
+# By symmetry the arc center lies on the line z = FW/2.
+# Solving distance equations gives:
+ARC_CX = ((EDGE_R**2 - PEAK_R**2 + (FW / 2.0)**2)
+          / (2.0 * (EDGE_R - PEAK_R)))
+ARC_R = PEAK_R - ARC_CX
 
 App.Console.PrintMessage(
     f"Dimensions from master:\n"
-    f"  outer radius: {OUTER_R} mm  (drive_pulley_dia / 2)\n"
-    f"  bore radius:  {BORE_R} mm   (grinder_shaft_dia + fit_clearance_running) / 2\n"
-    f"  face width:   {FW} mm\n"
+    f"  peak outer radius: {PEAK_R} mm  (drive_pulley_dia / 2)\n"
+    f"  crown depth:       {CROWN} mm\n"
+    f"  edge outer radius: {EDGE_R} mm  (peak - crown)\n"
+    f"  bore radius:       {BORE_R} mm  (grinder_shaft_dia + running fit) / 2\n"
+    f"  face width:        {FW} mm\n"
+    f"  arc center X:      {ARC_CX:.2f} mm  (computed from 3-point arc)\n"
+    f"  arc radius:        {ARC_R:.2f} mm\n"
 )
 
 
@@ -198,26 +223,44 @@ def bind(idx, expr, label):
 # Build right-half cross-section rectangle (counterclockwise winding)
 # ====================================================================
 
-App.Console.PrintMessage("Building cross-section profile...\n")
+App.Console.PrintMessage("Building cross-section profile (with crown arc)...\n")
 
-L_BOT   = add_line(BORE_R,   0,    OUTER_R, 0)
-L_RIGHT = add_line(OUTER_R,  0,    OUTER_R, FW)
-L_TOP   = add_line(OUTER_R,  FW,   BORE_R,  FW)
-L_LEFT  = add_line(BORE_R,   FW,   BORE_R,  0)
+# Bottom edge: bore -> edge_r at z=0
+L_BOT = add_line(BORE_R, 0, EDGE_R, 0)
+
+# Right edge: ARC from (EDGE_R, 0) bulging out to (PEAK_R, FW/2) back to (EDGE_R, FW)
+# Construct from underlying circle + parametric angle range.
+# Circle center at (ARC_CX, FW/2), radius ARC_R.
+# Start angle = atan2(0 - FW/2, EDGE_R - ARC_CX)
+# End angle   = atan2(FW - FW/2, EDGE_R - ARC_CX)
+# Both points have the same X relative to center; only Y (= z in sketch coords) differs.
+arc_start_ang = math.atan2(0 - FW / 2.0, EDGE_R - ARC_CX)
+arc_end_ang   = math.atan2(FW - FW / 2.0, EDGE_R - ARC_CX)
+arc_circle = Part.Circle(Vector(ARC_CX, FW / 2.0, 0), Vector(0, 0, 1), ARC_R)
+ARC_RIGHT = sketch.addGeometry(
+    Part.ArcOfCircle(arc_circle, arc_start_ang, arc_end_ang), False
+)
+
+# Top edge: edge_r -> bore at z=FW
+L_TOP = add_line(EDGE_R, FW, BORE_R, FW)
+
+# Left edge (bore wall): bore at z=FW down to bore at z=0
+L_LEFT = add_line(BORE_R, FW, BORE_R, 0)
 
 
 # ====================================================================
 # Geometric constraints (orientation + corners)
 # ====================================================================
 
-constraint(Sketcher.Constraint("Horizontal", L_BOT),   "L_BOT H")
-constraint(Sketcher.Constraint("Vertical",   L_RIGHT), "L_RIGHT V")
-constraint(Sketcher.Constraint("Horizontal", L_TOP),   "L_TOP H")
-constraint(Sketcher.Constraint("Vertical",   L_LEFT),  "L_LEFT V")
-constraint(Sketcher.Constraint("Coincident", L_BOT,   2, L_RIGHT, 1), "corner BR")
-constraint(Sketcher.Constraint("Coincident", L_RIGHT, 2, L_TOP,   1), "corner TR")
-constraint(Sketcher.Constraint("Coincident", L_TOP,   2, L_LEFT,  1), "corner TL")
-constraint(Sketcher.Constraint("Coincident", L_LEFT,  2, L_BOT,   1), "corner BL")
+constraint(Sketcher.Constraint("Horizontal", L_BOT),  "L_BOT H")
+constraint(Sketcher.Constraint("Horizontal", L_TOP),  "L_TOP H")
+constraint(Sketcher.Constraint("Vertical",   L_LEFT), "L_LEFT V")
+# Right edge is now an arc — no Vertical constraint.
+# Coincident corners use ARC_RIGHT's endpoints (PosId 1 = start, 2 = end)
+constraint(Sketcher.Constraint("Coincident", L_BOT,     2, ARC_RIGHT, 1), "corner BR (arc start)")
+constraint(Sketcher.Constraint("Coincident", ARC_RIGHT, 2, L_TOP,     1), "corner TR (arc end)")
+constraint(Sketcher.Constraint("Coincident", L_TOP,     2, L_LEFT,    1), "corner TL")
+constraint(Sketcher.Constraint("Coincident", L_LEFT,    2, L_BOT,     1), "corner BL")
 
 
 # ====================================================================
@@ -241,17 +284,31 @@ constraint(
 
 App.Console.PrintMessage("Adding dimensional constraints (hardcoded from master)...\n")
 
+# Edge radius (where bottom and top horizontal edges end at the right side)
 constraint(
-    Sketcher.Constraint("DistanceX", -1, 1, L_RIGHT, 1, OUTER_R),
-    "outer radius"
+    Sketcher.Constraint("DistanceX", -1, 1, L_BOT, 2, EDGE_R),
+    "edge radius (peak - crown)"
 )
+# Bore radius (left wall position)
 constraint(
     Sketcher.Constraint("DistanceX", -1, 1, L_LEFT, 1, BORE_R),
     "bore radius"
 )
+# Face width
 constraint(
     Sketcher.Constraint("DistanceY", -1, 1, L_TOP, 1, FW),
     "face width"
+)
+# Arc center position — locks where the bulge is centered.
+# (Radius is implicit from center + endpoint-coincidence, so no Radius
+# constraint — it would be redundant and break the solver.)
+constraint(
+    Sketcher.Constraint("DistanceX", -1, 1, ARC_RIGHT, 3, ARC_CX),
+    "arc center X"
+)
+constraint(
+    Sketcher.Constraint("DistanceY", -1, 1, ARC_RIGHT, 3, FW / 2.0),
+    "arc center Y (midheight)"
 )
 
 
@@ -302,18 +359,20 @@ part_doc.recompute()
 App.Console.PrintMessage(
     "\n"
     "================================================================\n"
-    f"Macro 05 complete. Drive pulley v1 created.\n"
+    f"Macro 05 complete. Drive pulley v2 (CROWNED) created.\n"
     f"  doc:                 {PART_PATH}\n"
     f"  body:                PulleyBody\n"
     f"  sketch:              ProfileSketch ({sketch.GeometryCount} geom, "
     f"{sketch.ConstraintCount} constraints)\n"
     f"  feature:             Pulley (Revolution, 360 deg around V_Axis)\n"
     f"  baked dimensions:\n"
-    f"    outer dia:         {OUTER_R * 2} mm  (= drive_pulley_dia)\n"
+    f"    peak dia:          {PEAK_R * 2} mm  (= drive_pulley_dia)\n"
+    f"    edge dia:          {EDGE_R * 2} mm  (peak - 2 * crown)\n"
+    f"    crown depth:       {CROWN} mm\n"
     f"    bore dia:          {BORE_R * 2:.2f} mm "
     f"(= grinder_shaft_dia + fit_clearance_running)\n"
     f"    face width:        {FW} mm\n"
-    f"  fits Bambu A1 Mini:  {OUTER_R * 2} < "
+    f"  fits Bambu A1 Mini:  {PEAK_R * 2} < "
     f"{q(master_doc.Frame.max_print_dim)} ✓\n"
     "================================================================\n"
 )
