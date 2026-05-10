@@ -66,13 +66,26 @@ Implications:
 - **Coolant routing is gravity-friendly:** drip line above platen, slurry catch tray below
 - **Operator stance: seated** (see decision #5)
 
+### 4b. Belt orientation relative to the rider: long axis LEFT-RIGHT across the body
+
+The belt's long axis (drive pulley → platen → idler) runs **left-right across the seated rider**, perpendicular to the rider's forward-facing direction. Glass on the sled travels **forward (away from the rider)** into the contact zone, then back to the rider after the pass. This is the "jointer / planer / commercial belt edger" convention.
+
+**Why this orientation (not belt-running-away-from-rider):**
+- **Surface averaging.** Cardinal rule of belt grinding flat work: workpiece motion ⟂ belt motion at the contact zone. Belt left-right + push-forward gives perpendicular travel, which averages out belt scratches, splice marks, and tracking drift across the entire glass edge. Same-direction motion leaves visible streaks.
+- **Industry convention.** Every horizontal belt sander for flat work is built this way (Powermatic, Jet, Grizzly, Wilton). Glass-specific belt edgers (Glastar, Diamond Tech, Inland) follow the same convention.
+- **Seated ergonomics.** Forward push from a bike-seated posture is shoulder-driven and natural. Side-sweep needs sustained lateral wrist motion — fatiguing and harder to keep parallel.
+- **Sled rail alignment.** Rails run forward-back, parallel to the rider's body axis. Loading and locking glass on a forward-aligned sled is way simpler than a sled that crosses in front.
+- **Visibility.** The belt-sled contact line is across the rider's field of view at platen height — easy to watch the edge meet the belt directly. Belt-running-toward-the-rider would put the contact line in shrinking perspective behind the platen, harder to read.
+
+**Implication for the FreeCAD assembly:** the drive-pulley → platen → idler axis is the X axis (left-right) when the rider's forward direction is +Y. Sled rails run along Y. If the assembly currently shows belt running along Y (rider sees it stretching away), that's wrong — rotate 90° about Z so belt runs along X.
+
 ### 5. Operator: seated rider position
 
 Aero/TT-bike position with hands forward at platen height. Standing pedaling fatigues fast (sprint posture, not endurance). Seated keeps cadence sustainable and matches Isaiah's "conversational pace" target.
 
 ### 6. Workpiece fixture: rail-guided sled with full-width straight-edge pusher
 
-Glass panel sits flat in the sled, a straight-edge pusher across the full panel width keeps the edge perfectly parallel to the belt as the whole sled moves forward. Solves: (a) operator doesn't guess where the middle is, (b) belt inconsistencies don't translate to high/low spots on the edge.
+Glass panel sits flat in the sled. A straight-edge pusher across the full panel width keeps the edge perfectly parallel to the belt as the whole sled moves **forward, away from the rider** (per decision #4b — belt long axis is left-right, so sled travel is perpendicular to belt at the contact zone). Solves: (a) operator doesn't guess where the middle is, (b) belt inconsistencies don't translate to high/low spots on the edge, (c) every point of the glass edge sees the average of the belt surface (perpendicular sweep).
 
 ### 7. Drivetrain: two chain stages, 10:1 speed-up
 

@@ -176,6 +176,7 @@ sketch is fully constrained (zero degrees of freedom)
 - **170 mm max printable dimension** in any axis — `Frame.max_print_dim = 170`
 - **Units are mm** throughout, even for inch-spec parts (6" pulley = 152.4 mm)
 - **FreeCAD 1.1.x only** — `.FCStd` files are NOT backward-compatible with 1.0
+- **Belt orientation in assembly: long axis runs LEFT-RIGHT across the seated rider** (decision #4b in `tooling/bike-powered-grinder/README.md`). Drive-pulley → platen → idler axis aligns with global X. Sled travel direction (perpendicular to belt) is global Y, away from rider. If the assembly shows belt stretching forward away from the rider, rotate 90° about Z. This is a locked-spec belt-grinding ergonomics decision, not a stylistic one — see README #4b for the full reasoning (surface averaging, industry convention, seated ergonomics).
 
 ---
 
