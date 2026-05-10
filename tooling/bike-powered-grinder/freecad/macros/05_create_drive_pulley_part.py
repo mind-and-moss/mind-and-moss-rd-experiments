@@ -343,13 +343,14 @@ part_doc.recompute()
 
 
 # ====================================================================
-# KNOWN GAP — axis convention mismatch (deferred)
+# AXIS CONVENTION (Session 8 correction)
 # ====================================================================
-# This macro's Placement rotation puts the cylinder axis along global
-# Y (height runs from Y=0 to Y=60). The master sketch convention has
-# the grinder shaft along global Z. Doesn't matter for first print
-# (slicer reorients freely), but assembly-time linking will need the
-# axis on Z. Fix in macro 06 or an assembly-prep macro.
+# The Placement rotation here lands V_Axis (the revolution axis) on
+# global Z, so the printed cylinder runs from Z=0 to Z=face_width with
+# its circular cross-section in the XY plane. An earlier comment in
+# this file claimed the axis ended up on global Y — that was wrong.
+# Bounding-box inspection of the saved part confirms: X[-76.2, 76.2],
+# Y[-76.2, 76.2], Z[0, 60]. Axis is on Z. No follow-up macro needed.
 
 
 # ====================================================================

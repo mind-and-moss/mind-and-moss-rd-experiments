@@ -8,22 +8,21 @@ via DistanceX/DistanceY constraints bound to four new Drivetrain VarSet
 properties. Also adds two computed VarSet properties for stage-1 and
 stage-2 chain center distances (expression-bound, auto-update).
 
-DEFAULTS (Path B from Session 7 — "Claude picks reasonable bike geometry")
--------------------------------------------------------------------------
-  intermediate_shaft = (0, 500)  mm  — straight back from grinder shaft, ~20"
-  crank_bb           = (0, 1100) mm  — 600 mm further back (chainstay-equiv)
+DEFAULTS (Session 8 retune — match current MasterSketch geometry)
+-----------------------------------------------------------------
+  intermediate_shaft = (0, 200)  mm
+  crank_bb           = (0, 650)  mm
 
 Resulting chain center distances:
-  stage 2 (intermediate -> grinder) = 500 mm
-  stage 1 (crank        -> intermediate) = 600 mm
+  stage 2 (intermediate -> grinder) = 200 mm
+  stage 1 (crank        -> intermediate) = 450 mm
 
-Both are inside the 380-635 mm sweet spot (30-50 chain pitches) and well
-clear of sum-of-radii minimums (67.3 and 111.5 mm).
+(Earlier Session-7 defaults were 500 / 1100 mm; the geometry shipped at
+200 / 650 and Isaiah confirmed those are the right values to lock in.)
 
-Total grinder-shaft to crank-shaft = 1100 mm = 43" linear. Combined with
-~900 mm of grinder module (drive pulley to idler + structure) and ~400 mm
-behind the crank for saddle, total machine length ~7.9 ft. Matches the
-Q4-locked "~7 feet" estimate.
+Stage 1 (450 mm) sits inside the 380-635 mm chain CD sweet spot.
+Stage 2 (200 mm) is BELOW that band — flag for review with Isaiah; may
+be intentional if the grinder module is meant to be compact.
 
 THIS MACRO SUPERSEDES MACRO 03
 ==============================
@@ -67,9 +66,9 @@ if sketch is None:
 
 DEFAULTS = {
     "intermediate_shaft_x": 0.0,
-    "intermediate_shaft_y": 500.0,
+    "intermediate_shaft_y": 200.0,
     "crank_bb_x":           0.0,
-    "crank_bb_y":           1100.0,
+    "crank_bb_y":           650.0,
 }
 
 

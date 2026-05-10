@@ -116,7 +116,7 @@ All have matching `.stl` files generated via `export_stl.py`. Sprockets/cog/chai
 
 - **Cross-doc expression bindings (`<<Grinder_Params#Pulleys>>.drive_pulley_dia`) are flaky in part files.** The syntax resolves correctly when set in isolation (diagnostic confirms 152.4) but Revolution.Shape stays null in-session when constraints have such bindings. Macros 05 + 06 hardcode values from master at macro-build time; live cross-doc binding revisited later once the recompute-time resolution is understood. Try App::Link objects as an alternative to `<<>>` syntax.
 - **MeshPart.meshFromShape + mesh.write hangs under freecadcmd.** Solved by `export_stl.py` using `shape.tessellate()` + manual ASCII STL writing — bypass works reliably for all 8 parts so far.
-- **All cylindrical parts have axis along global Y, not Z.** Sketcher Placement quirk inherited from macro 05. Doesn't affect first print (slicer reorients freely) but assembly will need axis convention fixed. Fix in a future macro.
+- ~~All cylindrical parts have axis along global Y, not Z.~~ **Retracted in Session 8.** Empirical bounding-box inspection of all 8 parts shows the cylinder axis is actually on global Z (height runs Z=0..H, OD spans X and Y equally). The earlier warning was a misdiagnosis — the sketch placement rotation in macros 05/06 (`App.Rotation(Vector(1,0,0), 90)`) does correctly land V_Axis on global Z. Macro 07 (assembly) places links with pure translation, no rotation.
 - **No gear teeth on sprockets/cog/chainring.** Placeholders use pitch diameter as OD. Real teeth come later via PartDesign Gear workbench or external tooth-generator macro.
 - **No crown on pulleys.** 0.75 mm rise needed per locked spec for belt tracking. v2 macro will add.
 

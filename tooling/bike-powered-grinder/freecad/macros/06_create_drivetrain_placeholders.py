@@ -118,13 +118,25 @@ PARTS = [
         chain_pitch_dia(CHAINRING_TEETH), 16.0, 5.0, 0.0,
         "42T donor steel chainring on crank/BB (placeholder; bore=BB axle)"),
 
-    ("intermediate_shaft", "ShaftBody",
+    ("intermediate_shaft", "IntermediateShaftBody",
         INT_SHAFT_DIA, 0.0, 150.0, 0.0,
         "12mm 304 stainless rod, ~150mm length (donor stock)"),
 
-    ("grinder_shaft", "ShaftBody",
+    ("grinder_shaft", "GrinderShaftBody",
         GRINDER_SHAFT_DIA, 0.0, 150.0, 0.0,
         "8mm 304 stainless rod, ~150mm length (donor stock)"),
+
+    # Stub axles — added Session 8 so the assembly's idler and chainring
+    # are mounted on visible rods instead of floating in space. The idler
+    # rides an 8mm stub (same as grinder shaft stock); the crank/BB axle
+    # is donor hardware (16mm square-taper; modeled here as a plain rod).
+    ("idler_shaft", "IdlerShaftBody",
+        GRINDER_SHAFT_DIA, 0.0, 80.0, 0.0,
+        "8mm stub axle for idler pulley (assembly placeholder, ~80mm)"),
+
+    ("crank_bb_shaft", "CrankBBShaftBody",
+        16.0, 0.0, 140.0, 0.0,
+        "16mm crank/BB axle (donor hardware placeholder, ~140mm)"),
 ]
 
 App.Console.PrintMessage(
@@ -173,8 +185,10 @@ def build_hollow_cylinder(part_name, body_name, outer_dia, bore_dia, height,
     body = part_doc.addObject("PartDesign::Body", body_name)
     sketch = body.newObject("Sketcher::SketchObject", "ProfileSketch")
 
-    # Sketch on XZ plane (V_Axis becomes global Y for revolution — same
-    # quirk as macro 05; axis-convention fix is a follow-up).
+    # Sketch on XZ plane. V_Axis (revolution axis) lands on global Z, so
+    # each saved part has its cylinder axis on Z and height running Z=0..H.
+    # (Earlier comments in macros 05/06 claimed V_Axis ended up on global
+    # Y — that was a misdiagnosis, retracted in Session 8.)
     sketch.Placement = App.Placement(
         App.Vector(0, 0, 0),
         App.Rotation(App.Vector(1, 0, 0), 90)
