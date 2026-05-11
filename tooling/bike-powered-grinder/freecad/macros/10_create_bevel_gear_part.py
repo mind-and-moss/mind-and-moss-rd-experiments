@@ -62,6 +62,7 @@ if GEARS_ROOT not in sys.path:
     sys.path.insert(0, GEARS_ROOT)
 
 import FreeCAD as App  # noqa: E402
+import Part  # noqa: E402
 
 if "freecad" in sys.modules:
     _fc = sys.modules["freecad"]
@@ -70,6 +71,11 @@ if "freecad" in sys.modules:
         _fc.__path__.append(_gears_path)
 
 from freecad.gears.bevelgear import BevelGear  # noqa: E402
+
+# Bore size: drilled through the gear's axis so the shaft can pass.
+# Matches the 12 mm intermediate_shaft used for both jackshaft (carries
+# bevel_input) AND the new bevel-output vertical shaft (carries bevel_output).
+BEVEL_GEAR_BORE_DIA = 12.0  # mm
 
 # ----------------------------------------------------------------
 # Locate output path (parts/ relative to this macro)
@@ -119,13 +125,32 @@ App.Console.PrintMessage(
     f"Z[{bbox.ZMin:.2f},{bbox.ZMax:.2f}]\n"
 )
 
+# Subtract a cylindrical bore through the gear's axis (local +Z). The bore
+# runs from a bit below the large face up to well above the apex so it
+# definitely punches all the way through.
+gear_shape = feature.Shape.copy()
+bore_height = max(60.0, bbox.ZMax + 40.0)
+bore_cylinder = Part.makeCylinder(
+    BEVEL_GEAR_BORE_DIA / 2.0, bore_height,
+    App.Vector(0, 0, bbox.ZMin - 10.0),  # start below the large face
+    App.Vector(0, 0, 1),                 # axis = local +Z
+)
+gear_with_bore = gear_shape.cut(bore_cylinder)
+
 static_body = doc.addObject("Part::Feature", "BevelGearBody")
-static_body.Shape = feature.Shape.copy()
-static_body.Label = "BevelGearBody_16T_module3_pitch45deg_pa20deg_h8mm"
+static_body.Shape = gear_with_bore
+static_body.Label = (
+    f"BevelGearBody_16T_m3_pitch45deg_pa20deg_h8mm_bore{int(BEVEL_GEAR_BORE_DIA)}"
+)
 
 # Drop the Proxy feature now that we have the baked shape
 doc.removeObject(feature.Name)
 doc.recompute()
+
+App.Console.PrintMessage(
+    f"Bored {BEVEL_GEAR_BORE_DIA} mm through gear axis. "
+    f"Final volume = {static_body.Shape.Volume:.1f} mm^3\n"
+)
 
 # ----------------------------------------------------------------
 # Save the part file

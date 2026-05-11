@@ -227,6 +227,13 @@ PART_SPECS = {
     "grinder_shaft":      ("grinder_shaft.FCStd",      "GrinderShaftBody",    150.0),
     "idler_shaft":        ("idler_shaft.FCStd",        "IdlerShaftBody",       80.0),
     "bevel_gear":         ("bevel_gear.FCStd",         "BevelGearBody",         8.0),
+    # Session-10 Phase-2 new parts
+    "bb_shell":           ("bb_shell.FCStd",           "BBShellBody",          68.0),
+    "crank_arm":          ("crank_arm.FCStd",          "CrankArmBody",         10.0),
+    "pedal":              ("pedal.FCStd",              "PedalBody",            12.0),
+    "pillow_block":       ("pillow_block.FCStd",       "PillowBlockBody",      38.0),
+    "bevel_mount_bracket":("bevel_mount_bracket.FCStd","BevelMountBracketBody", 200.0),
+    "chain_link":         ("chain_link.FCStd",         "ChainLinkBody",        12.7),
 }
 
 PART_BODIES = {}
@@ -421,9 +428,22 @@ MANAGED_NAMES = [
     "Stage2Pinion_Link",
     "ChainLoop2",
 
-    # Loops
+    # Loops (Session-9 envelope solids; replaced by chain-link arrays in
+    # Session-10 Phase 2, but names kept here for cleanup on re-run)
     "ChainLoop",
     "BeltLoop",
+
+    # Session-10 Phase-2: gaps + supports
+    "BBShell_Link",
+    "CrankArmLeft_Link", "CrankArmRight_Link",
+    "PedalLeft_Link", "PedalRight_Link",
+    "PillowBlock_Jackshaft_L", "PillowBlock_Jackshaft_R",
+    "PillowBlock_BevelOut_Bot", "PillowBlock_BevelOut_Top",
+    "PillowBlock_Grinder_Bot", "PillowBlock_Grinder_Top",
+    "PillowBlock_Idler_Top",
+    "BevelMountBracket_Link",
+    # Belt loop kept (real belts are continuous, not discrete links).
+    # Chain loops removed in favor of chain_link arrays — wiped by prefix below.
 
     # Legacy Session-8 placeholder names (left in for migration cleanup)
     "CrankBB_Placeholder",
@@ -439,6 +459,12 @@ removed = 0
 for name in MANAGED_NAMES:
     if assembly.getObject(name) is not None:
         assembly.removeObject(name)
+        removed += 1
+# Prefix-based wipe for variable-length arrays (chain links).
+prefix_managed = ("Chain1Link_", "Chain2Link_")
+for o in list(assembly.Objects):
+    if o.Name.startswith(prefix_managed):
+        assembly.removeObject(o.Name)
         removed += 1
 App.Console.PrintMessage(
     f"Idempotency: removed {removed} pre-existing managed objects.\n"
@@ -466,6 +492,31 @@ def add_cyl_z(name, dia, height, position, label=None):
     obj.Placement = App.Placement(position, App.Rotation())
     obj.Label = label or name
     return obj
+
+
+def add_cyl_x(name, dia, length, start_position, label=None):
+    """Parametric Part::Cylinder with axis along world +X.
+    start_position is the world point at one end of the shaft.
+    Native cylinder axis is local +Z. Rotate +90° about world +Y so
+    local +Z → world +X (confirmed empirically vs add_link_axis_x)."""
+    obj = assembly.addObject("Part::Cylinder", name)
+    obj.Radius = dia / 2.0
+    obj.Height = length
+    obj.Placement = App.Placement(
+        start_position, App.Rotation(Vector(0, 1, 0), 90)
+    )
+    obj.Label = label or name
+    return obj
+
+
+def make_rotation_from_basis(x_dir, y_dir, z_dir):
+    """Build an App.Rotation mapping local +X → x_dir, +Y → y_dir, +Z → z_dir.
+    Input vectors must be unit-length and mutually perpendicular."""
+    m = App.Matrix()
+    m.A11 = x_dir.x; m.A21 = x_dir.y; m.A31 = x_dir.z
+    m.A12 = y_dir.x; m.A22 = y_dir.y; m.A32 = y_dir.z
+    m.A13 = z_dir.x; m.A23 = z_dir.y; m.A33 = z_dir.z
+    return App.Rotation(m)
 
 
 def add_sphere(name, radius, position, label=None):
@@ -579,6 +630,45 @@ def add_chain_loop(name, label=None):
     obj.Shape = solid
     obj.Label = label or name
     return obj
+
+
+def add_chain_link_array_along_wire(prefix, wire, plane_normal_dir,
+                                     n_links_override=None):
+    """Walk a closed wire (chain path) at chain_pitch arc-length steps and
+    place a chain_link App::Link at each point with appropriate rotation.
+    prefix:           name prefix (e.g., 'Chain1Link_'). Each link is named
+                      prefix + zero-padded index.
+    wire:             Part.Wire — typically built by the racetrack helpers.
+    plane_normal_dir: Vector — unit normal of the chain plane (out-of-plane
+                      direction). For a YZ-plane chain, pass Vector(1,0,0);
+                      for an XY-plane chain, pass Vector(0,0,1).
+    Returns the number of links placed."""
+    total_length = wire.Length
+    n_links = n_links_override or int(round(total_length / CHAIN_PITCH))
+    # Discretize to n_links uniformly spaced points around the closed wire.
+    points = wire.discretize(Number=n_links + 1)
+    chain_part_body = PART_BODIES["chain_link"]
+
+    for i in range(n_links):
+        pos = points[i]
+        nxt = points[(i + 1) % n_links]
+        tangent = Vector(nxt.sub(pos))
+        if tangent.Length < 1e-6:
+            continue
+        tangent.normalize()
+        # Chain link local frame:
+        #   +X = chain run direction (tangent)
+        #   +Z = out-of-plane (= plane_normal_dir)
+        #   +Y = +Z × +X (right-hand)
+        z_dir = Vector(plane_normal_dir)
+        z_dir.normalize()
+        y_dir = z_dir.cross(tangent)
+        y_dir.normalize()
+        rot = make_rotation_from_basis(tangent, y_dir, z_dir)
+        link = assembly.addObject("App::Link", f"{prefix}{i:03d}")
+        link.LinkedObject = chain_part_body
+        link.Placement = App.Placement(pos, rot)
+    return n_links
 
 
 def add_chain_loop_2(name, label=None):
@@ -799,22 +889,44 @@ add_diagonal_brace(
 )
 
 # --- Crank/BB shaft (App::Link, axis X) ---
+# 140mm donor symbol. Will be visible at the ends where the crank arms
+# attach (BB shell hides the middle portion).
 add_link_axis_x(
     "CrankBB_ShaftLink", "crank_bb_shaft",
     Vector(0, CRANK_Y, CRANK_Z),
     label="CrankBB_ShaftLink_140mm_donor_stock_axis_X"
 )
 
-# --- Jackshaft (App::Link, axis X) ---
-# Anchored so its left end sits at the chain plane; the 150mm part
-# extends rightward toward the bevel gearbox column. Real shaft will be
-# cut to assembly span; this is donor-stock symbol only.
-js_left_x = CHAIN_PLANE_X
-js_center_x = js_left_x + native_h("intermediate_shaft") / 2.0
-add_link_axis_x(
-    "Jackshaft_Link", "intermediate_shaft",
-    Vector(js_center_x, JACKSHAFT_Y, JACKSHAFT_Z),
-    label="Jackshaft_Link_150mm_donor_stock_axis_X_anchored_at_chain_plane"
+# --- BB shell (App::Link, axis X, wraps the BB shaft) ---
+# Session-10 Phase-2: real BB housing — 68mm BSA-standard shell with
+# 34mm ID bore. Bevel-shaped local +Z → world +X via -90° rotation about
+# world +Y. Centered on the BB axle at (0, CRANK_Y, CRANK_Z).
+bbshell_h = native_h("bb_shell")
+bbshell_link = assembly.addObject("App::Link", "BBShell_Link")
+bbshell_link.LinkedObject = PART_BODIES["bb_shell"]
+bbshell_link.Placement = App.Placement(
+    Vector(-bbshell_h / 2.0, CRANK_Y, CRANK_Z),
+    App.Rotation(Vector(0, 1, 0), 90)  # +90° about +Y maps local +Z → world +X
+)
+bbshell_link.Label = f"BBShell_Link_BSA68mm_wraps_crank_axle"
+
+# --- Jackshaft (parametric Part::Cylinder, axis X) ---
+# Session-10 Phase-2: replaces the 150mm donor App::Link with a span-
+# correct parametric cylinder. Runs from just inboard of the left
+# pillow block (X=70) to just past the bevel input gear's back face
+# (X=BEVEL_MEETING_X - BEVEL_LARGE_RADIUS = 275 plus a few mm of bearing
+# seat margin). Uses intermediate_shaft_dia from the Bearings VarSet.
+JACKSHAFT_LEFT_X = 70.0
+JACKSHAFT_RIGHT_X = BEVEL_MEETING_X + 10.0  # past gear back face for bearing
+JACKSHAFT_LEN = JACKSHAFT_RIGHT_X - JACKSHAFT_LEFT_X
+JACKSHAFT_DIA = q(params.Bearings.intermediate_shaft_dia)
+add_cyl_x(
+    "Jackshaft_Link", JACKSHAFT_DIA, JACKSHAFT_LEN,
+    Vector(JACKSHAFT_LEFT_X, JACKSHAFT_Y, JACKSHAFT_Z),
+    label=(
+        f"Jackshaft_parametric_OD{int(JACKSHAFT_DIA)}_"
+        f"L{int(JACKSHAFT_LEN)}_X{int(JACKSHAFT_LEFT_X)}to{int(JACKSHAFT_RIGHT_X)}"
+    )
 )
 
 # --- Chainring (App::Link, axis X, in chain plane) ---
@@ -846,13 +958,13 @@ bevel_meeting_pt = Vector(BEVEL_MEETING_X, BEVEL_MEETING_Y, BEVEL_MEETING_Z)
 
 # --- BevelGear_Input: cone axis along world +X (jackshaft direction) ---
 # Apex points in +X (toward meeting_x). Body extends back in -X.
-# Rotation: local +Z → world +X  (= -90° rotation about world +Y).
+# Rotation: local +Z → world +X (= +90° about world +Y; Phase-3 fix).
 bevel_input_link = assembly.addObject("App::Link", "BevelGear_Input")
 bevel_input_link.LinkedObject = PART_BODIES["bevel_gear"]
 bevel_input_link.Placement = App.Placement(
     Vector(BEVEL_MEETING_X - BEVEL_GEAR_APEX_DISTANCE,
            BEVEL_MEETING_Y, BEVEL_MEETING_Z),
-    App.Rotation(Vector(0, 1, 0), -90)
+    App.Rotation(Vector(0, 1, 0), 90)
 )
 bevel_input_link.Label = (
     f"BevelGear_Input_real_involute_16T_m{int(BEVEL_GEAR_MODULE)}_axisX_jackshaft"
@@ -873,14 +985,21 @@ bevel_output_link.Label = (
     f"BevelGear_Output_real_involute_16T_m{int(BEVEL_GEAR_MODULE)}_axisZ_vert_shaft"
 )
 
-# --- Bevel-output vertical shaft (App::Link to intermediate_shaft, axis Z) ---
-# 12mm OD donor stock, anchored just above the bevel output gear's large
-# face (at BEVEL_MEETING_Z + APEX_DISTANCE), extending up past stage2_large.
-bevel_out_shaft_z_base = BEVEL_MEETING_Z + BEVEL_GEAR_APEX_DISTANCE
-add_link_axis_z(
-    "BevelOutputShaft_Link", "intermediate_shaft",
-    Vector(BEVEL_OUT_SHAFT_X, BEVEL_OUT_SHAFT_Y, bevel_out_shaft_z_base),
-    label="BevelOutputShaft_Link_150mm_donor_stock_axis_Z_carries_stage2_large"
+# --- Bevel-output vertical shaft (parametric Part::Cylinder, axis Z) ---
+# Session-10 Phase-2: replaces 150mm donor stock with a span-correct
+# parametric cylinder. Runs from 10 mm BELOW the bevel output gear's
+# large face (Z = BEVEL_MEETING_Z + APEX_DISTANCE - 10) through and
+# past stage2_large to a bearing seat above.
+bevel_out_shaft_z_bot = BEVEL_MEETING_Z + BEVEL_GEAR_APEX_DISTANCE - 10.0
+bevel_out_shaft_z_top = CHAIN2_PLANE_Z + 25.0
+bevel_out_shaft_len = bevel_out_shaft_z_top - bevel_out_shaft_z_bot
+add_cyl_z(
+    "BevelOutputShaft_Link", JACKSHAFT_DIA, bevel_out_shaft_len,
+    Vector(BEVEL_OUT_SHAFT_X, BEVEL_OUT_SHAFT_Y, bevel_out_shaft_z_bot),
+    label=(
+        f"BevelOutputShaft_parametric_OD{int(JACKSHAFT_DIA)}_"
+        f"L{int(bevel_out_shaft_len)}_Z{int(bevel_out_shaft_z_bot)}to{int(bevel_out_shaft_z_top)}"
+    )
 )
 
 # --- Stage 2 large sprocket (App::Link, axis Z, on bevel-output shaft) ---
@@ -899,14 +1018,21 @@ add_link_axis_z(
     label=f"Stage2Pinion_Link_8T_axisZ_at_chain2_plane_Z{int(CHAIN2_PLANE_Z)}"
 )
 
-# --- Vertical drive shaft (App::Link, axis Z) ---
-# Anchored at chain2 plane so it visually connects stage2_pinion → drive pulley.
-# 150mm donor stock — reaches partway toward the desk-top pulley; real shaft
-# will be cut to fit when fabricated.
-add_link_axis_z(
-    "VerticalDriveShaft_Link", "grinder_shaft",
-    Vector(DRIVE_X, BELT_CENTERLINE_Y, CHAIN2_PLANE_Z),
-    label="VerticalDriveShaft_Link_150mm_donor_stock_axis_Z_chain2_to_pulley"
+# --- Vertical drive shaft (parametric Part::Cylinder, axis Z) ---
+# Session-10 Phase-2: replaces 150mm donor stock. Spans below
+# stage2_pinion (Z = CHAIN2_PLANE_Z - 20) to above the drive pulley top
+# (Z = DESK_HEIGHT + PULLEY_FACE/2 + 25).
+GRINDER_SHAFT_DIA = q(params.Bearings.grinder_shaft_dia)
+vert_drive_z_bot = CHAIN2_PLANE_Z - 20.0
+vert_drive_z_top = DESK_HEIGHT + PULLEY_FACE / 2.0 + 25.0
+vert_drive_len = vert_drive_z_top - vert_drive_z_bot
+add_cyl_z(
+    "VerticalDriveShaft_Link", GRINDER_SHAFT_DIA, vert_drive_len,
+    Vector(DRIVE_X, BELT_CENTERLINE_Y, vert_drive_z_bot),
+    label=(
+        f"VerticalDriveShaft_parametric_OD{int(GRINDER_SHAFT_DIA)}_"
+        f"L{int(vert_drive_len)}_Z{int(vert_drive_z_bot)}to{int(vert_drive_z_top)}"
+    )
 )
 
 # --- Drive pulley (App::Link, axis Z, straddles desk top) ---
@@ -935,22 +1061,214 @@ add_link_axis_z(
     label="IdlerShaft_Link_80mm_donor_stock_axis_Z"
 )
 
-# --- Chain loop 1 (visualization solid — chainring → stage1_cog) ---
-add_chain_loop(
-    "ChainLoop",
-    label=f"ChainLoop_chainring_to_stage1_cog_at_X{int(CHAIN_PLANE_X)}"
+# --- Chain 1 link array (replaces ChainLoop solid) ---
+# Stage 1 chain runs in the YZ plane at X = CHAIN_PLANE_X around the
+# chainring and stage1_cog. Build the pitch-circle racetrack wire as
+# the chain's centerline path, then walk it placing chain_link instances.
+chain1_wire = _racetrack_wire_yz(
+    (CRANK_Y, CRANK_Z), CHAINRING_PITCH_R,
+    (JACKSHAFT_Y, JACKSHAFT_Z), COG_PITCH_R,
+    CHAIN_PLANE_X
 )
-
-# --- Chain loop 2 (visualization solid — stage2_large → stage2_pinion) ---
-add_chain_loop_2(
-    "ChainLoop2",
-    label=f"ChainLoop2_stage2_large_to_stage2_pinion_at_Z{int(CHAIN2_PLANE_Z)}"
+chain1_count = add_chain_link_array_along_wire(
+    "Chain1Link_", chain1_wire, Vector(1, 0, 0)
 )
+App.Console.PrintMessage(f"Chain 1: placed {chain1_count} chain links.\n")
 
-# --- Belt loop (visualization solid) ---
+# --- Chain 2 link array (replaces ChainLoop2 solid) ---
+# Stage 2 chain runs in the XY plane at Z = CHAIN2_PLANE_Z.
+chain2_wire = _racetrack_wire_xy(
+    (BEVEL_OUT_SHAFT_X, BEVEL_OUT_SHAFT_Y), STAGE2_LARGE_PITCH_R,
+    (DRIVE_X, BELT_CENTERLINE_Y), STAGE2_PINION_PITCH_R,
+    CHAIN2_PLANE_Z
+)
+chain2_count = add_chain_link_array_along_wire(
+    "Chain2Link_", chain2_wire, Vector(0, 0, 1)
+)
+App.Console.PrintMessage(f"Chain 2: placed {chain2_count} chain links.\n")
+
+# --- Belt loop (visualization solid — kept; real flat belts are continuous) ---
 add_belt_loop(
     "BeltLoop",
     label=f"BeltLoop_drive_to_idler_at_Z{int(DESK_HEIGHT)}"
+)
+
+# ====================================================================
+# Session-10 Phase-2: crank arms + pedals + pillow blocks + bevel bracket
+# ====================================================================
+
+# --- Crank arms (App::Links at BB shaft ends, 180° opposed) ---
+# crank_arm part: local origin = BB-end bore center; local +X = arm
+# length direction; local +Z = arm thickness up.
+# Crank arms attach AT THE BB AXLE ENDS (real cranks mount via square-
+# taper / spline on the axle stubs that protrude beyond the BB shell).
+# BB axle (crank_bb_shaft) is 140mm long centered at X=0, so axle ends
+# are at X=±70. Phase-3 fix: was X=±44 (against the BB shell face),
+# now X=±70 to match the axle.
+left_crank_x = -70.0
+right_crank_x = +70.0
+
+# Left crank: local +X → world -Z. local +Y → world +Y. local +Z → world +X.
+left_crank = assembly.addObject("App::Link", "CrankArmLeft_Link")
+left_crank.LinkedObject = PART_BODIES["crank_arm"]
+left_crank.Placement = App.Placement(
+    Vector(left_crank_x, CRANK_Y, CRANK_Z),
+    make_rotation_from_basis(
+        Vector(0, 0, -1),  # +X → -Z (down)
+        Vector(0, 1, 0),   # +Y → +Y
+        Vector(1, 0, 0)    # +Z → +X
+    )
+)
+left_crank.Label = "CrankArmLeft_170mm_pointing_down"
+
+# Right crank: local +X → world +Z. local +Y → world +Y. local +Z → world -X.
+right_crank = assembly.addObject("App::Link", "CrankArmRight_Link")
+right_crank.LinkedObject = PART_BODIES["crank_arm"]
+right_crank.Placement = App.Placement(
+    Vector(right_crank_x, CRANK_Y, CRANK_Z),
+    make_rotation_from_basis(
+        Vector(0, 0, 1),    # +X → +Z (up)
+        Vector(0, 1, 0),    # +Y → +Y
+        Vector(-1, 0, 0)    # +Z → -X
+    )
+)
+right_crank.Label = "CrankArmRight_170mm_pointing_up"
+
+# --- Pedals (App::Links at crank-arm pedal-bore ends) ---
+# crank_arm length = 170mm. Pedal sits at the far end of each crank.
+# pedal part: local origin = spindle center, local +Y = spindle axis,
+# local +X = platform extends in this direction, +Z = platform thickness.
+CRANK_LEN = 170.0
+# Pedal spindle center coincides with the crank-arm's pedal-bore so the
+# spindle (25mm each side) passes through the crank-arm and the platform
+# sits outboard. Phase-3 fix: was 30mm offset, gap was too large.
+PEDAL_SPINDLE_REACH = 0.0
+
+# Left pedal: at end of left crank, which is at world (left_crank_x - PEDAL_SPINDLE_REACH, CRANK_Y, CRANK_Z - CRANK_LEN)
+# Spindle axis (local +Y) → world -X (outboard left). Platform (local +X) → world horizontal direction (let's pick world +Y, away from rider).
+left_pedal = assembly.addObject("App::Link", "PedalLeft_Link")
+left_pedal.LinkedObject = PART_BODIES["pedal"]
+left_pedal.Placement = App.Placement(
+    Vector(left_crank_x - PEDAL_SPINDLE_REACH, CRANK_Y, CRANK_Z - CRANK_LEN),
+    make_rotation_from_basis(
+        Vector(0, 1, 0),   # +X → +Y (platform extends forward)
+        Vector(-1, 0, 0),  # +Y → -X (spindle axis outboard left)
+        Vector(0, 0, 1)    # +Z → +Z
+    )
+)
+left_pedal.Label = "PedalLeft_platform_spindle_outboard_left"
+
+right_pedal = assembly.addObject("App::Link", "PedalRight_Link")
+right_pedal.LinkedObject = PART_BODIES["pedal"]
+right_pedal.Placement = App.Placement(
+    Vector(right_crank_x + PEDAL_SPINDLE_REACH, CRANK_Y, CRANK_Z + CRANK_LEN),
+    make_rotation_from_basis(
+        Vector(0, 1, 0),   # +X → +Y (platform extends forward toward desk)
+        Vector(1, 0, 0),   # +Y → +X (spindle axis outboard right)
+        Vector(0, 0, -1)   # +Z → -Z  (right-handed: cross(+Y,+X)=-Z)
+    )
+)
+right_pedal.Label = "PedalRight_platform_spindle_outboard_right"
+
+# --- Pillow blocks ---
+# pillow_block part: local +Z = shaft axis; base sits at local Z=0..BASE_H (=8mm).
+# For X-axis shafts, rotate local +Z → world +X (= rotation about world +Y, -90°).
+# For Z-axis shafts, no rotation needed.
+
+def add_pillow_block_z(name, world_pos_base, label=None):
+    """Pillow block with shaft axis along world +Z. world_pos_base = base
+    plate's bottom face center in world coords."""
+    obj = assembly.addObject("App::Link", name)
+    obj.LinkedObject = PART_BODIES["pillow_block"]
+    obj.Placement = App.Placement(world_pos_base, App.Rotation())
+    obj.Label = label or name
+    return obj
+
+
+def add_pillow_block_x(name, world_pos_base_center, label=None):
+    """Pillow block with shaft axis along world +X. world_pos_base_center =
+    where the base-plate underside face center sits in world coords.
+    Rotation +90° about world +Y maps local +Z → world +X (matches
+    add_link_axis_x convention)."""
+    obj = assembly.addObject("App::Link", name)
+    obj.LinkedObject = PART_BODIES["pillow_block"]
+    obj.Placement = App.Placement(
+        world_pos_base_center, App.Rotation(Vector(0, 1, 0), 90)
+    )
+    obj.Label = label or name
+    return obj
+
+
+# Jackshaft pillow blocks (axis X). The pillow-block geometry occupies
+# local Z=0..38 along the shaft axis; we want the bearing-bore center
+# (at local Z = BASE_H + (BOSS_H - 11)/2 + 11/2 = 8 + 9.5 + 5.5 = 23
+# approximately) to align with the jackshaft Y, Z position. Simplest:
+# place the base center at (Jackshaft endpoint X, Y=400-25, Z=450-23)
+# so the bearing bore goes through the shaft. For visual clarity we
+# park the pillow blocks just outboard of where bearings would sit.
+PILLOW_BORE_OFFSET = 23.0  # roughly center-of-bearing-bore from base
+# Left jackshaft pillow block: base center at X = JACKSHAFT_LEFT_X - 5 (just outboard),
+# YZ shifted so the bearing bore center aligns with the shaft.
+add_pillow_block_x(
+    "PillowBlock_Jackshaft_L",
+    Vector(JACKSHAFT_LEFT_X, JACKSHAFT_Y, JACKSHAFT_Z - PILLOW_BORE_OFFSET),
+    label="PillowBlock_Jackshaft_L_left_end_bearing_housing"
+)
+add_pillow_block_x(
+    "PillowBlock_Jackshaft_R",
+    Vector(JACKSHAFT_RIGHT_X - 38.0,  # base length is 38 along shaft axis
+           JACKSHAFT_Y, JACKSHAFT_Z - PILLOW_BORE_OFFSET),
+    label="PillowBlock_Jackshaft_R_right_end_bearing_housing"
+)
+
+# Bevel-output pillow blocks (axis Z)
+add_pillow_block_z(
+    "PillowBlock_BevelOut_Bot",
+    Vector(BEVEL_OUT_SHAFT_X, BEVEL_OUT_SHAFT_Y, bevel_out_shaft_z_bot - 8.0),
+    label="PillowBlock_BevelOut_Bot_below_bevel_gear"
+)
+add_pillow_block_z(
+    "PillowBlock_BevelOut_Top",
+    Vector(BEVEL_OUT_SHAFT_X, BEVEL_OUT_SHAFT_Y, bevel_out_shaft_z_top - 38.0),
+    label="PillowBlock_BevelOut_Top_above_stage2_large"
+)
+
+# Grinder shaft pillow blocks (axis Z)
+add_pillow_block_z(
+    "PillowBlock_Grinder_Bot",
+    Vector(DRIVE_X, BELT_CENTERLINE_Y, vert_drive_z_bot),
+    label="PillowBlock_Grinder_Bot_below_stage2_pinion"
+)
+add_pillow_block_z(
+    "PillowBlock_Grinder_Top",
+    Vector(DRIVE_X, BELT_CENTERLINE_Y, vert_drive_z_top - 38.0),
+    label="PillowBlock_Grinder_Top_above_drive_pulley"
+)
+
+# Idler shaft single pillow block at top (idler shaft is short, single bearing OK)
+add_pillow_block_z(
+    "PillowBlock_Idler_Top",
+    Vector(IDLER_X, BELT_CENTERLINE_Y, DESK_HEIGHT + PULLEY_FACE / 2.0 + 5.0),
+    label="PillowBlock_Idler_Top_above_pulley"
+)
+
+# --- Bevel mount bracket (App::Link) ---
+# L-bracket tying the bevel-output shaft area to the back rail. Vertical
+# leg next to the bevel-out shaft (X=BEVEL_OUT_SHAFT_X, Y just behind it),
+# horizontal flange extending toward +Y to bolt to the back rail.
+bevel_bracket_link = assembly.addObject("App::Link", "BevelMountBracket_Link")
+bevel_bracket_link.LinkedObject = PART_BODIES["bevel_mount_bracket"]
+# Bracket native frame: vertical leg along local +Z, flange along local +Y.
+# Place vertical leg at (X=BEVEL_OUT_SHAFT_X, Y=BEVEL_OUT_SHAFT_Y + 15) so
+# it sits 15mm behind the shaft. Base at Z=bevel_out_shaft_z_bot - 5.
+bevel_bracket_link.Placement = App.Placement(
+    Vector(BEVEL_OUT_SHAFT_X, BEVEL_OUT_SHAFT_Y + 15.0,
+           bevel_out_shaft_z_bot - 5.0),
+    App.Rotation()
+)
+bevel_bracket_link.Label = (
+    "BevelMountBracket_L_bracket_vertical_leg_at_bevel_shaft_"
+    "flange_toward_back_rail"
 )
 
 # --- Glass platen reference at desk's far edge ---
@@ -987,8 +1305,9 @@ App.Console.PrintMessage(
 App.Console.PrintMessage(
     "\n"
     "================================================================\n"
-    "Macro 08 (Session 9) complete. Assembly built with App::Linked\n"
-    "real parts, chain + belt loop solids, and diagonal brace.\n"
+    "Macro 08 (Session 10 Phase 2) complete. Real-geometry assembly\n"
+    "with BB shell, crank arms, pedals, parametric shafts, bearings,\n"
+    "real chain links, and gear-support brackets.\n"
     "================================================================\n"
     f"  WORLD FRAME (origin = rider seat on floor)\n"
     f"    rider_seat_y      = {RIDER_SEAT_Y:>8.1f} mm\n"
@@ -1000,13 +1319,13 @@ App.Console.PrintMessage(
     f"  KEY POSITIONS (X, Y, Z) in mm — App::Linked parts in []\n"
     f"    rider seat ref   = (    0,     0,     0)\n"
     f"    crank/BB shaft   = (    0, {CRANK_Y:>5.0f}, {CRANK_Z:>5.0f}) axis=X  [crank_bb_shaft]\n"
-    f"    jackshaft        = ({js_center_x:>5.0f}, {JACKSHAFT_Y:>5.0f}, {JACKSHAFT_Z:>5.0f}) axis=X  [intermediate_shaft]\n"
+    f"    jackshaft        = (X={JACKSHAFT_LEFT_X:>.0f}..{JACKSHAFT_RIGHT_X:>.0f}, Y={JACKSHAFT_Y:.0f}, Z={JACKSHAFT_Z:.0f}) axis=X  [parametric]\n"
     f"    chainring        = ({CHAIN_PLANE_X:>5.0f}, {CRANK_Y:>5.0f}, {CRANK_Z:>5.0f}) axis=X  [chainring]\n"
     f"    stage1 cog       = ({CHAIN_PLANE_X:>5.0f}, {JACKSHAFT_Y:>5.0f}, {JACKSHAFT_Z:>5.0f}) axis=X  [stage1_cog]\n"
-    f"    RA-drive (placeholder housing center)\n"
-    f"                     = ({DRIVE_X:>5.0f}, {(JACKSHAFT_Y + BELT_CENTERLINE_Y) / 2.0:>5.0f}, {JACKSHAFT_Z:>5.0f})\n"
+    f"    bevel meeting pt = ({BEVEL_MEETING_X:>5.0f}, {BEVEL_MEETING_Y:>5.0f}, {BEVEL_MEETING_Z:>5.0f}) — apex of both bevel cones\n"
+    f"    bevel-out shaft  = ({BEVEL_OUT_SHAFT_X:>5.0f}, {BEVEL_OUT_SHAFT_Y:>5.0f}, {bevel_out_shaft_z_bot:.0f}..{bevel_out_shaft_z_top:.0f}) axis=Z  [parametric]\n"
     f"    vertical drive shaft\n"
-    f"                     = ({DRIVE_X:>5.0f}, {BELT_CENTERLINE_Y:>5.0f}, {JACKSHAFT_Z:>5.0f}..{JACKSHAFT_Z + 150:.0f}) axis=Z  [grinder_shaft]\n"
+    f"                     = ({DRIVE_X:>5.0f}, {BELT_CENTERLINE_Y:>5.0f}, {vert_drive_z_bot:.0f}..{vert_drive_z_top:.0f}) axis=Z  [parametric]\n"
     f"    drive pulley     = ({DRIVE_X:>5.0f}, {BELT_CENTERLINE_Y:>5.0f}, {DESK_HEIGHT:>5.0f}) axis=Z  [drive_pulley]\n"
     f"    idler pulley     = ({IDLER_X:>5.0f}, {BELT_CENTERLINE_Y:>5.0f}, {DESK_HEIGHT:>5.0f}) axis=Z  [idler_pulley]\n"
     f"    idler shaft      = ({IDLER_X:>5.0f}, {BELT_CENTERLINE_Y:>5.0f}, {DESK_HEIGHT:>5.0f}) axis=Z  [idler_shaft]\n"
@@ -1037,5 +1356,20 @@ App.Console.PrintMessage(
     f"    GroundPost_Main         OD={GROUND_POST_OD:.0f} h={post_top_z - CONCRETE_BLOCK_Z_HEIGHT:.0f}  at (X=0, Y={block_center_y:.0f})\n"
     f"    BB_SplitCollar          OD={BB_CLAMP_OD:.0f} L={BB_CLAMP_LENGTH:.0f}  wraps BB shell axis-X\n"
     f"    GroundPost_DiagonalStrut OD={STRUT_OD:.0f}  post-base → BB front  (truss)\n"
+    "----------------------------------------------------------------\n"
+    f"  Session-10 Phase-2 — gaps closed + gear supports:\n"
+    f"    BBShell_Link            BSA 68mm wraps BB axle (real housing)\n"
+    f"    CrankArmLeft/Right_Link  170mm cranks at BB ends, 180° opposed\n"
+    f"    PedalLeft/Right_Link     90×60 flat pedals, spindles outboard ±X\n"
+    f"    Jackshaft_Link           PARAMETRIC OD={JACKSHAFT_DIA:.0f}  L={JACKSHAFT_LEN:.0f}  X={JACKSHAFT_LEFT_X:.0f}..{JACKSHAFT_RIGHT_X:.0f}\n"
+    f"    BevelOutputShaft_Link    PARAMETRIC OD={JACKSHAFT_DIA:.0f}  L={bevel_out_shaft_len:.0f}  Z={bevel_out_shaft_z_bot:.0f}..{bevel_out_shaft_z_top:.0f}\n"
+    f"    VerticalDriveShaft_Link  PARAMETRIC OD={GRINDER_SHAFT_DIA:.0f}  L={vert_drive_len:.0f}  Z={vert_drive_z_bot:.0f}..{vert_drive_z_top:.0f}\n"
+    f"    PillowBlock_Jackshaft    L+R (2)   axis X\n"
+    f"    PillowBlock_BevelOut     Bot+Top (2) axis Z\n"
+    f"    PillowBlock_Grinder      Bot+Top (2) axis Z\n"
+    f"    PillowBlock_Idler        Top (1)   axis Z\n"
+    f"    BevelMountBracket_Link   L-bracket tying bevel-out to back rail\n"
+    f"    Chain1Link_NNN           {chain1_count} real chain links along stage-1 path\n"
+    f"    Chain2Link_NNN           {chain2_count} real chain links along stage-2 path\n"
     "================================================================\n"
 )
