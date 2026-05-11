@@ -1,0 +1,28 @@
+# FreeCAD backup files (auto-created on save)
+*.FCStd1
+*.FCBak
+
+# FreeCAD lock files (created when a file is open)
+*.FCLock
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Python compiled
+__pycache__/
+*.pyc
+
+# Verification / diagnostic report files (runtime artifacts)
+macros/*.report.txt
+
+# STL exports (derived from .FCStd — slicer-bound, regenerable)
+parts/*.stl
+
+# Whole-assembly STL render (very large, regenerable from
+# _session10_export_assembly_stl.py — exceeds GitHub's 100 MB file limit
+# when the assembly contains the chain-link arrays)
+session10_assembly_render.stl
+
+# One-off diagnostic scripts (prefixed with _ by convention)
+macros/_*.py
