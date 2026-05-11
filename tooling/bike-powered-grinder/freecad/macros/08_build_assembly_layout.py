@@ -171,6 +171,9 @@ BELT_WIDTH = q(params.Belt.belt_width)
 CHAIN_PITCH = q(params.Drivetrain.chain_pitch)
 CHAINRING_TEETH = int(params.Drivetrain.stage1_chainring_teeth)
 COG_TEETH = int(params.Drivetrain.stage1_cog_teeth)
+STAGE2_LARGE_TEETH = int(params.Drivetrain.stage2_large_teeth)
+STAGE2_PINION_TEETH = int(params.Drivetrain.stage2_pinion_teeth)
+TOTAL_RATIO_TARGET = q(params.Drivetrain.total_ratio)
 
 # Platen
 MAX_GLASS_EDGE = q(params.Platen.max_glass_edge)
@@ -182,6 +185,8 @@ DRIVE_X = +BELT_CENTER_DISTANCE / 2.0
 IDLER_X = -BELT_CENTER_DISTANCE / 2.0
 CHAINRING_PITCH_R = CHAIN_PITCH / (2.0 * math.sin(math.pi / CHAINRING_TEETH))
 COG_PITCH_R = CHAIN_PITCH / (2.0 * math.sin(math.pi / COG_TEETH))
+STAGE2_LARGE_PITCH_R = CHAIN_PITCH / (2.0 * math.sin(math.pi / STAGE2_LARGE_TEETH))
+STAGE2_PINION_PITCH_R = CHAIN_PITCH / (2.0 * math.sin(math.pi / STAGE2_PINION_TEETH))
 
 
 # ====================================================================
@@ -213,12 +218,15 @@ def open_part(filename):
 PART_SPECS = {
     "chainring":          ("chainring.FCStd",          "ChainringBody",         5.0),
     "stage1_cog":         ("stage1_cog.FCStd",         "CogBody",               5.0),
+    "stage2_large":       ("stage2_large.FCStd",       "LargeSprocketBody",    12.0),
+    "stage2_pinion":      ("stage2_pinion.FCStd",      "PinionBody",           16.0),
     "drive_pulley":       ("drive_pulley.FCStd",       "PulleyBody",           60.0),
     "idler_pulley":       ("idler_pulley.FCStd",       "IdlerBody",            60.0),
     "crank_bb_shaft":     ("crank_bb_shaft.FCStd",     "CrankBBShaftBody",    140.0),
     "intermediate_shaft": ("intermediate_shaft.FCStd", "IntermediateShaftBody", 150.0),
     "grinder_shaft":      ("grinder_shaft.FCStd",      "GrinderShaftBody",    150.0),
     "idler_shaft":        ("idler_shaft.FCStd",        "IdlerShaftBody",       80.0),
+    "bevel_gear":         ("bevel_gear.FCStd",         "BevelGearBody",         8.0),
 }
 
 PART_BODIES = {}
@@ -254,14 +262,114 @@ CRANK_Z = 290.0
 JACKSHAFT_Y = 400.0
 JACKSHAFT_Z = 450.0
 
-# Right-angle drive placeholder block dims
-RA_DRIVE_X_HALF = 60.0
-RA_DRIVE_Z_HEIGHT = 100.0
-RA_DRIVE_Z_BOTTOM = JACKSHAFT_Z - RA_DRIVE_Z_HEIGHT / 2.0
+# ---------------------------------------------------------------
+# Session 10 Q2 — visible bevel-gear pair + restored stage 2 chain
+# ---------------------------------------------------------------
+# Decision (Session 10, Q2): RA_Drive_Placeholder REMOVED. Replaced with
+# two visible 1:1 bevel-gear placeholders (cone frustums) and the
+# previously-dropped stage 2 chain restored. Total ratio still 10.10:1
+# (chain stages do all reduction; bevel just turns the corner).
+#
+# Topology:
+#   chainring (BB, X) → chain1 → stage1_cog (jackshaft, X) →
+#   bevel_input (X) ⟂ bevel_output (Z) →
+#   stage2_large (bevel-out shaft, Z) → chain2 → stage2_pinion (grinder shaft, Z) →
+#   drive pulley → belt → idler pulley
+#
+# Ratio: (42/13) × 1.0 × (25/8) = 10.096 ≈ 10:1 ✓
 
-# Diagonal "downtube" brace — TODO: promote to Frame VarSet on donor pick
-DOWNTUBE_OUTER_DIA = 30.0          # typical donor-bike downtube OD
-DOWNTUBE_ATTACH_OFFSET_FROM_BACK = 25.0  # back-rail centerline distance from back-leg edge
+# Bevel-pair meets at a single apex point. Bevel input cone axis is
+# world X (jackshaft direction), output cone axis is world Z (vertical).
+# Session-10 upgrade (post-Q2 clarification): real involute teeth via the
+# freecad.gears workbench — see macro 10. Both gears App::Link to the
+# same parts/bevel_gear.FCStd (1:1 ratio, identical part).
+BEVEL_MEETING_X = 300.0           # apex along jackshaft, past stage1_cog
+BEVEL_MEETING_Y = JACKSHAFT_Y     # = 400 (must lie on jackshaft axis)
+BEVEL_MEETING_Z = JACKSHAFT_Z     # = 450 (must lie on jackshaft axis)
+# Bevel gear params — keep in sync with macro 10:
+BEVEL_GEAR_MODULE = 3.0
+BEVEL_GEAR_TEETH = 16
+BEVEL_GEAR_HEIGHT = 8.0           # face width along cone axis
+BEVEL_GEAR_PITCH_ANGLE_DEG = 45.0 # 1:1 mesh at 90°
+# Apex distance (along axis from large face to extrapolated apex):
+#   scale = (module * num_teeth / 2) / tan(pitch_angle)
+BEVEL_GEAR_APEX_DISTANCE = (
+    (BEVEL_GEAR_MODULE * BEVEL_GEAR_TEETH / 2.0)
+    / math.tan(math.radians(BEVEL_GEAR_PITCH_ANGLE_DEG))
+)  # = 24.0 mm for the locked params
+
+# Stage 2 chain plane (horizontal XY at this Z)
+CHAIN2_PLANE_Z = 580.0
+
+# Vertical bevel-output shaft (between bevel output and stage2_large)
+BEVEL_OUT_SHAFT_X = BEVEL_MEETING_X
+BEVEL_OUT_SHAFT_Y = BEVEL_MEETING_Y
+
+# ---------------------------------------------------------------
+# Session 10 — ground-anchored BB support (replaces Downtube_Brace)
+# ---------------------------------------------------------------
+# Decision (Session 10, Q1): BB shell is supported from below by a
+# vertical post planted on a concrete floor block (rider-side, "behind"
+# the BB). Cantilever bending at the joint is mitigated by:
+#   (1) fat 50mm post (vs. 30mm donor-bike tubing)
+#   (2) split-collar clamp wrapping full BB shell circumference
+#   (3) post extends above the BB so clamp loads in shear, not bending
+#   (4) diagonal strut from post-base to BB-front side, forming a triangle
+# All assembly-level constants for now; promote to VarSet when donor
+# tubing + concrete-block source are confirmed (Q3 still open).
+
+# Main vertical post (rider-side of BB, runs from block top up past BB)
+GROUND_POST_OFFSET_Y = -50.0       # 50mm behind BB axle (rider side)
+GROUND_POST_OD = 50.0              # 50mm OD steel tube
+GROUND_POST_TOP_Z_OVER_BB = 60.0   # post extends 60mm above BB top
+
+# Concrete block under the post — Q3 (Session 10): SELF-CAST pyramidal
+# frustum with WIDER BASE for spike resistance. Sits on floor; post bottom
+# mounts to its top.
+#
+# BACK-CALCULATION of footprint (Session-10 design notes):
+# ========================================================
+# Design loads at the BB:
+#   - Pedal force peak (rider standing on pedal):    ~ 800 N
+#   - Dynamic spike (kickback / chain jam):          2-3x sustained = ~2400 N peak
+#   - Lateral force (rider body twitch):             ~ 300 N
+# Tipping moment about block edge (worst case):
+#   M_tip = F_lat × (BB_height - block_top) ≈ 300 N × 0.20 m ≈ 60 N·m
+# Required tipping resistance with 2x safety factor: 120 N·m
+# Resistance comes from block weight × half-base-width:
+#   M_resist = ρ_concrete × g × V × (b/2)
+# where ρ_concrete = 2400 kg/m³, g = 9.81 m/s².
+#
+# PEDAL-CLEARANCE constraint (this is what set the X dimension):
+#   Right pedal traces a YZ circle at world X = +170 mm (crank arm length).
+#   Rider's foot (shoe) extends INWARD from pedal to ankle at ~X = +140 mm.
+#   At pedal bottom-of-stroke (Y=250, Z=120), foot intrudes into the
+#   region above the block.
+#   So block half-width in X MUST be < 140 mm.  Picked 120 mm → 20 mm
+#   foot clearance at the inner edge.
+#
+# Final block: base 240 × 400 × 200 mm pyramidal frustum, top 200 × 200.
+#   Volume = (h/3)(A_base + A_top + √(A_base·A_top))
+#          = (0.20/3)(0.096 + 0.04 + 0.062) ≈ 0.0132 m³
+#   Mass   ≈ 32 kg
+#   Tip resist (X edge, fore-aft pedaling spike):  32×9.81×0.20 ≈ 63 N·m  ← ~52% of target
+#   Tip resist (Y edge, side spike):               32×9.81×0.12 ≈ 38 N·m  ← lower (X is narrow by design)
+# The remaining tipping margin comes from the truss + chain + desk-frame
+# being a connected structural system — block is one node, not standalone.
+# Re-tune if real bench testing shows wobble.
+CONCRETE_BLOCK_BASE_X = 240.0
+CONCRETE_BLOCK_BASE_Y = 400.0
+CONCRETE_BLOCK_TOP_X = 200.0
+CONCRETE_BLOCK_TOP_Y = 200.0
+CONCRETE_BLOCK_Z_HEIGHT = 200.0
+
+# Split-collar clamp wrapping the BB shell (axis X, sleeve geometry)
+BB_CLAMP_OD = 60.0                 # outer dia of clamp
+BB_CLAMP_LENGTH = 40.0             # axial length along X
+
+# Diagonal strut: post-base → BB-front-side. Converts cantilever to truss.
+STRUT_OD = 30.0
+STRUT_FORWARD_OFFSET_Y = +50.0     # strut top-end attaches 50mm forward of BB axle
 
 # Chain visualization (envelope, not real link geometry)
 CHAIN_BAND_RADIAL = 11.0   # ~plate height of #40 chain
@@ -283,10 +391,16 @@ MANAGED_NAMES = [
     "DeskPlate",
     "FrameLeg_FL", "FrameLeg_FR", "FrameLeg_BL", "FrameLeg_BR",
     "FrameRail_Back", "FrameRail_Left", "FrameRail_Right",
-    "Downtube_Brace",
+    "Downtube_Brace",  # Session-9 element, removed in Session 10 — kept here for cleanup on re-run
     "GlassPlatenRef",
 
-    # Right-angle drive placeholder block
+    # Session-10 BB ground support
+    "ConcreteBlock_Anchor",
+    "GroundPost_Main",
+    "GroundPost_DiagonalStrut",
+    "BB_SplitCollar",
+
+    # Session-9 RA-drive placeholder (removed in Session 10 — kept for cleanup on re-run)
     "RA_Drive_Placeholder",
 
     # Session-9 App::Link names
@@ -298,6 +412,14 @@ MANAGED_NAMES = [
     "Stage1Cog_Link",
     "DrivePulley_Link",
     "IdlerPulley_Link",
+
+    # Session-10 bevel pair + restored stage-2 chain
+    "BevelGear_Input",
+    "BevelGear_Output",
+    "BevelOutputShaft_Link",
+    "Stage2Large_Link",
+    "Stage2Pinion_Link",
+    "ChainLoop2",
 
     # Loops
     "ChainLoop",
@@ -459,6 +581,26 @@ def add_chain_loop(name, label=None):
     return obj
 
 
+def add_chain_loop_2(name, label=None):
+    """Stage-2 chain envelope: extruded racetrack ring in XY plane at
+    Z = CHAIN2_PLANE_Z, around stage2_large (P1) and stage2_pinion (P2).
+    Both sprockets are on Z-axis shafts so the chain runs horizontally."""
+    P1 = (BEVEL_OUT_SHAFT_X, BEVEL_OUT_SHAFT_Y)
+    P2 = (DRIVE_X, BELT_CENTERLINE_Y)
+    R1 = STAGE2_LARGE_PITCH_R
+    R2 = STAGE2_PINION_PITCH_R
+    z_face = CHAIN2_PLANE_Z - CHAIN_EXTRUDE_X / 2.0
+    outer = _racetrack_wire_xy(P1, R1 + CHAIN_BAND_RADIAL / 2.0,
+                               P2, R2 + CHAIN_BAND_RADIAL / 2.0, z_face)
+    inner = _racetrack_wire_xy(P1, R1 - CHAIN_BAND_RADIAL / 2.0,
+                               P2, R2 - CHAIN_BAND_RADIAL / 2.0, z_face)
+    solid = _hollow_band_solid(outer, inner, Vector(0, 0, CHAIN_EXTRUDE_X))
+    obj = assembly.addObject("Part::Feature", name)
+    obj.Shape = solid
+    obj.Label = label or name
+    return obj
+
+
 def add_belt_loop(name, label=None):
     """Build belt envelope: extruded racetrack ring in XY plane,
     centered vertically on Z = DESK_HEIGHT (extruded ± BELT_WIDTH/2).
@@ -472,6 +614,42 @@ def add_belt_loop(name, label=None):
                                P2, R2 + BELT_THICKNESS, z_face)
     inner = _racetrack_wire_xy(P1, R1, P2, R2, z_face)
     solid = _hollow_band_solid(outer, inner, Vector(0, 0, BELT_WIDTH))
+    obj = assembly.addObject("Part::Feature", name)
+    obj.Shape = solid
+    obj.Label = label or name
+    return obj
+
+
+def add_square_frustum_block(name, base_x, base_y, top_x, top_y,
+                              height, center_xy, base_z, label=None):
+    """Build a SQUARE PYRAMIDAL FRUSTUM (truncated rectangular pyramid) solid.
+    Two horizontal rectangular wires are lofted: base at Z=base_z and top at
+    Z=base_z+height, both centered on center_xy (X,Y).
+    Wider base + narrower top — for the cast concrete BB-support block."""
+    cx, cy = center_xy
+    bhx = base_x / 2.0
+    bhy = base_y / 2.0
+    base_pts = [
+        Vector(cx - bhx, cy - bhy, base_z),
+        Vector(cx + bhx, cy - bhy, base_z),
+        Vector(cx + bhx, cy + bhy, base_z),
+        Vector(cx - bhx, cy + bhy, base_z),
+        Vector(cx - bhx, cy - bhy, base_z),
+    ]
+    base_wire = Part.makePolygon(base_pts)
+
+    thx = top_x / 2.0
+    thy = top_y / 2.0
+    top_z = base_z + height
+    top_pts = [
+        Vector(cx - thx, cy - thy, top_z),
+        Vector(cx + thx, cy - thy, top_z),
+        Vector(cx + thx, cy + thy, top_z),
+        Vector(cx - thx, cy + thy, top_z),
+        Vector(cx - thx, cy - thy, top_z),
+    ]
+    top_wire = Part.makePolygon(top_pts)
+    solid = Part.makeLoft([base_wire, top_wire], True, False)  # solid=True, ruled=False
     obj = assembly.addObject("Part::Feature", name)
     obj.Shape = solid
     obj.Label = label or name
@@ -562,18 +740,62 @@ add_box(
     label="FrameRail_Right"
 )
 
-# --- Diagonal brace (BB area → back rail centerline) ---
-# Single tube, X=0 centerline. Carries pedal-load bending forces from
-# the BB up into the rear of the frame structure. Donor-bike-typical OD
-# (~30 mm) and length determined by start/end points; if a real donor
-# is selected, swap dimensions and the geometry follows.
-brace_start = Vector(0, CRANK_Y, CRANK_Z)
-brace_end = Vector(0,
-                   leg_y_back + LEG_DIA / 2.0,
-                   rail_bottom_z + RAIL_HEIGHT / 2.0)
+# --- Session 10: BB ground-anchored support (replaces Downtube_Brace) ---
+# Four pieces — see constants block above for the engineering rationale:
+#   (a) ConcreteBlock_Anchor — floor-resting block, post mounting plate sits on top
+#   (b) GroundPost_Main      — fat 50mm post, block-top → above BB
+#   (c) BB_SplitCollar       — clamp wrapping full BB shell circumference
+#   (d) GroundPost_DiagonalStrut — diagonal post-base → BB front, makes a truss
+
+# (a) Concrete block: pyramidal frustum, wider base, narrow top.
+# Centered in X on post centerline (X=0), centered in Y on post centerline
+# (Y = CRANK_Y + GROUND_POST_OFFSET_Y), sitting on floor.
+block_center_y = CRANK_Y + GROUND_POST_OFFSET_Y
+add_square_frustum_block(
+    "ConcreteBlock_Anchor",
+    CONCRETE_BLOCK_BASE_X, CONCRETE_BLOCK_BASE_Y,
+    CONCRETE_BLOCK_TOP_X, CONCRETE_BLOCK_TOP_Y,
+    CONCRETE_BLOCK_Z_HEIGHT,
+    (0.0, block_center_y), 0.0,
+    label=(
+        f"ConcreteBlock_Anchor_cast_frustum_"
+        f"base{int(CONCRETE_BLOCK_BASE_X)}x{int(CONCRETE_BLOCK_BASE_Y)}_"
+        f"top{int(CONCRETE_BLOCK_TOP_X)}x{int(CONCRETE_BLOCK_TOP_Y)}_"
+        f"h{int(CONCRETE_BLOCK_Z_HEIGHT)}_pedal_clearance_aware"
+    )
+)
+
+# (b) Main vertical post: from block top up to past the BB.
+post_top_z = CRANK_Z + GROUND_POST_TOP_Z_OVER_BB
+post_height = post_top_z - CONCRETE_BLOCK_Z_HEIGHT
+add_cyl_z(
+    "GroundPost_Main",
+    GROUND_POST_OD, post_height,
+    Vector(0.0, block_center_y, CONCRETE_BLOCK_Z_HEIGHT),
+    label=f"GroundPost_Main_OD{int(GROUND_POST_OD)}_h{int(post_height)}_steel_tube"
+)
+
+# (c) Split-collar clamp wrapping the BB shell. Modeled as a short cylinder
+# along world X axis, centered on the BB axle. Real component is a two-piece
+# bolted clamp; here it's a solid stand-in showing volume + position.
+collar = assembly.addObject("Part::Cylinder", "BB_SplitCollar")
+collar.Radius = BB_CLAMP_OD / 2.0
+collar.Height = BB_CLAMP_LENGTH
+# Rotate local +Z to world +X, then position so the collar is X-centered on 0
+collar.Placement = App.Placement(
+    Vector(-BB_CLAMP_LENGTH / 2.0, CRANK_Y, CRANK_Z),
+    App.Rotation(Vector(0, 1, 0), 90)
+)
+collar.Label = f"BB_SplitCollar_OD{int(BB_CLAMP_OD)}_L{int(BB_CLAMP_LENGTH)}_wraps_full_shell"
+
+# (d) Diagonal strut: from post base (at block-top height) up to a point
+# 50mm forward of the BB axle. Forms a triangle with the vertical post —
+# main post sees compression, strut sees tension, BB joint sees axial only.
+strut_start = Vector(0.0, block_center_y, CONCRETE_BLOCK_Z_HEIGHT)
+strut_end = Vector(0.0, CRANK_Y + STRUT_FORWARD_OFFSET_Y, CRANK_Z)
 add_diagonal_brace(
-    "Downtube_Brace", brace_start, brace_end, DOWNTUBE_OUTER_DIA,
-    label="Downtube_Brace_BB_to_BackRail_donor_bike_OD"
+    "GroundPost_DiagonalStrut", strut_start, strut_end, STRUT_OD,
+    label=f"GroundPost_DiagonalStrut_OD{int(STRUT_OD)}_truss_anti_bending"
 )
 
 # --- Crank/BB shaft (App::Link, axis X) ---
@@ -609,27 +831,82 @@ add_link_axis_x(
     label=f"Stage1Cog_Link_13T_at_X{int(CHAIN_PLANE_X)}"
 )
 
-# --- Right-angle drive placeholder block ---
-ra_y_min = min(JACKSHAFT_Y, BELT_CENTERLINE_Y)
-ra_y_max = max(JACKSHAFT_Y, BELT_CENTERLINE_Y)
-ra_y_depth = (ra_y_max - ra_y_min) + 40.0
-add_box(
-    "RA_Drive_Placeholder",
-    RA_DRIVE_X_HALF * 2.0, ra_y_depth, RA_DRIVE_Z_HEIGHT,
-    Vector(DRIVE_X - RA_DRIVE_X_HALF,
-           ra_y_min - 20.0,
-           RA_DRIVE_Z_BOTTOM),
-    label="RA_Drive_PLACEHOLDER_BevelGearOrSpiralBevel_TBD_spec_required"
+# --- Session 10 Q2 (real gears): visible bevel-gear pair via App::Link ---
+# Both gears App::Link to parts/bevel_gear.FCStd (16T module-3 involute
+# straight bevel — see macro 10). 1:1 ratio means both gears are identical;
+# placement differs only in orientation.
+#
+# Source-part frame (bevel_gear.FCStd, reset_origin=True):
+#   Local Z=0     large (outer/heel) face — at the local origin
+#   Local Z=H     small (inner/toe) face  — at H = BEVEL_GEAR_HEIGHT (8)
+#   Local Z=apex  extrapolated apex       — at BEVEL_GEAR_APEX_DISTANCE (24)
+# We orient each gear so its apex sits on the world meeting point.
+
+bevel_meeting_pt = Vector(BEVEL_MEETING_X, BEVEL_MEETING_Y, BEVEL_MEETING_Z)
+
+# --- BevelGear_Input: cone axis along world +X (jackshaft direction) ---
+# Apex points in +X (toward meeting_x). Body extends back in -X.
+# Rotation: local +Z → world +X  (= -90° rotation about world +Y).
+bevel_input_link = assembly.addObject("App::Link", "BevelGear_Input")
+bevel_input_link.LinkedObject = PART_BODIES["bevel_gear"]
+bevel_input_link.Placement = App.Placement(
+    Vector(BEVEL_MEETING_X - BEVEL_GEAR_APEX_DISTANCE,
+           BEVEL_MEETING_Y, BEVEL_MEETING_Z),
+    App.Rotation(Vector(0, 1, 0), -90)
+)
+bevel_input_link.Label = (
+    f"BevelGear_Input_real_involute_16T_m{int(BEVEL_GEAR_MODULE)}_axisX_jackshaft"
+)
+
+# --- BevelGear_Output: cone axis along world +Z (vertical) ---
+# Apex points in -Z (downward, toward meeting_z). Body extends UP in +Z
+# from meeting_pt, so the vertical bevel-output shaft sits ABOVE the gear.
+# Rotation: local +Z → world -Z  (= 180° rotation about world +X).
+bevel_output_link = assembly.addObject("App::Link", "BevelGear_Output")
+bevel_output_link.LinkedObject = PART_BODIES["bevel_gear"]
+bevel_output_link.Placement = App.Placement(
+    Vector(BEVEL_MEETING_X, BEVEL_MEETING_Y,
+           BEVEL_MEETING_Z + BEVEL_GEAR_APEX_DISTANCE),
+    App.Rotation(Vector(1, 0, 0), 180)
+)
+bevel_output_link.Label = (
+    f"BevelGear_Output_real_involute_16T_m{int(BEVEL_GEAR_MODULE)}_axisZ_vert_shaft"
+)
+
+# --- Bevel-output vertical shaft (App::Link to intermediate_shaft, axis Z) ---
+# 12mm OD donor stock, anchored just above the bevel output gear's large
+# face (at BEVEL_MEETING_Z + APEX_DISTANCE), extending up past stage2_large.
+bevel_out_shaft_z_base = BEVEL_MEETING_Z + BEVEL_GEAR_APEX_DISTANCE
+add_link_axis_z(
+    "BevelOutputShaft_Link", "intermediate_shaft",
+    Vector(BEVEL_OUT_SHAFT_X, BEVEL_OUT_SHAFT_Y, bevel_out_shaft_z_base),
+    label="BevelOutputShaft_Link_150mm_donor_stock_axis_Z_carries_stage2_large"
+)
+
+# --- Stage 2 large sprocket (App::Link, axis Z, on bevel-output shaft) ---
+stage2_large_z_base = CHAIN2_PLANE_Z - native_h("stage2_large") / 2.0
+add_link_axis_z(
+    "Stage2Large_Link", "stage2_large",
+    Vector(BEVEL_OUT_SHAFT_X, BEVEL_OUT_SHAFT_Y, stage2_large_z_base),
+    label=f"Stage2Large_Link_25T_axisZ_at_chain2_plane_Z{int(CHAIN2_PLANE_Z)}"
+)
+
+# --- Stage 2 pinion (App::Link, axis Z, on grinder shaft) ---
+stage2_pinion_z_base = CHAIN2_PLANE_Z - native_h("stage2_pinion") / 2.0
+add_link_axis_z(
+    "Stage2Pinion_Link", "stage2_pinion",
+    Vector(DRIVE_X, BELT_CENTERLINE_Y, stage2_pinion_z_base),
+    label=f"Stage2Pinion_Link_8T_axisZ_at_chain2_plane_Z{int(CHAIN2_PLANE_Z)}"
 )
 
 # --- Vertical drive shaft (App::Link, axis Z) ---
-# Anchored at JACKSHAFT_Z (bevel-box output level), extends 150 mm up.
-# Falls short of belt plane (Z=DESK_HEIGHT) — gap is intentional;
-# real shaft will be cut to length when fabricated.
+# Anchored at chain2 plane so it visually connects stage2_pinion → drive pulley.
+# 150mm donor stock — reaches partway toward the desk-top pulley; real shaft
+# will be cut to fit when fabricated.
 add_link_axis_z(
     "VerticalDriveShaft_Link", "grinder_shaft",
-    Vector(DRIVE_X, BELT_CENTERLINE_Y, JACKSHAFT_Z),
-    label="VerticalDriveShaft_Link_150mm_donor_stock_axis_Z"
+    Vector(DRIVE_X, BELT_CENTERLINE_Y, CHAIN2_PLANE_Z),
+    label="VerticalDriveShaft_Link_150mm_donor_stock_axis_Z_chain2_to_pulley"
 )
 
 # --- Drive pulley (App::Link, axis Z, straddles desk top) ---
@@ -658,10 +935,16 @@ add_link_axis_z(
     label="IdlerShaft_Link_80mm_donor_stock_axis_Z"
 )
 
-# --- Chain loop (visualization solid) ---
+# --- Chain loop 1 (visualization solid — chainring → stage1_cog) ---
 add_chain_loop(
     "ChainLoop",
     label=f"ChainLoop_chainring_to_stage1_cog_at_X{int(CHAIN_PLANE_X)}"
+)
+
+# --- Chain loop 2 (visualization solid — stage2_large → stage2_pinion) ---
+add_chain_loop_2(
+    "ChainLoop2",
+    label=f"ChainLoop2_stage2_large_to_stage2_pinion_at_Z{int(CHAIN2_PLANE_Z)}"
 )
 
 # --- Belt loop (visualization solid) ---
@@ -688,6 +971,18 @@ add_box(
 # Recompute and report
 # ====================================================================
 assembly.recompute()
+
+# Verify drivetrain ratio still hits the 10:1 target after Session-10 changes
+stage1_ratio = CHAINRING_TEETH / float(COG_TEETH)
+bevel_ratio = 1.0  # 1:1 bevel pair
+stage2_ratio = STAGE2_LARGE_TEETH / float(STAGE2_PINION_TEETH)
+total_ratio = stage1_ratio * bevel_ratio * stage2_ratio
+ratio_status = "OK" if abs(total_ratio - TOTAL_RATIO_TARGET) / TOTAL_RATIO_TARGET < 0.05 else "MISMATCH"
+App.Console.PrintMessage(
+    f"Drivetrain ratio check: stage1={stage1_ratio:.3f} × bevel={bevel_ratio:.2f} "
+    f"× stage2={stage2_ratio:.3f} = {total_ratio:.3f}  "
+    f"(target {TOTAL_RATIO_TARGET:.2f})  [{ratio_status}]\n"
+)
 
 App.Console.PrintMessage(
     "\n"
@@ -721,10 +1016,26 @@ App.Console.PrintMessage(
     f"  Chain span (chainring↔cog): "
     f"{math.hypot(JACKSHAFT_Y-CRANK_Y, JACKSHAFT_Z-CRANK_Z):.1f} mm\n"
     "================================================================\n"
-    "REMINDER: RA_Drive_Placeholder is a SPATIAL RESERVATION + LABEL.\n"
-    "Real bevel/spiral-bevel right-angle gearbox still to be spec'd.\n"
+    "REMINDER: bevel gears are REAL INVOLUTE TEETH via freecad.gears workbench\n"
+    "(macro 10 builds parts/bevel_gear.FCStd). Straight bevel, 16T module-3,\n"
+    "45° pitch angle — both App::Links to the same source part (1:1 mesh).\n"
     "Shaft App::Links are 140-150mm donor-stock symbols — visible gaps\n"
     "between sprockets and shaft ends are intentional; real shafts get\n"
     "cut to assembly span at fabrication.\n"
+    "----------------------------------------------------------------\n"
+    f"  Session-10 Q2 — real bevel pair + restored stage 2 chain:\n"
+    f"    BevelGear_Input         apex@({BEVEL_MEETING_X:.0f},{BEVEL_MEETING_Y:.0f},{BEVEL_MEETING_Z:.0f}) axisX  16T m{BEVEL_GEAR_MODULE:.1f} pitch_dia={BEVEL_GEAR_MODULE*BEVEL_GEAR_TEETH:.0f}\n"
+    f"    BevelGear_Output        apex@({BEVEL_MEETING_X:.0f},{BEVEL_MEETING_Y:.0f},{BEVEL_MEETING_Z:.0f}) axisZ  16T m{BEVEL_GEAR_MODULE:.1f} pitch_dia={BEVEL_GEAR_MODULE*BEVEL_GEAR_TEETH:.0f}\n"
+    f"    BevelOutputShaft_Link   12mm OD donor symbol  axisZ at (X={BEVEL_OUT_SHAFT_X:.0f}, Y={BEVEL_OUT_SHAFT_Y:.0f})\n"
+    f"    Stage2Large_Link        25T  axisZ at (X={BEVEL_OUT_SHAFT_X:.0f}, Y={BEVEL_OUT_SHAFT_Y:.0f}, Z={CHAIN2_PLANE_Z:.0f})\n"
+    f"    Stage2Pinion_Link       8T   axisZ at (X={DRIVE_X:.0f}, Y={BELT_CENTERLINE_Y:.0f}, Z={CHAIN2_PLANE_Z:.0f})\n"
+    f"    ChainLoop2              horizontal at Z={CHAIN2_PLANE_Z:.0f}\n"
+    f"    Drivetrain ratio        {stage1_ratio:.3f} × {bevel_ratio:.2f} × {stage2_ratio:.3f} = {total_ratio:.3f}  [{ratio_status}]\n"
+    "----------------------------------------------------------------\n"
+    f"  Session-10 BB ground support (cast frustum block + truss):\n"
+    f"    ConcreteBlock_Anchor    base {CONCRETE_BLOCK_BASE_X:.0f}×{CONCRETE_BLOCK_BASE_Y:.0f}  top {CONCRETE_BLOCK_TOP_X:.0f}×{CONCRETE_BLOCK_TOP_Y:.0f}  h={CONCRETE_BLOCK_Z_HEIGHT:.0f}  (~32 kg cast)\n"
+    f"    GroundPost_Main         OD={GROUND_POST_OD:.0f} h={post_top_z - CONCRETE_BLOCK_Z_HEIGHT:.0f}  at (X=0, Y={block_center_y:.0f})\n"
+    f"    BB_SplitCollar          OD={BB_CLAMP_OD:.0f} L={BB_CLAMP_LENGTH:.0f}  wraps BB shell axis-X\n"
+    f"    GroundPost_DiagonalStrut OD={STRUT_OD:.0f}  post-base → BB front  (truss)\n"
     "================================================================\n"
 )

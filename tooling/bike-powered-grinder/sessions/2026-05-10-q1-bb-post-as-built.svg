@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" font-family="system-ui, sans-serif">
+  <!-- Side view from rider's right (looking from +X toward -X). World: +Y rightward (forward, toward desk), +Z upward.
+       Origin at floor under rider's seat. Scale 1mm = 0.5px. SVG x = 150 + Y*0.5; SVG y = 620 - Z*0.5. -->
+
+  <rect width="1100" height="700" fill="#fafafa"/>
+
+  <text x="550" y="34" font-size="22" font-weight="700" text-anchor="middle" fill="#222">BB ground support — AS BUILT (Session 10, decision = B + bending mitigations)</text>
+  <text x="550" y="58" font-size="14" text-anchor="middle" fill="#555">Side view from rider's right. Pedals are at X=±170 (in/out of page) so they don't intersect anything drawn here.</text>
+
+  <!-- Floor -->
+  <line x1="40" y1="620" x2="1060" y2="620" stroke="#8a7a5c" stroke-width="3"/>
+  <pattern id="ground" width="20" height="20" patternUnits="userSpaceOnUse">
+    <line x1="0" y1="0" x2="20" y2="20" stroke="#c9b894" stroke-width="1"/>
+  </pattern>
+  <rect x="40" y="620" width="1020" height="60" fill="url(#ground)" opacity="0.7"/>
+  <text x="50" y="675" font-size="12" fill="#8a7a5c">FLOOR (Z=0)</text>
+
+  <!-- Desk top: top at Z=762 (current desk_height). Desk depth 610 — top runs Y=0..610 -->
+  <!-- y_top = 620 - 762*0.5 = 239; y_bottom = 239 + 15 (thickness illustrative) -->
+  <rect x="150" y="239" width="305" height="20" fill="#5b4a30" opacity="0.9"/>
+  <text x="300" y="232" font-size="12" text-anchor="middle" fill="#5b4a30">Desk top (Z = 762 mm)</text>
+
+  <!-- Desk legs (front Y=25, back Y~585) -->
+  <rect x="158" y="259" width="14" height="361" fill="#5b4a30"/>
+  <rect x="438" y="259" width="14" height="361" fill="#5b4a30"/>
+  <text x="165" y="635" font-size="10" fill="#5b4a30">front leg</text>
+  <text x="443" y="635" font-size="10" fill="#5b4a30">back leg</text>
+
+  <!-- Rider seat -->
+  <rect x="60" y="395" width="80" height="14" fill="#d4a017"/>
+  <line x1="65" y1="409" x2="65" y2="620" stroke="#888" stroke-width="2"/>
+  <line x1="135" y1="409" x2="135" y2="620" stroke="#888" stroke-width="2"/>
+  <text x="100" y="385" font-size="12" text-anchor="middle" fill="#a07810">RIDER (school chair)</text>
+
+  <!-- Stick figure -->
+  <circle cx="100" cy="360" r="14" fill="#fff" stroke="#444" stroke-width="2"/>
+  <line x1="100" y1="374" x2="100" y2="420" stroke="#444" stroke-width="2"/>
+  <line x1="100" y1="410" x2="180" y2="455" stroke="#444" stroke-width="2"/>
+  <line x1="180" y1="455" x2="275" y2="475" stroke="#444" stroke-width="2"/>
+
+  <!-- Pedal swing path (dashed) -->
+  <circle cx="275" cy="475" r="85" fill="none" stroke="#cc7733" stroke-width="1.2" stroke-dasharray="6 4"/>
+  <text x="275" y="395" font-size="10" text-anchor="middle" fill="#cc7733">pedal swing path (in/out of page)</text>
+
+  <!-- ============== As-built parts ============== -->
+
+  <!-- (a) Concrete block: 200x200x150, centered on (X=0, Y=200) at Z=0..150
+       Y=200 in SVG: x = 150 + 200*0.5 = 250. Block Y extends Y=100..300, so SVG x=200..300.
+       Block Z=0..150, SVG y=620..545. -->
+  <rect x="200" y="545" width="100" height="75" fill="#a8a8a8" stroke="#333" stroke-width="1.5"/>
+  <pattern id="concrete" width="10" height="10" patternUnits="userSpaceOnUse">
+    <circle cx="2" cy="2" r="1" fill="#7a7a7a"/>
+    <circle cx="7" cy="6" r="1" fill="#7a7a7a"/>
+  </pattern>
+  <rect x="200" y="545" width="100" height="75" fill="url(#concrete)" opacity="0.5"/>
+
+  <!-- (b) GroundPost_Main: OD=50, at X=0, Y=200, Z=150..350. SVG x=237..262 (centered on 250), y=545..445 -->
+  <rect x="237" y="445" width="25" height="100" fill="#5d6c7a" stroke="#222" stroke-width="1.5"/>
+
+  <!-- (c) BB_SplitCollar: OD=60 along X, length 40 along X. From the side view (looking down X axis),
+       the collar appears as a circle of OD=60 centered on the BB. Draw as a beefy ring around the BB shell. -->
+  <circle cx="275" cy="475" r="30" fill="none" stroke="#c44" stroke-width="6" opacity="0.85"/>
+  <!-- BB shell itself (smaller, inside the collar) -->
+  <circle cx="275" cy="475" r="20" fill="#bbb" stroke="#333" stroke-width="1.5"/>
+  <circle cx="275" cy="475" r="6" fill="#333"/>
+
+  <!-- (d) GroundPost_DiagonalStrut: from (X=0, Y=200, Z=150) to (X=0, Y=300, Z=290). SVG (250, 545)→(300, 475).
+       Draw as a 30 OD tube along that diagonal. -->
+  <line x1="250" y1="545" x2="300" y2="475" stroke="#3a7a4a" stroke-width="14" opacity="0.9"/>
+  <line x1="250" y1="545" x2="300" y2="475" stroke="#1e9c48" stroke-width="10"/>
+
+  <!-- BB labels -->
+  <text x="275" y="441" font-size="11" font-weight="700" text-anchor="middle" fill="#222">BB shell</text>
+  <text x="275" y="427" font-size="10" text-anchor="middle" fill="#555">(Y=250, Z=290)</text>
+
+  <!-- ============== Callouts ============== -->
+
+  <!-- Concrete block callout -->
+  <line x1="250" y1="582" x2="700" y2="600" stroke="#444" stroke-width="1"/>
+  <text x="710" y="595" font-size="14" font-weight="700" fill="#444">ConcreteBlock_Anchor</text>
+  <text x="710" y="612" font-size="11" fill="#666">200 × 200 × 150 mm — DEFAULT (Q3 still open)</text>
+
+  <!-- Main post callout -->
+  <line x1="265" y1="495" x2="700" y2="495" stroke="#5d6c7a" stroke-width="1.5"/>
+  <text x="710" y="488" font-size="14" font-weight="700" fill="#3a4a5a">GroundPost_Main</text>
+  <text x="710" y="505" font-size="11" fill="#666">OD = 50 mm steel tube · h = 200 mm · extends 60 mm above BB</text>
+
+  <!-- Split-collar callout -->
+  <line x1="305" y1="445" x2="700" y2="395" stroke="#c44" stroke-width="1.5"/>
+  <text x="710" y="390" font-size="14" font-weight="700" fill="#a23030">BB_SplitCollar</text>
+  <text x="710" y="407" font-size="11" fill="#666">OD = 60 mm · L = 40 mm · wraps full BB shell circumference</text>
+
+  <!-- Strut callout -->
+  <line x1="285" y1="510" x2="700" y2="540" stroke="#1e9c48" stroke-width="1.5"/>
+  <text x="710" y="535" font-size="14" font-weight="700" fill="#176535">GroundPost_DiagonalStrut</text>
+  <text x="710" y="552" font-size="11" fill="#666">OD = 30 mm · post-base → BB-front · post sees compression, strut sees tension, BB joint axial-only</text>
+
+  <!-- Force diagram inset, top-right -->
+  <g transform="translate(820, 80)">
+    <rect x="0" y="0" width="240" height="170" fill="#fff" stroke="#999" stroke-width="1" rx="6"/>
+    <text x="120" y="20" font-size="13" font-weight="700" text-anchor="middle" fill="#333">Load path (truss)</text>
+    <!-- Mini diagram: BB at (180, 70), post-top at (60, 70), block at (60, 130), strut from (60, 130) to (180, 70) -->
+    <line x1="60" y1="70" x2="60" y2="130" stroke="#3a4a5a" stroke-width="6"/>
+    <line x1="60" y1="130" x2="180" y2="70" stroke="#1e9c48" stroke-width="4"/>
+    <circle cx="180" cy="70" r="8" fill="#bbb" stroke="#333"/>
+    <rect x="35" y="130" width="50" height="20" fill="#a8a8a8" stroke="#333"/>
+    <!-- Labels -->
+    <text x="55" y="100" font-size="10" text-anchor="end" fill="#3a4a5a">post (compression)</text>
+    <text x="125" y="115" font-size="10" fill="#1e9c48">strut (tension)</text>
+    <text x="195" y="60" font-size="10" fill="#666">BB</text>
+    <!-- Force arrow -->
+    <line x1="180" y1="40" x2="180" y2="65" stroke="#c44" stroke-width="2" marker-end="url(#arrowR)"/>
+    <text x="190" y="50" font-size="10" fill="#c44">pedal force</text>
+  </g>
+  <defs>
+    <marker id="arrowR" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <polygon points="0 0, 8 4, 0 8" fill="#c44"/>
+    </marker>
+  </defs>
+
+  <!-- Axes -->
+  <g transform="translate(60,640)">
+    <line x1="0" y1="20" x2="40" y2="20" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+    <line x1="0" y1="20" x2="0" y2="-20" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="46" y="25" font-size="11" fill="#333">+Y (forward)</text>
+    <text x="6" y="-25" font-size="11" fill="#333">+Z (up)</text>
+  </g>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <polygon points="0 0, 8 4, 0 8" fill="#333"/>
+    </marker>
+  </defs>
+</svg>

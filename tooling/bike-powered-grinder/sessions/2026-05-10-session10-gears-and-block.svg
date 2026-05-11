@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" font-family="system-ui, sans-serif">
+  <rect width="1200" height="760" fill="#fafafa"/>
+  <text x="600" y="32" font-size="22" font-weight="700" text-anchor="middle" fill="#222">Session 10 — Real involute bevel pair + cast pyramidal block</text>
+  <text x="600" y="56" font-size="13" text-anchor="middle" fill="#555">parts/bevel_gear.FCStd: 16T, module 3, 45° pitch angle, 20° pressure angle, 8mm face — straight bevel, FDM-printable</text>
+
+  <!-- ============================================================ -->
+  <!-- LEFT PANEL: top-down view of bevel pair meshing at 90°       -->
+  <!-- ============================================================ -->
+  <g transform="translate(0,80)">
+    <text x="280" y="0" font-size="14" font-weight="700" text-anchor="middle" fill="#222">Bevel pair — top-down view at the meeting point</text>
+    <text x="280" y="20" font-size="11" text-anchor="middle" fill="#666">Looking down -Z onto the world (300, 400, 450) apex.</text>
+
+    <!-- Coord box -->
+    <rect x="20" y="40" width="520" height="500" fill="#ffffff" stroke="#ddd"/>
+
+    <!-- INPUT GEAR (axis X, cone extends in -X from apex) — viewed from above as a TRIANGLE -->
+    <!-- Cone occupies X = 276..300 (-24..0 from apex); from above we see it as a triangle
+         widening in -X direction. -->
+    <g transform="translate(280, 290)">
+      <!-- Input gear triangle (cone seen from top) -->
+      <!-- Apex at center (0,0). Body extends LEFT (-X). Pitch radius at back = 24mm = 96 px (scale 4 px/mm). -->
+      <polygon points="0,0 -192,-96 -192,96" fill="#aaaaaa" stroke="#333" stroke-width="2"/>
+      <!-- Teeth indication: radial lines from apex through the back face -->
+      <g stroke="#222" stroke-width="0.5" fill="none">
+        <!-- 8 visible teeth shown across the back face (half of 16) -->
+        <line x1="0" y1="0" x2="-220" y2="-110"/>
+        <line x1="0" y1="0" x2="-225" y2="-82"/>
+        <line x1="0" y1="0" x2="-228" y2="-55"/>
+        <line x1="0" y1="0" x2="-230" y2="-27"/>
+        <line x1="0" y1="0" x2="-230" y2="0"/>
+        <line x1="0" y1="0" x2="-230" y2="27"/>
+        <line x1="0" y1="0" x2="-228" y2="55"/>
+        <line x1="0" y1="0" x2="-225" y2="82"/>
+        <line x1="0" y1="0" x2="-220" y2="110"/>
+      </g>
+      <!-- Tooth tips as small bumps at the back face arc -->
+      <g fill="#e8d28a" stroke="#222" stroke-width="0.5">
+        <circle cx="-220" cy="-110" r="3"/>
+        <circle cx="-225" cy="-82" r="3"/>
+        <circle cx="-228" cy="-55" r="3"/>
+        <circle cx="-230" cy="-27" r="3"/>
+        <circle cx="-230" cy="0" r="3"/>
+        <circle cx="-230" cy="27" r="3"/>
+        <circle cx="-228" cy="55" r="3"/>
+        <circle cx="-225" cy="82" r="3"/>
+        <circle cx="-220" cy="110" r="3"/>
+      </g>
+      <text x="-205" y="-130" font-size="12" font-weight="700" fill="#222" text-anchor="middle">BevelGear_Input</text>
+      <text x="-205" y="-114" font-size="10" fill="#666" text-anchor="middle">axis +X (jackshaft)</text>
+
+      <!-- OUTPUT GEAR (axis Z) seen from above — appears as a CIRCLE (we're looking down its axis) -->
+      <!-- Pitch circle at radius 24mm = 96px -->
+      <circle cx="0" cy="0" r="96" fill="#bcbcbc" stroke="#333" stroke-width="2"/>
+      <!-- 16 teeth around -->
+      <g fill="#e8d28a" stroke="#222" stroke-width="0.5">
+        <!-- Tooth tips evenly spaced around the addendum circle (r ≈ 100) -->
+        <circle cx="100" cy="0" r="3"/>
+        <circle cx="92.4" cy="38.3" r="3"/>
+        <circle cx="70.7" cy="70.7" r="3"/>
+        <circle cx="38.3" cy="92.4" r="3"/>
+        <circle cx="0" cy="100" r="3"/>
+        <circle cx="-38.3" cy="92.4" r="3"/>
+        <circle cx="-70.7" cy="70.7" r="3"/>
+        <circle cx="-92.4" cy="38.3" r="3"/>
+        <circle cx="-100" cy="0" r="3"/>
+        <circle cx="-92.4" cy="-38.3" r="3"/>
+        <circle cx="-70.7" cy="-70.7" r="3"/>
+        <circle cx="-38.3" cy="-92.4" r="3"/>
+        <circle cx="0" cy="-100" r="3"/>
+        <circle cx="38.3" cy="-92.4" r="3"/>
+        <circle cx="70.7" cy="-70.7" r="3"/>
+        <circle cx="92.4" cy="-38.3" r="3"/>
+      </g>
+      <!-- Radial tooth lines on output gear (visible from above) -->
+      <g stroke="#222" stroke-width="0.5" fill="none">
+        <line x1="0" y1="0" x2="100" y2="0"/>
+        <line x1="0" y1="0" x2="92.4" y2="38.3"/>
+        <line x1="0" y1="0" x2="70.7" y2="70.7"/>
+        <line x1="0" y1="0" x2="38.3" y2="92.4"/>
+        <line x1="0" y1="0" x2="0" y2="100"/>
+        <line x1="0" y1="0" x2="-38.3" y2="92.4"/>
+        <line x1="0" y1="0" x2="-70.7" y2="70.7"/>
+        <line x1="0" y1="0" x2="-92.4" y2="38.3"/>
+        <line x1="0" y1="0" x2="-100" y2="0"/>
+        <line x1="0" y1="0" x2="-92.4" y2="-38.3"/>
+        <line x1="0" y1="0" x2="-70.7" y2="-70.7"/>
+        <line x1="0" y1="0" x2="-38.3" y2="-92.4"/>
+        <line x1="0" y1="0" x2="0" y2="-100"/>
+        <line x1="0" y1="0" x2="38.3" y2="-92.4"/>
+        <line x1="0" y1="0" x2="70.7" y2="-70.7"/>
+        <line x1="0" y1="0" x2="92.4" y2="-38.3"/>
+      </g>
+      <text x="0" y="-115" font-size="12" font-weight="700" fill="#222" text-anchor="middle">BevelGear_Output</text>
+      <text x="0" y="-100" font-size="10" fill="#666" text-anchor="middle">axis +Z (vertical) — looking down the cone</text>
+
+      <!-- Apex point -->
+      <circle cx="0" cy="0" r="4" fill="#c44"/>
+      <text x="14" y="4" font-size="10" font-weight="700" fill="#c44">apex</text>
+
+      <!-- Mesh point arrow -->
+      <line x1="-100" y1="-3" x2="-95" y2="0" stroke="#1a7" stroke-width="2"/>
+      <line x1="-100" y1="3" x2="-95" y2="0" stroke="#1a7" stroke-width="2"/>
+      <text x="-130" y="-15" font-size="10" font-weight="700" fill="#1a7">teeth mesh here</text>
+    </g>
+
+    <!-- Spec box, bottom-left -->
+    <g transform="translate(40, 460)">
+      <rect width="480" height="70" fill="#f5f1e8" stroke="#c9b894"/>
+      <text x="10" y="20" font-size="11" font-weight="700" fill="#333">Gear spec (parts/bevel_gear.FCStd, both App::Linked instances)</text>
+      <text x="10" y="38" font-size="10" fill="#555">module 3.0 mm · 16 teeth · pitch_dia 48 mm · pitch_angle 45° · pressure 20° · height 8 mm · backlash 0.10 · straight (β=0°)</text>
+      <text x="10" y="56" font-size="10" fill="#555">apex distance = 24 mm · ratio 1:1 (chain stages do all reduction) · ratio check 3.231 × 1.00 × 3.125 = 10.10 ✓</text>
+    </g>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- RIGHT PANEL: side view of new cast pyramidal-frustum block   -->
+  <!-- ============================================================ -->
+  <g transform="translate(620, 80)">
+    <text x="280" y="0" font-size="14" font-weight="700" text-anchor="middle" fill="#222">Cast concrete block — wider base, narrow top</text>
+    <text x="280" y="20" font-size="11" text-anchor="middle" fill="#666">Side view from rider's right (+X). Pedal swing path is at X=±170 (in/out of page).</text>
+
+    <rect x="20" y="40" width="520" height="500" fill="#ffffff" stroke="#ddd"/>
+
+    <!-- World coord scale: 0.7 px per mm, origin (Y=0, Z=0) at SVG (40, 440). -->
+    <!-- Y world (mm) → SVG x: x = 40 + Y*0.7;   Z world (mm) → SVG y: y = 440 - Z*0.7 -->
+
+    <!-- Floor -->
+    <line x1="30" y1="440" x2="540" y2="440" stroke="#8a7a5c" stroke-width="2"/>
+    <pattern id="ground2" width="15" height="15" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="15" y2="15" stroke="#c9b894" stroke-width="1"/>
+    </pattern>
+    <rect x="30" y="440" width="510" height="30" fill="url(#ground2)" opacity="0.7"/>
+
+    <!-- Rider seat -->
+    <rect x="20" y="290" width="56" height="10" fill="#d4a017"/>
+    <text x="48" y="285" font-size="9" text-anchor="middle" fill="#a07810">SEAT</text>
+
+    <!-- BB at world (Y=250, Z=290) → SVG (40+175, 440-203) = (215, 237) -->
+    <circle cx="215" cy="237" r="16" fill="none" stroke="#c44" stroke-width="4"/>
+    <circle cx="215" cy="237" r="11" fill="#bbb" stroke="#333" stroke-width="1.5"/>
+    <circle cx="215" cy="237" r="4" fill="#333"/>
+    <text x="215" y="212" font-size="11" font-weight="700" text-anchor="middle" fill="#222">BB shell</text>
+    <text x="215" y="200" font-size="9" text-anchor="middle" fill="#666">Y=250, Z=290</text>
+
+    <!-- Pedal circle (r=170 → 119px) -->
+    <circle cx="215" cy="237" r="119" fill="none" stroke="#cc7733" stroke-width="1.2" stroke-dasharray="5 3"/>
+    <text x="215" y="120" font-size="9" text-anchor="middle" fill="#cc7733">pedal arc (in/out of page)</text>
+
+    <!-- ============== Cast concrete pyramidal frustum ============== -->
+    <!-- Block centered on (Y=200, X=0), base 240×400 (X×Y), top 200×200, h=200.
+         In side view (looking from +X toward -X): we see the Y×Z silhouette.
+         Y range: base 0..400, top 100..300. Z range: 0..200.
+         SVG: base x = 40+0*0.7=40 to 40+400*0.7=320, base y = 440 (floor).
+              top  x = 40+100*0.7=110 to 40+300*0.7=250, top y = 440-200*0.7=300.
+    -->
+    <polygon points="40,440 320,440 250,300 110,300" fill="#a8a8a8" stroke="#333" stroke-width="1.5"/>
+    <pattern id="concrete2" width="12" height="12" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="3" r="1" fill="#7a7a7a"/>
+      <circle cx="8" cy="7" r="1" fill="#7a7a7a"/>
+      <circle cx="5" cy="10" r="0.8" fill="#7a7a7a"/>
+    </pattern>
+    <polygon points="40,440 320,440 250,300 110,300" fill="url(#concrete2)" opacity="0.55"/>
+
+    <!-- Block label callout -->
+    <line x1="180" y1="370" x2="430" y2="380" stroke="#444" stroke-width="1"/>
+    <text x="430" y="375" font-size="11" font-weight="700" fill="#444">ConcreteBlock_Anchor (cast)</text>
+    <text x="430" y="392" font-size="9" fill="#666">base 240 (X) × 400 (Y) · top 200 × 200 · height 200</text>
+    <text x="430" y="406" font-size="9" fill="#666">volume ≈ 0.013 m³ · mass ≈ 32 kg concrete</text>
+    <text x="430" y="420" font-size="9" fill="#666">X-width capped at 240 for pedal/foot clearance (~140 mm inner foot edge)</text>
+
+    <!-- Main post (Y=200, Z=200..350) → SVG (180, 300..335) — but post starts at block TOP -->
+    <rect x="172" y="300" width="16" height="35" fill="#5d6c7a" stroke="#222" stroke-width="1"/>
+    <!-- Post extends above BB to Z=350 → SVG y = 440-245 = 195 — but the visible part runs from block top (300) up to BB (237) and beyond. Let me redraw correctly. -->
+    <!-- Block top at SVG y=300. Post top at world Z=350 → SVG y = 440 - 245 = 195. Post visible from y=195 to y=300. -->
+    <rect x="172" y="195" width="16" height="105" fill="#5d6c7a" stroke="#222" stroke-width="1.5"/>
+    <line x1="190" y1="240" x2="430" y2="230" stroke="#444" stroke-width="1"/>
+    <text x="430" y="225" font-size="11" font-weight="700" fill="#3a4a5a">GroundPost_Main</text>
+    <text x="430" y="240" font-size="9" fill="#666">OD 50 · h 150 · top at Z=350 (60 above BB)</text>
+
+    <!-- Diagonal strut from post base (Y=200, Z=200) to BB front (Y=300, Z=290) -->
+    <!-- Post base: SVG (180, 300). BB front: world (Y=300, Z=290) → SVG (40+210, 440-203) = (250, 237) -->
+    <line x1="180" y1="300" x2="250" y2="237" stroke="#1e9c48" stroke-width="9"/>
+    <line x1="245" y1="245" x2="450" y2="280" stroke="#444" stroke-width="1"/>
+    <text x="450" y="278" font-size="11" font-weight="700" fill="#176535">GroundPost_DiagonalStrut</text>
+    <text x="450" y="294" font-size="9" fill="#666">OD 30 truss — converts cantilever to axial loads</text>
+
+    <!-- Pedal clearance annotation -->
+    <text x="60" y="500" font-size="10" font-weight="700" fill="#333">Clearance check (the design constraint):</text>
+    <text x="60" y="514" font-size="9" fill="#555">• Pedal arc at X=±170 (out of plane) — block at X=±120 → 50 mm clear</text>
+    <text x="60" y="527" font-size="9" fill="#555">• Foot inner edge at X≈140 (ankle-side of pedal) → 20 mm clear vs block edge</text>
+  </g>
+</svg>
