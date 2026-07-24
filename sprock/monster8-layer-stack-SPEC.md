@@ -121,6 +121,38 @@ session. Must be read before the first boolean of session 7.
 
 ---
 
+## Toolchain facts (verified this session)
+
+**blender-mcp addon 1.2 works on Blender 5.0. It does NOT work on 5.1.**
+On 5.1 the bridge connects — port 9876 opens, "Running on port 9876" shows —
+and then every command times out, including `execute_blender_code`. It looks
+connected while doing nothing, which is worse than a clean failure.
+
+Confirmed upstream: `ahujasid/blender-mcp` issue **#243** (open, filed
+2026-05-01, Windows 11, addon 1.2, server 1.5.6) reports the identical
+symptom. Issue **#185** (open since February) notes the `"blender": (3, 0, 0)`
+in `bl_info` is untested and unverified. **Isaiah's 5.0-vs-5.1 result is
+better compatibility data than the repo currently has.**
+
+→ Run the bridge on **Blender 5.0**.
+
+**File-version trap.** `monster8_blockout.blend` is a Blender 5.x file.
+Blender opens older files reliably; it does NOT reliably open newer ones.
+Combined with the save-on-quit-over-the-same-file habit, opening a 5.1 file
+in 5.0 can silently drop data and then overwrite the only good copy on exit.
+
+Check first, no Python needed: open the .blend in Notepad — the first line
+reads `BLENDER-v` plus three digits. `v500` = 5.0 (safe). `v501` = 5.1 (copy
+the file before Blender touches it). Close Notepad without saving.
+
+Copy before opening, either way.
+
+**Not usable for this file:** a headless Blender 4.0.2 (Ubuntu apt build,
+Cycles CPU, `use_denoising = False` — that build ships without
+OpenImageDenoise). Renders fine, far too old for a 5.x file.
+
+---
+
 ## Working rules that carry
 
 - Everything stays separate objects.
