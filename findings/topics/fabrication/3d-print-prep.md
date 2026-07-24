@@ -1,5 +1,11 @@
 # 3D Print Preparation (For Clay / Mold Workflows)
 
+> ⚠️ **STATUS UPDATE (2026-07-24): the shellac pipeline below FAILED in practice.**
+> Isaiah reports the print → shellac → clay → mold workflow did not hold up when actually run.
+> Failure mode not yet documented (which stage failed, how it showed up) — pending debrief.
+> Until then, treat everything below as research history, NOT a validated workflow.
+> The "Winner: SHELLAC" conclusion is theory that did not survive contact with the bench.
+
 Cross-cutting research on what to do between pulling a 3D print off the bed and using it as a master in The Gem's hardscape pipeline. Three Threads converged on this topic in different excavation passes.
 
 ---
