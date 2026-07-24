@@ -190,28 +190,60 @@ Two real bugs found while proving that, worth not repeating:
 
 ---
 
-## 8. THE ONE BLANK — the layer stack
+## 8. STACK_S7 — the layer stack (SPECIFIED)
 
-Still unanswered. `erosion_rock.STACK_B2` is a Claude invention with no
-authority and must be **replaced**, not tuned toward.
+Replaces the invented `STACK_B2`. This is **anatomy, therefore machine work**
+(doctrine #1) — it is not Isaiah's to guess. Given as fractions of total
+height so it rescales without redesign.
 
-| # | Bed name | Thickness | Hardness (1 = rots out, 5 = holds) | Notes |
+| # | Bed | Frac of H | Hardness | Lithology / role |
 |---|---|---|---|---|
-| 1 | | | | |
-| 2 | | | | |
-| 3 | | | | |
-| 4 | | | | |
+| 1 | `B1_basal_massive` | 0.20 | **5** | well-cemented grainstone — floor + plinth |
+| 2 | `B2_marl_weak` | 0.12 | **1** | argillaceous marl — **THE ROTTEN ONE**, becomes the gallery |
+| 3 | `B3_massive_cap` | 0.22 | **5** | massive, well-cemented — the overhang that collapses into the mouth |
+| 4 | `B4_medium_bedded` | 0.18 | **3** | ordinary biomicrite |
+| 5 | `B5_marl_parting` | 0.08 | **2** | thin marly parting — a ledge, not a collapse |
+| 6 | `B6_crest_jointed` | 0.20 | **4** | crest bed, takes the vertical joint — rain enters here |
 
-Also needed: **units** (state which), and the hardness **contrast** between
-neighbours — a soft band under a hard cap undercuts and collapses; a soft band
-between two soft bands merely slumps. The contrast is what makes the mouth an
-output.
+**Why these are the rotten ones.** In a limestone sequence, resistance is
+controlled by cementation and clay content, not by the limestone itself.
+Marly / argillaceous interbeds are the classic recessive beds — they weather
+back fastest and cut the notch. Massive well-cemented beds hold the cliff.
+Stylolitic seams concentrate clay and become weakness planes. Jura Grey (the
+locked reference stone) is exactly this: well-bedded micritic limestone with
+marly partings.
 
-**This is readable, not inventable.** The water story already names a rotten
-layer: *"drains sideways along the weak bed."* And Image A is a photograph of
-real rock doing exactly this — count the bands, judge which the sea ate first.
+**Retreat by hardness**, as a fraction of block depth D — the difference
+between adjacent rows is the entire design:
 
----
+| Hardness | 5 | 4 | 3 | 2 | 1 |
+|---|---|---|---|---|---|
+| Retreat | 0.02 D | 0.05 D | 0.10 D | 0.18 D | **0.45 D** |
+
+**Contrast is what matters, not softness alone:**
+- **B2 (1) under B3 (5) — contrast 4, the maximum.** This is the collapse
+  engine: deep undercut, unsupported cap, failure along joints. **The mouth.**
+- B5 (2) under B6 (4) — contrast 2. A ledge and a shadow line, no collapse.
+  Wear-geometry gate: detail lives in this recess.
+- B2 (1) sitting on B1 (5) — the weak bed rots out **above a hard floor**,
+  which is why the chamber has a flat diggable floor and drains sideways
+  rather than down. Matches the locked water story exactly.
+
+**Units:** built in metres at `1 unit = 1 mm / 1000`; export STL with
+`global_scale = 1000`. Default instantiation `H_TOTAL = 120 mm`,
+`W = 180 mm` (A1 mini bed limit), `D = 140 mm`. Change `H_TOTAL` to rescale.
+
+**Open conflict, flagged not hidden:** turn-room ≥1.5 body lengths for a 6"
+goldfish needs ~9" (228 mm) of clear floor, which exceeds the A1 mini's
+180 mm bed. V1 at this scale suits smaller residents; the 6" goldfish hero
+must be the pinned-segment build. Isaiah's call, already anticipated in the
+ledger.
+
+**Script 01 status (`sprock/script01_massing_and_undercut.py`):** verified
+headless. Differential retreat produces real undercuts — the deepest shadow
+in a top-front-lit render, satisfying the shadow-first ART gate. Still to do:
+localise the retreat so it reads as a mouth rather than a continuous slot,
+break the rectangular plan (lopsided gate), then collapse the cap.
 
 ## 9. TOOLCHAIN — verified session 7
 
