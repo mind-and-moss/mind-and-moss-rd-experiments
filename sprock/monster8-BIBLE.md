@@ -277,3 +277,83 @@ break the rectangular plan (lopsided gate), then collapse the cap.
 5. Validate: manifold, walls, face count, flat base.
 6. Only then remesh, and only then displace — preview only.
 7. Screenshot at every step. Ship the picture unasked, including the ugly ones.
+
+---
+
+## 11. DECISION CHANGE — corner format is now BACK + RIGHT
+
+**Supersedes the ledger.** ★ START HERE v2 locked "back + left + base FLAT".
+Isaiah's session-7 sketch places the glass on **back + right**, and he
+confirmed: *"back and right is the new call."* The piece is the mirror of the
+old ledger entry.
+
+**Consequence that must not be missed:** the ledger also put the mouth on the
+RIGHT face. The right face is now *glass*, so the mouth cannot live there.
+All openings move into the perimeter wall.
+
+## 12. The piece is a WALL, not a block
+
+Isaiah's plan is not a solid block with a bored void. It is a curved wall that
+sits in the tank corner; **the void is closed on two sides by the tank glass
+itself.** Measured off his traced line:
+
+- void 124.8 cm² in plan vs rock 45.1 cm² — mostly space, light and cheap
+- wall 13 mm thick at the back glass, thickening to 28 mm at the front-right toe
+- perimeter run 256 mm
+
+Lopsided by nature, so the ART gate is satisfied by the form rather than bolted on.
+
+## 13. OPENINGS — Isaiah's rule
+
+> *"where the green passes the blue = opening"*
+
+An opening is simply a stretch of perimeter carrying no wall. Positions are
+parameterised along the run (0 = back-glass end, 1 = front-right toe), so they
+move by changing one number.
+
+| Opening | s | width |
+|---|---|---|
+| `upper_vent` | 0.17 | 20 mm |
+| `MOUTH` | 0.52 | 42 mm |
+| `tail_exit` | 0.83 | 24 mm |
+
+Each is a short tunnel through a 13–28 mm wall, not a notch in a cliff face.
+
+## 14. THE WINDOW — frost film goes on the OUTSIDE
+
+Where the void meets the glass is the window: **123 × 140 mm, L-shaped around
+the corner.**
+
+**Mount the film on the OUTSIDE of the tank glass (Route B).** From
+`findings/products/cylindrical-terrarium/film-installation.md`:
+
+- Route B — outside mount: **indefinite lifespan, trivially replaceable, zero
+  humidity exposure**
+- Route A / C — inside mount: 3–5 years, the film edge is the long-term weak
+  point, and Route C's adhesive chemistry is *"unvetted for sealed bioactive
+  environments"*
+
+**Why this is the whole call and not a detail:** the business is gated on
+*one dead fish traced to the brand kills it*. An inside-mounted film puts
+unvetted adhesive in the water and drags the window through the full
+cure → soak → pH-vs-control pipeline. Outside-mounted, the film never touches
+the water and **exits the safety pipeline entirely.** An entire risk category
+disappears for free.
+
+Cost: the customer applies it to their own tank, so it ships as a pre-cut
+patch with an alignment guide. The finding also notes outside mount gives a
+different optical look — worth a bench comparison before it is locked.
+
+## 15. OPEN CONFLICT — a 123 × 140 mm window versus "the den stays dark"
+
+The skylight was restricted to the gallery specifically so *"the den stays
+dark; fish gets dark+light choice"*. Frost film **diffuses** light, it does not
+block it, so a window this size floods the whole void with soft light and
+there is no dark pocket left anywhere.
+
+The dark+light choice is a BIO gate. Options, unresolved:
+1. Shelter a dark recess behind the 28 mm toe, away from the window
+2. Mask part of the film patch opaque rather than frosting all of it
+3. Shrink the window so it lights only part of the void
+
+Isaiah's call.
