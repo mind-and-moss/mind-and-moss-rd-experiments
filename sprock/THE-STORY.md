@@ -116,3 +116,67 @@ Derived from the above. These bind the geometry.
 6. **The second cave opening is in `A2` only**, where the bed daylights.
 7. **Flat faces follow joint planes** — back and right.
 8. **Nothing else may be placed by hand.** If a feature has no clause, it goes.
+
+---
+
+# CONFORMANCE AUDIT (`structure_story_conformant.py`)
+
+Every feature printed with the clause that produced it. **13 features derived,
+0 hand-placed.**
+
+| Feature | Derivation | Position | Clause |
+|---|---|---|---|
+| cave centre | J1 plane k=0 × J2 plane k=1 | (−57.7, −44.1) | Ep4 — water sinks fastest where joints cross |
+| cave run | along J1 strike, 68° | −94,−133 → −2,95 | Ep4 — drains sideways along the weak bed |
+| second opening | J1 k=−1 × J2 k=0 | (63.1, 25.3) | Ep4 — a bed does not rot in one spot only |
+| embayment | directly over the cave | (−43.5, −8.8) | Ep5 — `A3` loses support, fails along existing joints |
+| grike J1 k=0 | ON joint plane | (−46.4, −16.0) | Ep6 — joints widened by dissolution |
+| grike J2 k=0 | ON joint plane | (23.4, 46.4) | Ep6 |
+| grike J1 k=−1 | ON joint plane, offset −86 mm | (30.4, −55.5) | Ep6 |
+| grike J2 k=1 | ON joint plane, offset 118 mm | (−40.3, −53.3) | Ep6 |
+| basin 1 | J1 k=1 × J2 k=1, ledge z=99 | (−134.1, −3.5) | Ep6 — standing water sinks in at crossings |
+| basins 0, 2, 3 | **omitted** | — | Ep6 — no crossing on that ledge, so no basin |
+| talus | beneath the derived embayment | (−43, −9) | Ep5 — joint-bounded blocks fell and broke on landing |
+
+**Three basins were omitted, and that is the story working.** A basin forms
+where joints cross on a ledge. On three of the four ledges the joints do not
+cross inside the ledge, so those ledges have no basin. Nothing was invented to
+fill the gap.
+
+**Joint phase.** The joint sets are offset (J1 +37 mm, J2 −52 mm) rather than
+passing through the origin. Without a phase the lattice puts an intersection
+exactly at the centre of the piece, which dropped the cave dead-centre and
+broke the lopsided ART gate. Episode 7 justifies it: the fragment was broken
+out of a larger outcrop at an arbitrary place, so the joints have arbitrary
+phase relative to it.
+
+**Relaxation, declared.** Three features needed the search window widened
+because the lattice offers no intersection where the composition wanted one.
+That is reported at run time, not hidden. Basins may **never** be relaxed — a
+basin that walks off its ledge is not a basin.
+
+## Bugs found in this pass
+
+1. **Cave landed at (0,0)** — dead centre, worst possible spot. Cause was the
+   unphased joint lattice. Fixed by giving the joints a phase.
+2. **Features derived outside the fragment** — a second opening at y=−179 on a
+   piece ending at −125, a grike at (−319, 128), two basins on the same point.
+   Derivation without bounds is not conformance. Now every candidate must
+   exist inside the fragment (Ep7).
+3. **A 200 mm drum of solid rock in the middle of the piece.** Rewriting the
+   placement section deleted the boolean-apply loop and the cleanup along with
+   it, and **the patch that tried to restore them matched nothing and failed
+   silently.** So no boolean ever ran, every lamina stayed at its raw 170
+   faces, and ~25 unused cutters survived into the render as solid geometry.
+   Caught by listing objects and their face counts rather than trusting the
+   render. Now verified by asserting the code is present before running, and
+   by a name sweep so no cutter can leak.
+
+## Validation after conformance
+
+| Gate | Result |
+|---|---|
+| boolean ops applied | 74 |
+| objects | 12 laminae + 46 talus = 58, no cutters |
+| non-manifold after remesh | **0 — PASS** |
+| components after remesh | 6 = main mass + talus clusters — correct |
