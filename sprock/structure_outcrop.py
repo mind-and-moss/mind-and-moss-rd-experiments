@@ -74,19 +74,12 @@ for bi,(name, frac, hard, step) in enumerate(BEDS, start=1):
     ob["hardness"]=hard; ob["bed"]=bi
     z += thick
 
-# --- THE CAVE: a gap in the low beds, roofed by the hard cap --------------
-# Not bored. The marl A2 is simply absent across the mouth span, and A3 above
-# it is not -- so A3 becomes the lintel. Law 1.
-for name in ("A2_marl", "A1_platform"):
-    ob = bpy.data.objects[name]
-    bm = bmesh.new(); bm.from_mesh(ob.data)
-    lim = MOUTH_W/2 if name=="A2_marl" else MOUTH_W/2*0.62
-    kill=[f for f in bm.faces
-          if MOUTH_X-lim < f.calc_center_median().x/MM < MOUTH_X+lim
-          and f.calc_center_median().y/MM < 0
-          and f.normal.z > -0.5]
-    bmesh.ops.delete(bm, geom=kill, context='FACES')
-    bm.to_mesh(ob.data); bm.free()
+# --- NOTE ---------------------------------------------------------------
+# The old face-deletion "notch" hack lived here. It has been REMOVED.
+# Deleting faces left A1 and A2 as open shells: non-manifold, which fails the
+# manifold gate outright and made the inside/outside test unreliable, showing
+# up as 444 cm3 of phantom sealed void beneath the chamber floor.
+# The cave is cut properly by boolean in cave_chamber.py. Solids stay solid.
 
 print("\n--- BASIC STRUCTURE ---")
 print(f"overall {W:.0f} x {D:.0f} x {H:.0f} mm  (reference product ~300mm long)")

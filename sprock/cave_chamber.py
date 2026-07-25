@@ -25,59 +25,48 @@ NODES = [
     (MOUTH_X + 206,  -D/2 - 12,  18.0, 16.0),   # tail exit
 ]
 
-bm = bmesh.new(); rings=[]
-for (x,y,rx,ry) in NODES:
-    ring=[]; n=22
-    cz = (Z_A1_TOP - FLOOR_DISH + CEIL)/2
-    hz = (CEIL - (Z_A1_TOP - FLOOR_DISH))/2
-    for k in range(n):
-        a=2*math.pi*k/n
-        # elliptical in plan, squashed vertically: a chamber, not a pipe
-        ring.append(bm.verts.new(((x + rx*math.cos(a))*MM,
-                                  (y + ry*math.cos(a)*0.0 + ry*math.sin(a))*MM,
-                                  (cz + hz*math.sin(a)*0.0)*MM)))
-    rings.append(ring)
-# extrude each ring vertically into a slab-shaped tube
-bm.free()
-bm = bmesh.new()
+# The cutter is a CHAIN OF CLEAN CONVEX SOLIDS, differenced one at a time.
+# The previous version capped every lozenge and then bridged between them,
+# which left internal faces inside the cutter. EXACT boolean on
+# self-overlapping geometry produced 444 cm3 of phantom void inside A1 --
+# a failure that only a volumetric check would ever have found.
 lo = Z_A1_TOP - FLOOR_DISH
 hi = CEIL
-loops=[]
-for (x,y,rx,ry) in NODES:
-    lo_ring=[]; hi_ring=[]
-    n=24
-    for k in range(n):
-        a=2*math.pi*k/n
-        px=(x+rx*math.cos(a))*MM; py=(y+ry*math.sin(a))*MM
-        lo_ring.append(bm.verts.new((px,py,lo*MM)))
-        hi_ring.append(bm.verts.new((px,py,hi*MM)))
-    loops.append((lo_ring,hi_ring))
-for (lo_r,hi_r) in loops:
-    for k in range(len(lo_r)):
-        j=(k+1)%len(lo_r)
-        bm.faces.new((lo_r[k],lo_r[j],hi_r[j],hi_r[k]))
-    bmesh.ops.contextual_create(bm, geom=lo_r)
-    bmesh.ops.contextual_create(bm, geom=hi_r)
-# bridge consecutive lozenges so it is one continuous void
-for i in range(len(loops)-1):
-    a_lo,a_hi = loops[i]; b_lo,b_hi = loops[i+1]
-    for k in range(len(a_lo)):
-        j=(k+1)%len(a_lo)
-        bm.faces.new((a_lo[k],a_lo[j],b_lo[j],b_lo[k]))
-        bm.faces.new((a_hi[k],a_hi[j],b_hi[j],b_hi[k]))
-me=bpy.data.meshes.new("CAVE_CUTTER"); bm.to_mesh(me); bm.free()
-cut=bpy.data.objects.new("CAVE_CUTTER", me); bpy.context.collection.objects.link(cut)
+cutters=[]
+for idx,(x,y,rx,ry) in enumerate(NODES):
+    bpy.ops.mesh.primitive_cylinder_add(vertices=28, radius=1.0, depth=1.0,
+        location=(x*MM, y*MM, ((lo+hi)/2)*MM))
+    c=bpy.context.active_object
+    c.name=f"CUT_{idx:02d}"
+    c.scale=(rx*MM, ry*MM, (hi-lo)*MM)
+    bpy.ops.object.transform_apply(scale=True)
+    cutters.append(c)
+# bridge the gaps between consecutive nodes with an extra solid at the midpoint
+for idx in range(len(NODES)-1):
+    x0n,y0n,rx0,ry0 = NODES[idx]; x1n,y1n,rx1,ry1 = NODES[idx+1]
+    for t in (0.33, 0.66):
+        mx=x0n+(x1n-x0n)*t; my=y0n+(y1n-y0n)*t
+        mrx=rx0+(rx1-rx0)*t; mry=ry0+(ry1-ry0)*t
+        bpy.ops.mesh.primitive_cylinder_add(vertices=28, radius=1.0, depth=1.0,
+            location=(mx*MM, my*MM, ((lo+hi)/2)*MM))
+        c=bpy.context.active_object
+        c.name=f"CUT_link_{idx:02d}_{int(t*100)}"
+        c.scale=(mrx*0.94*MM, mry*0.94*MM, (hi-lo)*MM)
+        bpy.ops.object.transform_apply(scale=True)
+        cutters.append(c)
 
 before={}
 for t in ("A1_platform","A2_marl","A3_cap"):
     before[t]=len(bpy.data.objects[t].data.polygons)
 for tname in ("A1_platform","A2_marl","A3_cap"):
     t=bpy.data.objects[tname]
-    b=t.modifiers.new("cave",'BOOLEAN'); b.object=cut; b.operation='DIFFERENCE'
-    b.solver='EXACT'
-    bpy.context.view_layer.objects.active=t
-    bpy.ops.object.modifier_apply(modifier="cave")
-cut.hide_render=True; cut.hide_viewport=True
+    for c in cutters:
+        b=t.modifiers.new("cave",'BOOLEAN'); b.object=c
+        b.operation='DIFFERENCE'; b.solver='EXACT'
+        bpy.context.view_layer.objects.active=t
+        bpy.ops.object.modifier_apply(modifier="cave")
+for c in cutters:
+    bpy.data.objects.remove(c, do_unlink=True)
 
 # --- VALIDATE: the boolean must not have eaten a bed or split the model ---
 def components(ob):
