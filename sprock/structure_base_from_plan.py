@@ -37,7 +37,7 @@ def fnv(*a):
     return x/0xffffffff
 
 # --- resample the perimeter ----------------------------------------------
-def resample(poly, step=3.0):
+def resample(poly, step=1.2):
     pts=[Vector(poly[0])]
     for i in range(len(poly)-1):
         a,b=Vector(poly[i]),Vector(poly[i+1])
@@ -63,21 +63,26 @@ def inward(i):
     return n
 
 # --- where do the joints cross the perimeter? -----------------------------
-def joint_id(p):
-    return (math.floor((p.dot(N1)-J1_PHASE)/J1_SPACE),
-            math.floor((p.dot(N2)-J2_PHASE)/J2_SPACE))
+def joint_id(p, ph1, ph2):
+    return (math.floor((p.dot(N1)-ph1)/J1_SPACE),
+            math.floor((p.dot(N2)-ph2)/J2_SPACE))
 
-cuts=[0]
-for i in range(1,len(P)):
-    if joint_id(P[i]) != joint_id(P[i-1]): cuts.append(i)
-if cuts[-1] != len(P)-1: cuts.append(len(P)-1)
-# drop slivers: a block shorter than 14 mm is not a block
-merged=[cuts[0]]
-for c in cuts[1:]:
-    if (P[c]-P[merged[-1]]).length < 11.0 and c != cuts[-1]: continue
-    merged.append(c)
-cuts=merged
-print(f"perimeter run {RUN:.0f} mm, joint crossings -> {len(cuts)-1} blocks per bed")
+def cuts_for_bed(bi):
+    """Joint crossings for ONE bed. Each bed carries its own phase, because
+    joints step between beds rather than running straight through the whole
+    stack -- which is what stops the wall reading as vertical columns."""
+    ph1 = J1_PHASE + (fnv(bi,101,1)-0.5)*J1_SPACE*0.9
+    ph2 = J2_PHASE + (fnv(bi,103,2)-0.5)*J2_SPACE*0.9
+    cu=[0]
+    for i in range(1,len(P)):
+        if joint_id(P[i],ph1,ph2) != joint_id(P[i-1],ph1,ph2): cu.append(i)
+    if cu[-1] != len(P)-1: cu.append(len(P)-1)
+    mg=[cu[0]]
+    for c in cu[1:]:
+        if (P[c]-P[mg[-1]]).length < 13.0 and c != cu[-1]: continue
+        mg.append(c)
+    return mg
+print(f"perimeter run {RUN:.0f} mm, samples {len(P)}")
 
 # --- OPENINGS: where the green passes the blue (Isaiah's rule) ------------
 OPENINGS=[("upper_vent",0.17,20.0,4,5),("MOUTH",0.52,42.0,1,3),
@@ -89,28 +94,59 @@ def in_opening(s, bed):
 
 bpy.ops.object.select_all(action='SELECT'); bpy.ops.object.delete(use_global=False)
 
-made=0; z=0.0
+# DIP: bedding is inclined, so beds climb along the run (script10)
+DIP_DEG = 9.0
+DIP = math.tan(math.radians(DIP_DEG))
+def dip_dz(sv): return DIP*(sv-0.45)*RUN
+
+made=0; plucked_n=0; z=0.0
+fallen=[]
 for bi,(bname,frac,hard) in enumerate(BEDS, start=1):
     thick=H_TOTAL*frac
+    cuts = cuts_for_bed(bi)
     for ci in range(len(cuts)-1):
         i0,i1 = cuts[ci], cuts[ci+1]
         smid = 0.5*(S[i0]+S[i1])
         if in_opening(smid, bi):        # no wall here -- that is an opening
             continue
-        # each block gets its own small offsets so it reads as a loose block
-        jitter_out = (fnv(bi,ci,1)-0.5)*3.4
-        drop       = (fnv(bi,ci,2)-0.5)*2.2
+        # PLUCKING + BROKEN CREST (script05/06): weathering removes whole
+        # blocks, more from soft beds, more near the mouth, more with height.
+        hf = (z + thick/2)/H_TOTAL
+        prox = max(0.0, 1.0 - abs(smid-0.52)/0.26)
+        pluck_p = min(0.20, {5:0.02,4:0.04,3:0.06,2:0.10,1:0.15}[hard]
+                            + 0.09*prox + 0.17*(hf**3.2))
+        if fnv(bi,ci,7) < pluck_p:
+            fallen.append((0.5*(P[i0]+P[i1]), thick, hard, bi, ci))
+            plucked_n += 1
+            continue
+        # each block stands on its own: aperture at the joints, its own
+        # outward set, its own drop, its own tilt.
+        jitter_out = (fnv(bi,ci,1)-0.5)*4.2       # a SET, not a gap
+        drop       = (fnv(bi,ci,2)-0.5)*1.1
+        shrink_z   = 0.995 + 0.020*fnv(bi,ci,8)   # full height: beds stay in contact
+        # trim the ends: half the aperture off each, so adjacent blocks part
+        APER = 0.8 + 1.0*fnv(bi,ci,9)   # a fracture is a line, not a canyon
+        seg=[]
+        acc=0.0
+        for i in range(i0, i1+1):
+            if i>i0: acc += (P[i]-P[i-1]).length
+            seg.append((i,acc))
+        L=seg[-1][1]
+        keep=[i for (i,a) in seg if a >= APER/2 and a <= L-APER/2]
+        if len(keep) < 2: keep=[i0, i1]
         bm=bmesh.new()
         lo=[]; hi=[]
-        for i in range(i0, i1+1):
+        for i in keep:
             n = inward(i)
             t = base_t(S[i])*KEEP[hard]
             outer = P[i] - n*jitter_out           # erodes on the OUTER face
             innr  = P[i] + n*t
-            lo.append((bm.verts.new((outer.x*MM,outer.y*MM,(z+drop)*MM)),
-                       bm.verts.new((innr.x*MM, innr.y*MM, (z+drop)*MM))))
-            hi.append((bm.verts.new((outer.x*MM,outer.y*MM,(z+drop+thick)*MM)),
-                       bm.verts.new((innr.x*MM, innr.y*MM, (z+drop+thick)*MM))))
+            zb = z + drop + dip_dz(S[i])
+            zt = zb + thick*shrink_z
+            lo.append((bm.verts.new((outer.x*MM,outer.y*MM,zb*MM)),
+                       bm.verts.new((innr.x*MM, innr.y*MM, zb*MM))))
+            hi.append((bm.verts.new((outer.x*MM,outer.y*MM,zt*MM)),
+                       bm.verts.new((innr.x*MM, innr.y*MM, zt*MM))))
         for k in range(len(lo)-1):
             (bo0,bi0),(bo1,bi1_) = lo[k], lo[k+1]
             (to0,ti0),(to1,ti1)  = hi[k], hi[k+1]
@@ -128,16 +164,39 @@ for bi,(bname,frac,hard) in enumerate(BEDS, start=1):
         ob=bpy.data.objects.new(f"{bname}_b{ci:02d}", me)
         bpy.context.collection.objects.link(ob)
         ob["hardness"]=hard; ob["bed"]=bi; ob["block"]=ci
+        wear = 0.5 + 2.4*(0.45*max(0.0,jitter_out)/7.5 + 0.55*hf)
+        bv=ob.modifiers.new("wear",'BEVEL'); bv.width=max(0.4,wear)*MM
+        bv.segments=3; bv.limit_method='ANGLE'; bv.angle_limit=math.radians(34)
         # origin at the block's own centre so it rotates about itself
         bpy.context.view_layer.objects.active=ob
         ob.select_set(True)
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='BOUNDS')
+        ob.rotation_euler=((fnv(bi,ci,4)-0.5)*0.045,
+                           (fnv(bi,ci,5)-0.5)*0.045,
+                           (fnv(bi,ci,6)-0.5)*0.05)
         ob.select_set(False)
         made+=1
     z += thick
 
+tal=0
+for idx,(pt, th, hard, bi_, ci_) in enumerate(fallen):
+    n = inward(min(range(len(P)), key=lambda q:(P[q]-pt).length))
+    roll = 12.0 + 40.0*fnv(bi_,ci_,10)
+    cp = pt - n*roll                       # it fell OUTWARD, away from the cave
+    sz = th*(0.34 + 0.30*fnv(bi_,ci_,11))
+    bpy.ops.mesh.primitive_cube_add(size=1, location=(cp.x*MM, cp.y*MM, (sz*0.30)*MM))
+    o=bpy.context.active_object; o.name=f"talus_{bi_:02d}_{ci_:02d}"
+    o.scale=(sz*(1.3+0.6*fnv(bi_,ci_,12))*MM, sz*(1.0+0.5*fnv(bi_,ci_,13))*MM, sz*MM)
+    o.rotation_euler=((fnv(bi_,ci_,14)-0.5)*0.8,(fnv(bi_,ci_,15)-0.5)*0.8,
+                      fnv(bi_,ci_,16)*6.28)
+    bpy.ops.object.transform_apply(scale=True)
+    bv=o.modifiers.new("tumbled",'BEVEL'); bv.width=(1.4+2.0*fnv(bi_,ci_,17))*MM
+    bv.segments=3; bv.limit_method='ANGLE'; bv.angle_limit=math.radians(24)
+    tal+=1
+print(f"plucked {plucked_n} -> talus {tal}")
+print(f"bedding dip {DIP_DEG:.0f} deg -> beds climb {DIP*RUN:.0f} mm across the run")
 print(f"UNBONDED BLOCKS: {made} separate objects")
-print(f"  {len(BEDS)} beds x up to {len(cuts)-1} blocks, minus openings")
+print(f"  joints STAGGERED per bed so blocks interlock")
 for bi,(bname,frac,hard) in enumerate(BEDS,start=1):
     n=len([o for o in bpy.data.objects if o.name.startswith(bname)])
     print(f"  {bname:<13} h={hard} thick={H_TOTAL*frac:5.1f}mm  blocks={n}")
