@@ -457,3 +457,63 @@ further look-tuning by a machine is out of bounds — that is exactly the road
 to Law 2. The machine's deliverables are done: stack, wall, voids, openings,
 proven connectivity, block anatomy, talus placement, wear scaling. **The look
 belongs to Isaiah's hands from here.**
+
+---
+
+## 18. SEGMENTATION AND PIN JOINTS (script 07)
+
+Split at BEDDING PLANES, so the seam has an existing line to hide in and each
+piece prints flat-side-down. **The undercut is created by assembly, not by a
+printed overhang — no supports anywhere.**
+
+| Piece | Beds | z range | Height |
+|---|---|---|---|
+| `P1_base` | 1–2 | 0 → 38.4 mm | 38.4 mm |
+| `P2_mid` | 3–5 | 38.4 → 96.0 mm | 57.6 mm |
+| `P3_crest` | 6 | 96.0 → 120.0 mm | 24.0 mm |
+
+Pegs 6.0 mm, sockets 6.43 mm — **0.43 mm diametral clearance**, the figure
+already proven on the A1 mini. Four per seam, 10 mm long, placed in solid rock
+and kept ≥0.09 in `s` away from every opening. Foam fills the rest (Option C).
+
+*Bug caught:* the opening-avoidance nudge pushed peg 4 to s=1.01 — past the
+end of the wall, into the glass. Nudge direction is now chosen to stay on the
+wall, and `s` is clamped to 0.08–0.92.
+
+## 19. PREVIEW PIPELINE (script 08) — stack-order law obeyed
+
+`geometry → voxel remesh (2.0 mm) → displacement LAST, preview only`
+
+The remesh is what turns stacked boxes into one rock body: 42 blocks → a
+single 29k-vert mass with the joins welded. Displacement is two scales, broad
+form then grain, and **never touches the print core**. The block objects
+survive untouched as source of truth; the preview is a separate object
+`M8_preview`, so "everything stays separate objects" still holds.
+
+## 20. DEPTH, BUTTRESSES, SURVIVOR STACK (script 09)
+
+The remaining gap to the reference was **form, not surface**. Every block sat
+on one curve, so the piece was a slab.
+
+- **Depth variation** widened to ±0.9 × wall thickness per block
+- **Two buttresses** project 26 mm and 19 mm — where the joint set was widest,
+  more rock survived between joints
+- **A survivor stack** rises to **186 mm** against a 120 mm wall crest, over
+  one narrow span only, narrowing as it rises because it is attacked from
+  every side. In the reference photo the sea stacks are simply where the rock
+  resisted longest.
+
+## 21. HONEST GAP TO THE REFERENCE PHOTO
+
+Lighting and value are close: dark wet rock, low warm horizon key, cool sky,
+wet sand. Massing has real depth now.
+
+**It still reads as a rectilinear ruin, and the cause is structural.** Every
+block is an axis-aligned rectangle sitting on a horizontal bed. Real jointed
+limestone gives near-rectangular blocks, but the beds **dip** — the reference
+rock is steeply inclined, which breaks the grid completely.
+
+**The single highest-value next change is to tilt the whole bed stack** (a dip
+of 8–15°). It is one parameter, it is massing rather than decoration, and it
+would do more than any further surface tuning. Surface noise cannot close this
+gap — that is precisely what Law 2 warns about.
