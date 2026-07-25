@@ -409,3 +409,51 @@ The first assembly read as masonry. Three causes, all structural:
 The overall SILHOUETTE is still a rectangle. Real cliffs have a broken crest
 and talus at the base. Fixing the envelope — not the blocks — is the next
 form problem.
+
+---
+
+## 17. "THIS PIECE HAS SURVIVED HISTORY" — four structural consequences
+
+Isaiah's note, session 7. Not a mood — a set of physical facts, each of which
+changes geometry:
+
+1. **Survivors are big.** Small blocks were carried off long ago. Sizes skew
+   large and scale with hardness (massive ×1.30, marl ×0.72), so the resistant
+   beds keep large masses while the weak beds fragment.
+2. **The crest is broken.** The top has been exposed longest and is attacked
+   from above and both sides, so pluck probability rises with height and the
+   skyline steps down instead of sitting flat.
+3. **Exposed edges are worn.** Bevel width scales with how proud and how high
+   a block sits; sheltered blocks under the lintel stay crisp. This *is* the
+   wear-geometry gate — detail survives in recesses because that is where the
+   weather could not reach.
+4. **The debris is still there.** Plucked blocks did not vanish, they fell.
+   They return as talus at the foot, tumbled, heavily rounded and half-buried
+   — which also supplies the feathered, dig-stable buried edge the BIO gate
+   wants.
+
+### The overcorrection, recorded
+
+First attempt read "survived" as "mostly destroyed": blocks fell from 47 to
+22, `B5_marl_parting` was erased entirely, and the piece became floating
+fragments. **A survivor's resistant core stays continuous** — what goes is the
+periphery, the soft beds and the crest, not the mass itself.
+
+Fixes: pluck probability capped at 0.30, crest attack softened from
+0.42·hf^2.4 to 0.20·hf^3.0, block lengths narrowed to 0.55–2.10 × spacing, a
+1.03 overlap factor so courses stay welded, and a hard rule that **no bed may
+lose more than a quarter of its blocks**. A vanished bed destroys the stack
+story, which is the one thing the whole design rests on.
+
+Result: 34 wall blocks, every bed populated, 8 plucked and 8 landed as talus.
+
+### DOCTRINE #1 STOP
+
+> *"Never art-direct a bot past two iterations — reframe the job as
+> engineering."*
+
+Appearance has now been iterated more than twice in one session. Per doctrine,
+further look-tuning by a machine is out of bounds — that is exactly the road
+to Law 2. The machine's deliverables are done: stack, wall, voids, openings,
+proven connectivity, block anatomy, talus placement, wear scaling. **The look
+belongs to Isaiah's hands from here.**
