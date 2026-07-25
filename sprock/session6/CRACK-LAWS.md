@@ -112,3 +112,45 @@ white vein is a **STACK OF THIN BANDS**, not one uniform stripe.
 - After printing, before packing: **straightedge the base** (flat, no rock, no
   lip — if it isn't flat the corner format fails at the glass), sight the tunnel
   end to end, confirm the two machine cracks read ~3.5 mm wide × ~6 mm deep.
+
+---
+
+# APPLIED IN SESSION 7 — `structure_base_from_plan.py`
+
+| Law | Before | After |
+|---|---|---|
+| **1. spacing = bed thickness** | one global 34/44 mm regardless of bed | **per bed, 0.8–1.2× its own thickness** |
+| **2. thin dense / thick sparse** | not modelled | falls out of Law 1 for free |
+| **5. adjacent beds independent** | ✔ already staggered | kept |
+| **6. relief tightens upward** | not modelled | spacing finer toward the scar |
+| **surface classes** | bevel by exposure | **bevel limited to a vertex group of outward faces — tunnel edges stay SHARP** |
+| **scale** | 420 × 250 × 190, 8.3 L, 18 pieces, 99 pegs | **141.3 × 121.7 × 114.4 — fits the bed whole** |
+
+Measured result, every bed inside the legal window:
+
+| Bed | Thickness | Spacing | Ratio |
+|---|---|---|---|
+| `A1_platform` | 22.9 mm | 22.6 mm | 0.99× |
+| `A2_marl` | 12.6 mm | 11.2 mm | 0.89× |
+| `A3_cap` | 24.0 mm | 27.2 mm | 1.13× |
+| `A4_bench` | 18.3 mm | 16.0 mm | 0.87× |
+| `A5_parting` | 10.3 mm | 11.3 mm | 1.09× |
+| `A6_perch` | 26.3 mm | 27.6 mm | 1.05× |
+
+**Law 1 needed a hard clamp.** First attempt let Law 6's relief factor multiply
+the ratio down, and two beds came out at **0.75× and 0.78×** — inside the
+reads-fake zone. Law 1 is a floor, not a preference: below 0.8× the rock
+physically cannot over-crack. **Law 6 may tighten spacing toward the scar but
+may never breach Law 1's floor.** Clamped to [0.80, 1.20].
+
+## Not yet applied
+
+- **Law 3** — only 1–2 master joints. Blocks are per-bed so cracks already die
+  at bed lines, but the master joints are not yet explicit.
+- **Law 4** — T-junctions. Needs the two machine cracks placed first, then
+  hand cracks hooked into them.
+- **Law 7** — flaws as nucleation points, plumose structure on break faces.
+- **Law 8** — banded veins.
+- **The two machine cracks** (~3.5 mm wide × 6 mm deep) are not cut yet. Per
+  session 6 these are the *only* machine cracks; everything else is Isaiah's
+  hand.

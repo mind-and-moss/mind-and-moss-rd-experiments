@@ -17,9 +17,13 @@ MM=0.001
 PERIM = [(-46,85),(-46,76),(-30,47),(-27,15),(-8,-6),(-22,-33),
          (1,-46),(27,-61),(56,-72),(80,-80),(90,-83)]
 CORNER = Vector((90.0, 85.0))          # the glass corner: back +Y, right +X
-def base_t(s): return 13.0 + 15.0*(s**1.3)     # wall thickness along the run
+def base_t(s): return 9.0 + 11.0*(s**1.3)   # scaled with the part     # wall thickness along the run
 
-H_TOTAL = 190.0
+# Session 6, block 2 (THE STUMP): 141.3 x 121.7 x 114.4 mm, fits the A1 mini
+# 180 bed WHOLE -- no segmenting, no pins. This retires the 18-piece / 99-peg
+# segmentation derived earlier for a 420 mm object.
+H_TOTAL = 114.4
+TARGET_W, TARGET_D = 141.3, 121.7
 BEDS = [("A1_platform",0.20,5),("A2_marl",0.11,1),("A3_cap",0.21,5),
         ("A4_bench",0.16,3),("A5_parting",0.09,2),("A6_perch",0.23,4)]
 KEEP  = {5:1.00, 4:0.92, 3:0.84, 2:0.70, 1:0.50}   # soft beds keep less wall
@@ -44,6 +48,12 @@ def resample(poly, step=1.2):
         L=(b-a).length; n=max(1,int(L/step))
         for k in range(1,n+1): pts.append(a+(b-a)*(k/n))
     return pts
+# fit the traced plan into the real part's footprint
+_xs=[p[0] for p in PERIM]; _ys=[p[1] for p in PERIM]
+_sx = TARGET_W/(max(_xs)-min(_xs)); _sy = TARGET_D/(max(_ys)-min(_ys))
+PERIM = [((x-min(_xs))*_sx - TARGET_W/2, (y-min(_ys))*_sy - TARGET_D/2)
+         for (x,y) in PERIM]
+CORNER = Vector((TARGET_W/2, TARGET_D/2))
 P = resample(PERIM)
 RUN = sum((P[i+1]-P[i]).length for i in range(len(P)-1))
 S = []
@@ -67,19 +77,37 @@ def joint_id(p, ph1, ph2):
     return (math.floor((p.dot(N1)-ph1)/J1_SPACE),
             math.floor((p.dot(N2)-ph2)/J2_SPACE))
 
-def cuts_for_bed(bi):
+def spacing_for_bed(bi, thick, hf):
+    """LAW 1: joint spacing is 0.8-1.2x THE THICKNESS OF THE BED being
+    cracked. Tighter than 0.8x reads fake -- each joint casts a stress shadow
+    about one bed-thickness wide where no new joint can form.
+    LAW 2 falls out for free: thin beds crack dense, thick beds sparse.
+    LAW 6: relief tightens upward, so spacing gets finer toward the scar."""
+    ratio = 0.9 + 0.45*fnv(bi,207,3)         # 0.90 .. 1.35 before relief
+    relief = 1.0 - 0.22*(hf**1.6)            # Law 6: finer near the top
+    # HARD CLAMP at 0.8x. Law 1 is not a preference: below 0.8x the rock
+    # physically cannot over-crack, so anything tighter reads fake. Law 6 may
+    # tighten spacing toward the scar but may never breach Law 1's floor.
+    eff = max(0.80, min(1.20, ratio*relief))
+    return max(5.0, thick*eff)
+
+def cuts_for_bed(bi, thick=None, hf=0.5):
     """Joint crossings for ONE bed. Each bed carries its own phase, because
     joints step between beds rather than running straight through the whole
     stack -- which is what stops the wall reading as vertical columns."""
-    ph1 = J1_PHASE + (fnv(bi,101,1)-0.5)*J1_SPACE*0.9
-    ph2 = J2_PHASE + (fnv(bi,103,2)-0.5)*J2_SPACE*0.9
+    sp1 = spacing_for_bed(bi, thick, hf) if thick else J1_SPACE
+    sp2 = sp1*1.28                            # conjugate set, slightly sparser
+    ph1 = J1_PHASE + (fnv(bi,101,1)-0.5)*sp1*0.9
+    ph2 = J2_PHASE + (fnv(bi,103,2)-0.5)*sp2*0.9
     cu=[0]
     for i in range(1,len(P)):
-        if joint_id(P[i],ph1,ph2) != joint_id(P[i-1],ph1,ph2): cu.append(i)
+        if (math.floor((P[i].dot(N1)-ph1)/sp1), math.floor((P[i].dot(N2)-ph2)/sp2)) != \
+           (math.floor((P[i-1].dot(N1)-ph1)/sp1), math.floor((P[i-1].dot(N2)-ph2)/sp2)):
+            cu.append(i)
     if cu[-1] != len(P)-1: cu.append(len(P)-1)
     mg=[cu[0]]
     for c in cu[1:]:
-        if (P[c]-P[mg[-1]]).length < 13.0 and c != cu[-1]: continue
+        if (P[c]-P[mg[-1]]).length < max(5.0,sp1*0.55) and c != cu[-1]: continue
         mg.append(c)
     return mg
 print(f"perimeter run {RUN:.0f} mm, samples {len(P)}")
@@ -103,7 +131,7 @@ made=0; plucked_n=0; z=0.0
 fallen=[]
 for bi,(bname,frac,hard) in enumerate(BEDS, start=1):
     thick=H_TOTAL*frac
-    cuts = cuts_for_bed(bi)
+    cuts = cuts_for_bed(bi, thick, (z+thick/2)/H_TOTAL)
     # 1. LENGTH: merge adjacent joint segments sometimes, so a few blocks are
     #    long masses and others are short. Real jointed rock has both; equal
     #    lengths are what read as brickwork.
@@ -185,9 +213,21 @@ for bi,(bname,frac,hard) in enumerate(BEDS, start=1):
         bpy.context.collection.objects.link(ob)
         ob["hardness"]=hard; ob["bed"]=bi; ob["block"]=ci
         ob["spans2beds"]=span2; ob["t_mul"]=round(t_mul,3)
-        wear = 0.5 + 2.4*(0.45*max(0.0,jitter_out)/7.5 + 0.55*hf)
-        bv=ob.modifiers.new("wear",'BEVEL'); bv.width=max(0.4,wear)*MM
-        bv.segments=3; bv.limit_method='ANGLE'; bv.angle_limit=math.radians(34)
+        # SURFACE CLASSES (session 6): the FRONT + ends are OLD-ANCIENT, fully
+        # rounded arrises. The TUNNEL INTERIOR is sheltered and KEEPS SHARP
+        # EDGES -- sheltered rock does not round. So the bevel is limited to a
+        # vertex group of outward-facing verts only.
+        vg = ob.vertex_groups.new(name="weathered_flank")
+        ctr = sum(((ob.matrix_world @ v.co) for v in ob.data.vertices),
+                  Vector((0,0,0)))/len(ob.data.vertices)
+        for v in ob.data.vertices:
+            wp = ob.matrix_world @ v.co
+            outward = (wp - ctr)
+            faces_room = outward.xy.dot((ctr.xy - Vector((CORNER.x*MM, CORNER.y*MM)))) > 0
+            vg.add([v.index], 1.0 if faces_room else 0.0, 'REPLACE')
+        wear = 0.4 + 1.5*(0.45*max(0.0,jitter_out)/7.5 + 0.55*hf)
+        bv=ob.modifiers.new("wear",'BEVEL'); bv.width=max(0.3,wear)*MM
+        bv.segments=3; bv.limit_method='VGROUP'; bv.vertex_group="weathered_flank"
         # origin at the block's own centre so it rotates about itself
         bpy.context.view_layer.objects.active=ob
         ob.select_set(True)
@@ -220,7 +260,16 @@ tall=len([o for o in bpy.data.objects if o.get("spans2beds")])
 print(f"UNBONDED BLOCKS: {made} separate objects")
 print(f"  variables per block: length (1-3 joint spans), depth (0.72-1.38x),")
 print(f"    height ({tall} blocks span two beds), yaw (+/-0.11 rad)")
-print(f"  joints STAGGERED per bed so blocks interlock")
+print(f"  LAW 1: spacing = 0.8-1.2x bed thickness (per bed, not global)")
+print(f"  LAW 2: thin beds dense, thick sparse -- falls out of Law 1")
+print(f"  LAW 5: joints STAGGERED per bed (offset at every boundary)")
+print(f"  LAW 6: relief tightens upward -- finer spacing toward the scar")
+print(f"  surface classes: flanks bevelled, TUNNEL EDGES KEPT SHARP")
+for _bi,(_n,_f,_h) in enumerate(BEDS,start=1):
+    _t=H_TOTAL*_f; _z=sum(H_TOTAL*b[1] for b in BEDS[:_bi-1])
+    _sp=spacing_for_bed(_bi,_t,(_z+_t/2)/H_TOTAL)
+    print(f"    {_n:<13} thick={_t:5.1f}mm -> spacing {_sp:5.1f}mm "
+          f"({_sp/_t:.2f}x)")
 for bi,(bname,frac,hard) in enumerate(BEDS,start=1):
     n=len([o for o in bpy.data.objects if o.name.startswith(bname)])
     print(f"  {bname:<13} h={hard} thick={H_TOTAL*frac:5.1f}mm  blocks={n}")
