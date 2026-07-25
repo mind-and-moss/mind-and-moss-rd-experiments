@@ -25,4 +25,5 @@ def shoot(loc,path,lens=46,ortho=None):
     s.camera=c; s.render.filepath=path; bpy.ops.render.render(write_still=True)
 out=sys.argv[-1]
 shoot((0.012,0.010,0.62), out+"_top.png", ortho=0.30)   # LOOKING DOWNWARDS
-shoot((-0.28,-0.34,0.16), out+"_3q.png", 44)
+shoot((-0.40,-0.46,0.20), out+"_3q.png", 42)
+shoot((0.30,-0.44,0.15), out+"_right.png", 44)

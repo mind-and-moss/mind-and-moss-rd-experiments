@@ -114,3 +114,36 @@ Against Valdoviño: block sizes are too uniform (that cliff has huge masses
 beside small ones), and the profile is still a thin wall where the photograph
 has depth and standing pinnacles. Both are massing, both are machine work,
 neither is texture.
+
+## 7. Four independent variables per block
+
+Isaiah: *"add more shapes, at different angles, at different variables in a
+rectangle."* Every block is still a rectangular prism; what varies is now four
+things instead of one.
+
+| Variable | Range | Why |
+|---|---|---|
+| **length** | 1–3 joint spans merged | real jointed rock has long masses beside short blocks; equal lengths are what read as brickwork |
+| **depth** | 0.72–1.38 × the bed's wall | some blocks stand out of the face, others are set deep into it |
+| **height** | 1 or **2 beds** | sometimes a bedding plane failed to separate, so one block spans two as a single mass. Biased to hard beds, which is where that actually happens |
+| **yaw** | ±0.11 rad, per block | so no two blocks are parallel |
+
+Blocks that span two beds are tagged `spans2beds` so they can be found later.
+25 blocks, 6 of them double-height.
+
+## 8. STILL MISSING — the cracking and raising technique
+
+Isaiah: *"last session figured out this really good cracking and raising
+technique."*
+
+**This session does not have it.** It lives in
+`sprock-knowledge/33-monster8-blockout-state.md` and the `erosion_rock` module,
+in the local outputs folder that no remote session can reach — the same folder
+flagged in §1 of the bible and in the handoff.
+
+**Not guessed at deliberately.** From the name it sounds like cracking the mass
+and then raising blocks differentially, which is close to what the block
+offsets already do — but "close to" is how a proven technique gets quietly
+replaced by a worse reinvention. It needs the actual method.
+
+**This is now the third time this folder has blocked work.** Bank it.

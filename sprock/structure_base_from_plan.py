@@ -104,8 +104,19 @@ fallen=[]
 for bi,(bname,frac,hard) in enumerate(BEDS, start=1):
     thick=H_TOTAL*frac
     cuts = cuts_for_bed(bi)
-    for ci in range(len(cuts)-1):
-        i0,i1 = cuts[ci], cuts[ci+1]
+    # 1. LENGTH: merge adjacent joint segments sometimes, so a few blocks are
+    #    long masses and others are short. Real jointed rock has both; equal
+    #    lengths are what read as brickwork.
+    spans=[]; ci=0
+    while ci < len(cuts)-1:
+        grow = 1
+        r = fnv(bi, ci, 21)
+        if   r > 0.80: grow = 3
+        elif r > 0.55: grow = 2
+        grow = min(grow, len(cuts)-1-ci)
+        spans.append((ci, cuts[ci], cuts[ci+grow]))
+        ci += grow
+    for (ci, i0, i1) in spans:
         smid = 0.5*(S[i0]+S[i1])
         if in_opening(smid, bi):        # no wall here -- that is an opening
             continue
@@ -125,6 +136,15 @@ for bi,(bname,frac,hard) in enumerate(BEDS, start=1):
         drop       = (fnv(bi,ci,2)-0.5)*1.1
         shrink_z   = 0.995 + 0.020*fnv(bi,ci,8)   # full height: beds stay in contact
         # trim the ends: half the aperture off each, so adjacent blocks part
+        # 2. DEPTH varies per block -- some stand out of the face, some are
+        #    set deep into it.
+        t_mul = 0.72 + 0.66*fnv(bi,ci,22)
+        # 3. HEIGHT: sometimes a bedding plane failed to separate, so one block
+        #    spans two beds as a single mass. Strongly biased to hard beds.
+        span2 = (hard >= 4 and fnv(bi,ci,23) > 0.74)
+        h_mul = 1.9 if span2 else 1.0
+        # 4. ANGLE: its own yaw, so no two blocks are parallel.
+        yaw = (fnv(bi,ci,24)-0.5)*0.22
         APER = 0.8 + 1.0*fnv(bi,ci,9)   # a fracture is a line, not a canyon
         seg=[]
         acc=0.0
@@ -138,11 +158,11 @@ for bi,(bname,frac,hard) in enumerate(BEDS, start=1):
         lo=[]; hi=[]
         for i in keep:
             n = inward(i)
-            t = base_t(S[i])*KEEP[hard]
+            t = base_t(S[i])*KEEP[hard]*t_mul
             outer = P[i] - n*jitter_out           # erodes on the OUTER face
             innr  = P[i] + n*t
             zb = z + drop + dip_dz(S[i])
-            zt = zb + thick*shrink_z
+            zt = zb + thick*shrink_z*h_mul
             lo.append((bm.verts.new((outer.x*MM,outer.y*MM,zb*MM)),
                        bm.verts.new((innr.x*MM, innr.y*MM, zb*MM))))
             hi.append((bm.verts.new((outer.x*MM,outer.y*MM,zt*MM)),
@@ -164,6 +184,7 @@ for bi,(bname,frac,hard) in enumerate(BEDS, start=1):
         ob=bpy.data.objects.new(f"{bname}_b{ci:02d}", me)
         bpy.context.collection.objects.link(ob)
         ob["hardness"]=hard; ob["bed"]=bi; ob["block"]=ci
+        ob["spans2beds"]=span2; ob["t_mul"]=round(t_mul,3)
         wear = 0.5 + 2.4*(0.45*max(0.0,jitter_out)/7.5 + 0.55*hf)
         bv=ob.modifiers.new("wear",'BEVEL'); bv.width=max(0.4,wear)*MM
         bv.segments=3; bv.limit_method='ANGLE'; bv.angle_limit=math.radians(34)
@@ -173,7 +194,7 @@ for bi,(bname,frac,hard) in enumerate(BEDS, start=1):
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='BOUNDS')
         ob.rotation_euler=((fnv(bi,ci,4)-0.5)*0.045,
                            (fnv(bi,ci,5)-0.5)*0.045,
-                           (fnv(bi,ci,6)-0.5)*0.05)
+                           yaw)
         ob.select_set(False)
         made+=1
     z += thick
@@ -195,7 +216,10 @@ for idx,(pt, th, hard, bi_, ci_) in enumerate(fallen):
     tal+=1
 print(f"plucked {plucked_n} -> talus {tal}")
 print(f"bedding dip {DIP_DEG:.0f} deg -> beds climb {DIP*RUN:.0f} mm across the run")
+tall=len([o for o in bpy.data.objects if o.get("spans2beds")])
 print(f"UNBONDED BLOCKS: {made} separate objects")
+print(f"  variables per block: length (1-3 joint spans), depth (0.72-1.38x),")
+print(f"    height ({tall} blocks span two beds), yaw (+/-0.11 rad)")
 print(f"  joints STAGGERED per bed so blocks interlock")
 for bi,(bname,frac,hard) in enumerate(BEDS,start=1):
     n=len([o for o in bpy.data.objects if o.name.startswith(bname)])
