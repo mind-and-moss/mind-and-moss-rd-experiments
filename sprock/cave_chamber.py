@@ -56,9 +56,9 @@ for idx in range(len(NODES)-1):
         cutters.append(c)
 
 before={}
-for t in ("A1_platform","A2_marl","A3_cap"):
+for t in ("A1_platform","A2_marl"):
     before[t]=len(bpy.data.objects[t].data.polygons)
-for tname in ("A1_platform","A2_marl","A3_cap"):
+for tname in ("A1_platform","A2_marl"):   # A3 is the lintel, untouched
     t=bpy.data.objects[tname]
     for c in cutters:
         b=t.modifiers.new("cave",'BOOLEAN'); b.object=c
@@ -84,16 +84,24 @@ def components(ob):
 
 print("\n--- BOOLEAN VALIDATION ---")
 ok=True
-for tname in ("A1_platform","A2_marl","A3_cap"):
+for tname in ("A1_platform","A2_marl"):
     t=bpy.data.objects[tname]
     nf=len(t.data.polygons); nc=components(t)
-    verdict="PASS" if nf>0 and nc==1 else "FAIL"
-    if verdict=="FAIL": ok=False
+    # NOTE: a bed may legitimately split into more than one component. A2
+    # does: both cave openings are on the front face, so the rock between
+    # them is an island IN THAT BED -- a PILLAR, captured by A1 below and A3
+    # above. Connectivity that matters is per PRINT PIECE, not per bed; see
+    # validate_solid_connectivity.py, which is the authoritative check.
+    verdict = "PASS" if nf>0 else "FAIL (bed consumed)"
+    if nc>1: verdict += f"  [{nc} components -- pillar, see note]"
+    if nf==0: ok=False
     print(f"{tname:<13} faces {before[tname]:4d} -> {nf:4d}   components={nc}   {verdict}")
-for tname in ("A4_bench","A5_parting","A6_perch"):
+for tname in ("A3_cap","A4_bench","A5_parting","A6_perch"):
     t=bpy.data.objects[tname]
     print(f"{tname:<13} untouched, faces {len(t.data.polygons):4d}   components={components(t)}")
-print(f"OVERALL: {'PASS - no bed consumed, no bed split' if ok else 'FAIL'}")
+print(f"OVERALL: {'PASS - no bed consumed' if ok else 'FAIL - a bed was consumed'}")
+print("(component counts >1 are pillars; authoritative connectivity check is")
+print(" validate_solid_connectivity.py, which tests the assembled print pieces)")
 
 print("\n--- CHAMBER ---")
 print(f"ceiling = A3 underside : z {CEIL:.1f} mm")

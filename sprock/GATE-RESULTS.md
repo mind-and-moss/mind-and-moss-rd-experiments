@@ -48,7 +48,8 @@ Both overhangs are outputs of hardness. Retreat: h5→0, h4→5, h3→11, h2→1
 | Mouth → tail flow-through | reachable | **PASS** |
 | Narrowest constriction | ~1200 mm² ≈ 39 mm circular equiv. | **PASS** — clearly passable |
 | Flat base | z = 0.00, 56 verts on plane | **PASS** |
-| Wall ≥ 1.2 mm | 1 of 876 samples at **1.07 mm** | **REVIEW** |
+| Wall ≥ 1.2 mm | 0 of 715 samples thin; thinnest **2.08 mm** | **PASS** |
+| Manifold = 0 | 0 non-manifold edges, 0 loose verts, all 6 beds | **PASS** |
 
 Constriction profile tapers smoothly 2752 → 1200 mm² and reopens to 1600 mm²
 at the tail. A monotonic taper with no sudden pinch is what the no-wedge rule
@@ -80,12 +81,34 @@ Recorded because each looked fine and only a measurement caught it.
    beds as disconnected, because separately-built beds touch face-to-face
    without sharing vertices. Replaced with voxel solid connectivity.
 
+## Fifth bug: the thin wall
+
+`A3_cap` measured **1.07 mm** at the cave rim, under the 1.2 mm gate. Cause:
+the cutter's top face sat *exactly* on `A3`'s underside, so the boolean was a
+coplanar cut against a bed that never needed cutting — **`A3` is the lintel;
+its underside already is the ceiling.** Removed `A3` from the boolean targets.
+Thinnest wall went 1.07 → **2.08 mm** and the manifold gate passes clean.
+
+## Segmentation for the A1 mini (180 mm bed)
+
+| | |
+|---|---|
+| footprint vs bed | 420 × 250 mm vs 180 mm → **3 × 2 columns** |
+| column size | 140 × 125 mm |
+| `L1_base` | z 0 → 58.9 (58.9 mm) — fits |
+| `L2_mid` | z 58.9 → 146.3 (87.4 mm) — fits |
+| `L3_crest` | z 146.3 → 190.0 (43.7 mm) — fits |
+| **total pieces** | **18** |
+| seams | 7 vertical per layer, 2 horizontal |
+| pegs | ~99 at 6.0 mm / 6.43 mm socket |
+
+> **Flag for review:** 18 pieces and ~99 pegs is a serious assembly job. The
+> 420 mm size drives this directly. Worth deciding whether the piece wants to
+> be this big before committing to that build.
+
 ## Open
 
-1. **Wall thickness 1.07 mm** on `A3_cap` at (77, −78, 59) — the cave ceiling
-   edge near the mouth. Below the 1.2 mm gate. Fix by pulling the cutter a
-   little clear of `A3`'s rim.
-2. **Headroom 30.9 mm** has little margin for a 56 mm fish (~18 mm body
+1. **Headroom 30.9 mm** has little margin for a 56 mm fish (~18 mm body
    depth). Deepening the floor dish or thickening `A2` both fix it; both
    change the terrace read.
 3. **Segmentation not re-derived at 420 mm.** The piece exceeds the A1 mini's
