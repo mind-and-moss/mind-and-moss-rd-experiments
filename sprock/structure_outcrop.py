@@ -20,13 +20,15 @@ W, D, H = 420.0, 250.0, 190.0
 # an OUTPUT of the stack, not drawn in.
 BEDS = [
     ("A1_platform",  0.20, 5,   0.0),   # the plinth, sits on substrate
-    ("A2_marl",      0.11, 1,  34.0),   # THE ROTTEN ONE -> the cave
-    ("A3_cap",       0.21, 5,   6.0),   # roof of the cave, overhangs A2
-    ("A4_bench",     0.16, 3,  22.0),   # the wide mid terrace
-    ("A5_parting",   0.09, 2,  27.0),   # thin recessive step
-    ("A6_perch",     0.23, 4,  16.0),   # the flat top the animal sits on
+    ("A2_marl",      0.11, 1,   0.0),   # THE ROTTEN ONE -> the cave.
+                                        # step 0: its RETREAT is its step.
+    ("A3_cap",       0.21, 5,  28.0),   # roof of the cave; wider than A2, so
+                                        # it overhangs -- that IS the undercut
+    ("A4_bench",     0.16, 3,  16.0),
+    ("A5_parting",   0.09, 2,  18.0),
+    ("A6_perch",     0.23, 4,  12.0)
 ]
-MOUTH_X, MOUTH_W = -0.30*W, 0.30*W     # cave at the FRONT-LEFT, per the photo
+MOUTH_X, MOUTH_W = -0.20*W, 0.26*W     # cave at the FRONT-LEFT, per the photo
 
 def outline(inset, wob, cx, cy, seed):
     """Plan outline of a bed. Irregular and OFF-CENTRE: as the outcrop wears
