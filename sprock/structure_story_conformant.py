@@ -292,16 +292,30 @@ AUDIT.append(("embayment", "directly over the cave",
               "Ep5: A3 loses support and fails along existing joints"))
 
 # EPISODE 6 -- grikes lie ON joint planes, at true multiples of the spacing.
-for gi,(which,k,base,strike) in enumerate(grike_planes(6)):
+def dist_to_cave(pt):
+    best=1e18
+    for (cx_,cy_,rx_,ry_) in NODES:
+        best=min(best, (Vector((cx_,cy_))-pt).length - max(rx_,ry_))
+    return best
+
+_grike_n=0
+for gi,(which,k,base,strike) in enumerate(grike_planes(8)):
     N   = N1 if which==1 else N2
     sp  = J1_SPACE if which==1 else J2_SPACE
     along = Vector((-N.y, N.x))
     slide = 46.0*(fnv(gi,3,1)-0.5)*2
     ctr = base + along*slide
     zlo = 96.0 + 44.0*fnv(gi,7,2)
+    wdt=4.0+3.0*fnv(gi,13,4)
+    if dist_to_cave(ctr) < wdt/2 + 14.0:
+        AUDIT.append((f"grike J{which} k={k}", "too close to the cave",
+                      "-- omitted --",
+                      "Ep6: the wall between would have gone; they'd be one opening"))
+        continue
+    if _grike_n >= 5: continue
+    _grike_n += 1
     c=box_cutter(f"GRIKE_J{which}_k{k}", ctr.x, ctr.y, (zlo+200.0)/2,
-                 78.0+52.0*fnv(gi,11,3), 4.0+3.0*fnv(gi,13,4),
-                 200.0-zlo, strike)
+                 78.0+52.0*fnv(gi,11,3), wdt, 200.0-zlo, strike)
     cutters.append(c); CUT_BEDS[c.name]=None
     AUDIT.append((f"grike J{which} k={k}", f"ON joint plane, offset {k*sp:.0f} mm",
                   f"({ctr.x:.1f}, {ctr.y:.1f})", "Ep6: joints widened by dissolution"))
@@ -309,11 +323,15 @@ for gi,(which,k,base,strike) in enumerate(grike_planes(6)):
 # EPISODE 6 -- basins at joint intersections on ledge tops.
 # a basin can only sit where its LEDGE actually is. Half-extents come from the
 # bed geometry, not from a guess.
-LEDGES=[(Z_A2_TOP,172.0, 87.0), (98.8,182.0, 97.0),
-        (146.3,129.0, 44.0), (190.0,131.0, 46.0)]
+# (ledge z, half-extents, BED whose top this ledge is)
+# A basin is a shallow dish. It must only cut the bed it sits on -- letting an
+# 11 mm dish cut down into the next bed clipped that bed's narrower edge into
+# a 0.3 mm rim, which is where the thin-wall failures were.
+LEDGES=[(Z_A2_TOP,172.0, 87.0, 2), (98.8,182.0, 97.0, 3),
+        (146.3,129.0, 44.0, 5), (190.0,131.0, 46.0, 6)]
 BAS_TARGET=[Vector((-50.0,40.0)), Vector((40.0,44.0)),
             Vector((-10.0,20.0)), Vector((30.0,10.0))]
-for i,((zt,hx,hy),tg) in enumerate(zip(LEDGES, BAS_TARGET)):
+for i,((zt,hx,hy,bidx),tg) in enumerate(zip(LEDGES, BAS_TARGET)):
     br=25.0+9.0*fnv(i,17,5)
     # centre must leave the basin fully on the ledge with a rim of rock
     bx=max(0.10,(hx-br-16.0)/(W/2)); by=max(0.10,(hy-br*0.78-14.0)/(D/2))
@@ -324,7 +342,7 @@ for i,((zt,hx,hy),tg) in enumerate(zip(LEDGES, BAS_TARGET)):
         continue
     kk1,kk2,q = hit
     c=cyl_cutter(f"BASIN_{i}", q.x, q.y, zt+4.0, br, br*0.78, 11.0)
-    cutters.append(c); CUT_BEDS[c.name]=None
+    cutters.append(c); CUT_BEDS[c.name]={bidx}
     AUDIT.append((f"basin {i}", f"J1 k={kk1}, J2 k={kk2}, ledge z={zt:.0f}",
                   f"({q.x:.1f}, {q.y:.1f})", "Ep6: standing water sinks in at joint crossings"))
 
@@ -389,6 +407,28 @@ for o in [x for x in bpy.data.objects if x.type=='MESH']:
     bpy.ops.object.mode_set(mode='OBJECT')
     cleaned+=1
 print(f"cleaned {cleaned} meshes")
+
+dropped=0
+for o in [x for x in bpy.data.objects if x.type=='MESH' and not x.name.startswith("talus")]:
+    bm=bmesh.new(); bm.from_mesh(o.data)
+    seen=set(); groups=[]
+    for v in bm.verts:
+        if v in seen: continue
+        g=[v]; seen.add(v); st=[v]
+        while st:
+            cur=st.pop()
+            for e in cur.link_edges:
+                o2=e.other_vert(cur)
+                if o2 not in seen: seen.add(o2); st.append(o2); g.append(o2)
+        groups.append(g)
+    if len(groups)>1:
+        groups.sort(key=len, reverse=True)
+        kill=[v for g in groups[1:] if len(g) < 0.18*len(groups[0]) for v in g]
+        if kill:
+            bmesh.ops.delete(bm, geom=kill, context='VERTS')
+            dropped+=1
+    bm.to_mesh(o.data); bm.free()
+print(f"meshes with loose chips removed: {dropped}")
 
 # --- 5. TALUS: the rock that left had to go somewhere --------------------
 # Rockfall does not scatter evenly across open ground. It PILES AT THE FOOT,

@@ -129,3 +129,64 @@ backwards is what makes fake rock look fake.
 The cave is currently a notch, not a proper opening — the armature has the
 overhang and the retreat, but not a true chamber behind the rim. That is
 machine work still owed, not something to sculpt around.
+
+---
+
+# UPDATE — zones for the MATURE structure
+
+The map above describes the six-slab armature. The story-conformant build adds
+four systems, and each needs its own treatment. Same principle throughout:
+**the number tells you what the surface is and what happened to it.**
+
+### 10 — GRIKE WALL
+The two facing walls of an open joint, running down through the stack.
+- **Near-vertical and near-parallel** — a joint is a fracture, so the two sides
+  once fitted together and still nearly do
+- **Fluted vertically** by water running down, not horizontally
+- Rounded and widened at the top where it has been open longest; **tighter and
+  sharper toward the bottom** where water reached later
+- The two walls should look like they'd close if you pushed them together.
+  That's the tell that it's a joint and not a carved slot.
+
+### 11 — EMBAYMENT SCAR
+The broken face where the cap collapsed over the cave (Episode 5).
+- **Fresher-looking than everything around it** — this is the youngest surface
+  on the piece
+- Angular, joint-bounded, stepped — it failed along fractures that were
+  already there, so its edges are straight, not curved
+- Less rounding than any other exposed face. It hasn't had time.
+
+### 12 — TALUS BLOCK
+The fallen rock at the foot.
+- **Rectangular, not rounded** — these are joint-bounded blocks that broke off,
+  not river cobbles
+- Edges knocked off from the fall and from decades of being shifted
+- **Bed lines run through them at random angles** — they landed how they landed,
+  so their bedding does not line up with the outcrop's. This one detail sells
+  the whole story.
+- Feather the bases into substrate; some should be more buried than others
+
+### 13 — SOLUTION BASIN
+Shallow dish on a ledge top where standing water sinks in at a joint crossing.
+- **Smooth, rounded, dished** — dissolution, not impact
+- Deepest at the centre, feathering out at the rim, with **no hard edge**
+- A drainage runnel leading out of it toward the ledge's low side
+- Mineral staining ring at the old waterline, if you want one place for colour
+  to concentrate
+
+---
+
+## What the story tells you that the geometry can't
+
+Read `THE-STORY.md` alongside this. Two clauses matter most for sculpting:
+
+**`A2` is the bed that should never have been there.** A river switched course
+and dumped clay onto a clean shelf. Everything in this piece — the cave, the
+overhang, the collapse, the talus — descends from that one accident. When you
+are deciding how rotten to make the marl band, the answer is: rotten enough
+that it explains all of it.
+
+**The piece is a fragment** (Episode 7). Its flat faces are fresh fracture
+surfaces, not sawn ones. That is why they sit against glass without looking
+manufactured — and it means the flat faces should carry a *little* of the
+angularity of a broken joint face, not be sanded dead flat.
