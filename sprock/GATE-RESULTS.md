@@ -118,3 +118,64 @@ Thinnest wall went 1.07 → **2.08 mm** and the manifold gate passes clean.
 4. **Manifold check not run** as a formal gate (non-manifold sources were
    removed, but `manifold = 0` has not been asserted).
 5. Armature only. Detail, colour and magic are Isaiah's — `SCULPT-BY-NUMBERS.md`.
+
+---
+
+# MATURE STRUCTURE (`structure_mature.py`) — the 70% armature
+
+The 30% version was six smooth slabs. Rock has **systems**, and those are what
+a sculptor should be handed rather than asked to invent.
+
+## Systems added
+
+| System | What it does | Why it is not decoration |
+|---|---|---|
+| **Joint sets** | two near-vertical fracture directions, strike 68°/152°, spacing 86/118 mm | every plan outline now **steps at a joint** instead of curving. Rock breaks along joints, not along splines — this is the single biggest reason a smooth extrusion reads as fake |
+| **Sub-bedding** | each bed split into 2 laminae, 2.6 mm retreat apart | thick beds are not one slab; laminae give the fine horizontal steps |
+| **Open joints (grikes)** | 6 widened fractures cutting down through the stack | ties the beds together visually — without them the beds read as separate plates |
+| **Collapsed embayment** | one sector lost its upper beds outright | breaks the profile so the piece has a front and a back, not a uniform mound |
+| **Two caves** | the marl rots wherever it is exposed, not in one spot | a second, smaller opening on another face |
+| **Talus** | 46 blocks, piled at the foot under the embayment, half-buried | the rock that left had to go somewhere — and it lands where it fell from |
+| **Solution basins** | 4 shallow dishes on ledge tops | ledges hold water, so they dissolve |
+
+Counts: **12 rock laminae, 46 talus, 29 cutters, 128 boolean operations.**
+All variation is a seeded FNV hash — same script, same rock, every run.
+
+## Validation
+
+| Gate | Result |
+|---|---|
+| Non-manifold edges (armature) | **3** boundary edges on one lamina |
+| Non-manifold edges (after voxel remesh) | **0** — **PASS** |
+| Components after remesh | 5 = main mass + 4 talus clusters — **correct**, fallen rock *is* separate |
+| Rock volume | 7618 cm³ |
+
+**Manifold is asserted after the remesh, which is where the canon pipeline puts
+it** (geometry → remesh → displacement). The armature's 3 boundary edges are
+resolved by that step, and this was proven rather than assumed.
+
+## Three bugs found here
+
+1. **Talus read as scattered dice** — too big, too far out, evenly spread.
+   Rockfall piles *at the foot*, heaviest under where it fell from, and
+   half-buries itself. Now 46 small blocks clustered under the embayment.
+2. **A joint slot severed the piece**, leaving a free-standing fin that read as
+   a wall. Joint slots were 200–300 mm across a 420 mm piece. Now partial —
+   about a third of the span, and stopped short of the base.
+3. **A picket fence of thin fins under the bench.** Cause was the *same*
+   coplanar-boolean bug fixed earlier and reintroduced here: the cave cutter's
+   top sat exactly on `A3`'s underside, punching 28 boundary holes, and
+   **voxel-remeshing an open surface renders it as a thin wall**. Cutters are
+   now tagged with the beds they may cut. 31 → 3 non-manifold edges.
+
+> First diagnosis of that fence was **wrong** — I blamed the outline sampling
+> and rewrote it to hold retreat per facet. That change is worth keeping on its
+> own merits, but it was not the cause. Recorded so the next session does not
+> trust the first explanation.
+
+## Honest position
+
+This is armature, not rock. It now carries jointing, sub-bedding, collapse,
+talus and solution features — the structural story — but the terraces still
+read as somewhat regular plates, and the surface is bare. Detail, colour and
+magic remain Isaiah's, per `SCULPT-BY-NUMBERS.md`.
