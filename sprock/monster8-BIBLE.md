@@ -517,3 +517,46 @@ rock is steeply inclined, which breaks the grid completely.
 of 8–15°). It is one parameter, it is massing rather than decoration, and it
 would do more than any further surface tuning. Surface noise cannot close this
 gap — that is precisely what Law 2 warns about.
+
+---
+
+## 22. DIPPING BEDS (script 10) — the grid comes from the bedding
+
+The rectilinear look was never caused by the blocks being rectangles. It was
+caused by **horizontal** bedding. The reference rock is steeply inclined.
+
+**The conflict:** a real dip fights the flat print base and the vertical glass
+faces. **The resolution is geologically honest:** the beds dip *inside* the
+block, and the base and glass faces are **cut planes through inclined
+strata** — exactly a sawn block of dipping rock. Every gate survives: flat
+base, flat glass faces, dipping bedding.
+
+`DIP_DEG = 11°` → the beds climb 50 mm across the 256 mm run. Blocks carried
+below the base plane are removed (the saw took them); blocks carried above the
+crest stay, since the crest is broken anyway. Each block is tilted to sit
+parallel to its own bed rather than flat.
+
+### Two bugs caught in the render
+
+1. **The survivor stack rendered as raw white cubes.** The preview join filters
+   on names beginning `B` or `talus`; stack blocks are named `S…`, so they were
+   never joined, never remeshed and never took the material.
+2. **The stack floated.** Nothing stopped the wall beneath it being plucked
+   away. Plucking is now forbidden across the stack's span — the rock under a
+   stack is, by definition, the rock that resisted; it is *why* the stack is
+   there.
+
+## 23. NEXT: a SUPPORT validator (engineering, not appearance)
+
+The piece still reads as floating slabs, and that is not a look problem — it
+is a **physical** one. Nothing currently guarantees that every block rests on
+another block or on the ground. A piece that cannot stand cannot be printed,
+pegged, or assembled.
+
+The fix is the same shape as the connectivity validator that caught the
+severed gallery: for every block, assert it has support beneath it (overlap in
+plan with a block in the bed below, or contact with z=0). Report unsupported
+blocks and either drop them into contact or remove them as fallen.
+
+This is worth more than any further surface tuning, and unlike surface tuning
+it is squarely machine work.

@@ -14,7 +14,7 @@ import bpy, sys, math
 exec(open(sys.argv[-2]).read())          # build the blocks (script 06)
 
 src = [o for o in bpy.data.objects if o.type=='MESH' and
-       (o.name.startswith("B") or o.name.startswith("talus"))]
+       (o.name.startswith("B") or o.name.startswith("talus") or o.name.startswith("S"))]
 print(f"source blocks: {len(src)}")
 
 # --- duplicate + join into one mass -------------------------------------
