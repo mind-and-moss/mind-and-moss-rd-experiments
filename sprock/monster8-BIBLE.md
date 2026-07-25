@@ -357,3 +357,55 @@ The dark+light choice is a BIO gate. Options, unresolved:
 3. Shrink the window so it lights only part of the void
 
 Isaiah's call.
+
+---
+
+## 16. FUNDAMENTAL CHANGE — the wall is an ASSEMBLY OF RECTANGULAR BLOCKS
+
+Isaiah's call, session 7. The wall is no longer one extruded ribbon; it is
+many rectangular blocks in varied positions.
+
+**This is not a simplification — it is the mechanism.** Bedded limestone is
+cut horizontally by bedding planes and vertically by two joint sets, and it
+comes apart into rectangular blocks. A smooth extruded curve reads as a
+retaining wall precisely because rock does not do that. It also happens to be
+exactly what a peg-and-socket assembly wants.
+
+**Two real relationships are built in rather than styled in:**
+
+1. **Joint spacing scales with bed thickness.** Thick beds break into wide
+   blocks, thin into narrow. Observed geology. The stack then reads on its
+   own with nothing tuned:
+
+   | Bed | Thickness | Joint spacing | Blocks |
+   |---|---|---|---|
+   | `B3_massive_cap` | 26.4 mm | 38.4 mm | 6 |
+   | `B5_marl_parting` | 9.6 mm | 19.0 mm | 9–13 |
+
+2. **Collapse is recorded in block POSITIONS, not in a texture.** Blocks near
+   the unsupported span have slipped out and dropped; blocks in solid wall
+   have not. This keeps the erosion story on the right side of Law 2 — it is
+   structural, not generated.
+
+**All variation is deterministic** (seeded FNV hash of bed and block index).
+The same script always builds the same rock. This matters: a random rock
+cannot be iterated on, reviewed, or reproduced for a second casting.
+
+### Session 7 fixes applied after the first block pass (script 05)
+
+The first assembly read as masonry. Three causes, all structural:
+
+1. **Relief** — every block sat at the same depth, so the face was a plane
+   with grooves. Offsets now scale with wall thickness (±0.42 t for hard beds,
+   ±0.62 t for soft), and soft beds are biased to sit back.
+2. **Plucking** — every course position was filled. Weathering removes whole
+   blocks. Pluck probability is by hardness (marl 0.34, massive 0.05) plus a
+   bonus near the mouth where blocks were unsupported. 8 of 47 plucked.
+3. **Size variation** — was ±25%, which is brickwork. Now 0.45–1.80 × spacing
+   on a power curve, so a few large blocks anchor the composition.
+
+### Still open
+
+The overall SILHOUETTE is still a rectangle. Real cliffs have a broken crest
+and talus at the base. Fixing the envelope — not the blocks — is the next
+form problem.
